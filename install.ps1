@@ -1,17 +1,11 @@
 # install.ps1
-# Stateless, idempotent dotfiles installer
-#
-# Modes:
-#   default  → install
-#   -DryRun  → show actions, no changes
-#   -Check   → verify state, no changes
-#
-# Rules:
-# - No bookkeeping
-# - Safe re-runs
-# - Overwrites ONLY repo-owned symlinks
-# - Use -Force to overwrite foreign targets
-# - Supports files and directories
+# Stateless dotfiles installer with:
+# - files + folders
+# - check mode
+# - dry-run mode
+# - automatic backup of foreign targets
+# - timestamped transcript per run
+# - no modules, no bookkeeping
 #
 # Usage:
 #   .\install.ps1
@@ -29,11 +23,16 @@ param(
 $ErrorActionPreference = 'Stop'
 
 # ------------------------------------------------------------
-# Paths
+# Paths & run context
 # ------------------------------------------------------------
 $RepoRoot     = Split-Path -Parent $MyInvocation.MyCommand.Path
 $DotfilesRoot = Join-Path $RepoRoot 'dotfiles'
 $MapFile      = Join-Path $RepoRoot 'dotfiles.map.json'
+
+$BackupRoot   = Join-Path $RepoRoot '.backup'
+$Timestamp    = Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'
+$BackupRunDir = Join-Path $BackupRoot $Timestamp
+$Transcript   = Join-Path $BackupRunDir 'transcript.txt'
 
 # ------------------------------------------------------------
 # Logging
@@ -70,8 +69,7 @@ function Get-Platform
 # ------------------------------------------------------------
 function Resolve-HomePath
 {
-    param([Parameter(Mandatory)][string]$Path)
-
+    param([string]$Path)
     if ($Path -like "~/*")
     {
         return Join-Path $HOME $Path.Substring(2)
@@ -79,10 +77,8 @@ function Resolve-HomePath
     return $Path
 }
 
-function Ensure-Directory
+function Ensure-Directory($Path)
 {
-    param([Parameter(Mandatory)][string]$Path)
-
     if (-not (Test-Path $Path))
     {
         if ($DryRun -or $Check)
@@ -91,36 +87,28 @@ function Ensure-Directory
         } else
         {
             New-Item -ItemType Directory -Path $Path -Force | Out-Null
-            Info "Created directory: $Path"
         }
     }
 }
 
 # ------------------------------------------------------------
-# Repo ownership detection (no bookkeeping)
+# Repo-owned symlink detection
 # ------------------------------------------------------------
 function Is-RepoOwnedLink
 {
-    param(
-        [Parameter(Mandatory)][string]$Target,
-        [Parameter(Mandatory)][string]$RepoRoot
-    )
-
-    if (-not (Test-Path $Target))
-    {
-        return $false
-    }
+    param([string]$Target)
 
     try
     {
         $item = Get-Item $Target -ErrorAction Stop
         if (-not $item.LinkType)
-        {
-            return $false
+        { return $false
         }
 
-        $resolved = (Resolve-Path $Target).Path
-        return $resolved.StartsWith($RepoRoot, [System.StringComparison]::OrdinalIgnoreCase)
+        return (Resolve-Path $Target).Path.StartsWith(
+            $RepoRoot,
+            [StringComparison]::OrdinalIgnoreCase
+        )
     } catch
     {
         return $false
@@ -128,17 +116,41 @@ function Is-RepoOwnedLink
 }
 
 # ------------------------------------------------------------
-# Install / Check link (file or directory)
+# Backup foreign targets
+# ------------------------------------------------------------
+function Backup-Target
+{
+    param([string]$Target)
+
+    # normalize path for backup layout
+    $relative = $Target -replace '^[A-Za-z]:\\', ''
+    $backupPath = Join-Path $BackupRunDir $relative
+    $backupDir  = Split-Path -Parent $backupPath
+
+    Ensure-Directory $backupDir
+
+    if ($DryRun)
+    {
+        Info "Would backup: $Target -> $backupPath"
+        return
+    }
+
+    Copy-Item -Path $Target -Destination $backupPath -Recurse -Force
+    Info "Backed up: $Target"
+}
+
+# ------------------------------------------------------------
+# Process a single mapping entry (file or folder)
 # ------------------------------------------------------------
 function Process-Entry
 {
     param(
-        [Parameter(Mandatory)][string]$Source,
-        [Parameter(Mandatory)][string]$Target
+        [string]$Source,
+        [string]$Target
     )
 
     $exists    = Test-Path $Target
-    $repoOwned = $exists -and (Is-RepoOwnedLink -Target $Target -RepoRoot $RepoRoot)
+    $repoOwned = $exists -and (Is-RepoOwnedLink $Target)
 
     if ($Check)
     {
@@ -147,32 +159,28 @@ function Process-Entry
             Warn "MISSING : $Target"
             return
         }
-
         if (-not $repoOwned)
         {
             Warn "FOREIGN : $Target"
             return
         }
-
         Info "OK      : $Target"
         return
     }
 
-    if ($exists -and -not $repoOwned -and -not $Force)
+    if ($exists -and -not $repoOwned)
     {
-        Warn "Target exists and is not repo-owned, skipping: $Target"
-        return
-    }
+        if (-not $Force)
+        {
+            Backup-Target $Target
+        }
 
-    if ($exists)
-    {
         if ($DryRun)
         {
-            Info "Would remove existing target: $Target"
+            Info "Would remove foreign target: $Target"
         } else
         {
             Remove-Item $Target -Recurse -Force
-            Info "Removed existing target: $Target"
         }
     }
 
@@ -212,39 +220,55 @@ if (-not (Test-Path $MapFile))
 }
 
 # ------------------------------------------------------------
-# Load mapping
+# Prepare backup + transcript (not in CHECK mode)
 # ------------------------------------------------------------
-$Map      = Get-Content $MapFile -Raw | ConvertFrom-Json
-$Platform = Get-Platform
-
-Info "Platform : $Platform"
-Info "Mode     : $(if ($Check) {'CHECK'} elseif ($DryRun) {'DRY-RUN'} else {'INSTALL'})"
-Info "Force    : $Force"
-
-# ------------------------------------------------------------
-# Process mappings
-# ------------------------------------------------------------
-foreach ($key in $Map.PSObject.Properties.Name)
+if (-not $Check)
 {
-    $entry = $Map.$key
-
-    if ($entry.platforms -and -not ($entry.platforms -contains $Platform))
-    {
-        Info "Skipping (platform mismatch): $key"
-        continue
-    }
-
-    $Source = Join-Path $DotfilesRoot $key
-    if (-not (Test-Path $Source))
-    {
-        Warn "Source missing, skipping: $Source"
-        continue
-    }
-
-    $Target = Resolve-HomePath $entry.target
-
-    Info "Processing: $key"
-    Process-Entry -Source $Source -Target $Target
+    Ensure-Directory $BackupRunDir
+    Start-Transcript -Path $Transcript | Out-Null
 }
 
-Info "Done."
+try
+{
+    # --------------------------------------------------------
+    # Load mapping
+    # --------------------------------------------------------
+    $Map      = Get-Content $MapFile -Raw | ConvertFrom-Json
+    $Platform = Get-Platform
+
+    Info "Mode     : $(if ($Check) {'CHECK'} elseif ($DryRun) {'DRY-RUN'} else {'INSTALL'})"
+    Info "Platform : $Platform"
+
+    # --------------------------------------------------------
+    # Process mappings
+    # --------------------------------------------------------
+    foreach ($key in $Map.PSObject.Properties.Name)
+    {
+        $entry = $Map.$key
+
+        if ($entry.platforms -and -not ($entry.platforms -contains $Platform))
+        {
+            continue
+        }
+
+        $Source = Join-Path $DotfilesRoot $key
+        if (-not (Test-Path $Source))
+        {
+            Warn "Source missing: $Source"
+            continue
+        }
+
+        $Target = Resolve-HomePath $entry.target
+
+        Info "Processing: $key"
+        Process-Entry -Source $Source -Target $Target
+    }
+
+    Info "Done."
+} finally
+{
+    if (-not $Check)
+    {
+        Stop-Transcript | Out-Null
+    }
+}
