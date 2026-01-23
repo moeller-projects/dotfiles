@@ -1,0 +1,14 @@
+[
+  { "key": "alt+v t", "command": "workbench.action.terminal.toggleTerminal" },
+  { "key": "alt+v e", "command": "workbench.view.explorer" },
+  {
+    "key": "shift+enter",
+    "command": "extension.jumpy-word",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "Escape",
+    "command": "extension.jumpy-exit",
+    "when": "editorTextFocus && jumpy.isJumpyMode"
+  }
+]

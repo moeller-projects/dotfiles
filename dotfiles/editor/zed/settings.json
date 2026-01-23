@@ -1,0 +1,12 @@
+{
+  "context_servers": {
+    "trigger": {
+      "source": "custom",
+      "command": "npx",
+      "args": [
+        "trigger.dev@4.1.0",
+        "mcp"
+      ]
+    }
+  }
+}

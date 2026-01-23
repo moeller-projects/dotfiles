@@ -1,0 +1,242 @@
+{
+  // ────────────────────────────────────────────
+  // Window & UI Settings
+  // ────────────────────────────────────────────
+  "window.autoDetectHighContrast": false,
+  "window.nativeFullScreen": true,
+  "window.newWindowDimensions": "inherit",
+  "window.menuBarVisibility": "compact",
+  "window.titleSeparator": " | ",
+
+  "workbench.activityBar.location": "top",
+  "workbench.sideBar.location": "right",
+  "workbench.statusBar.visible": false,
+  "workbench.tree.enableStickyScroll": false,
+  "workbench.tree.indent": 15,
+  "workbench.tips.enabled": false,
+  "workbench.startupEditor": "none",
+
+  "explorer.confirmDelete": false,
+  "explorer.openEditors.visible": 15,
+
+  // ────────────────────────────────────────────
+  // Editor Behavior & Appearance
+  // ────────────────────────────────────────────
+  "editor.accessibilitySupport": "off",
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  "editor.copyWithSyntaxHighlighting": false,
+  "editor.detectIndentation": false,
+  "editor.emptySelectionClipboard": false,
+  "editor.guides.indentation": false,
+  "editor.hideCursorInOverviewRuler": true,
+  "editor.hover.delay": 1500,
+  "editor.hover.enabled": "on",
+  "editor.inlineSuggest.suppressSuggestions": false,
+  "editor.lightbulb.enabled": "off",
+  "editor.matchBrackets": "never",
+  "editor.occurrencesHighlight": "off",
+  "editor.overviewRulerBorder": false,
+  "editor.renderControlCharacters": false,
+  "editor.renderLineHighlight": "none",
+  "editor.selectionHighlight": false,
+  "editor.snippetSuggestions": "top",
+  "editor.stickyScroll.enabled": false,
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": [
+          "comment",
+          "keyword",
+          "variable.language",
+          "entity.other.attribute-name.html",
+          "entity.other.attribute-name",
+          "keyword.control",
+          "storage.type",
+          "comment",
+          "comment.block",
+          "comment.line"
+        ],
+        "settings": {
+          "fontStyle": ""
+        }
+      }
+    ]
+  },
+  "editor.wordSeparators": "`~!@#%^&*()=+[{]}\\|;:'\",.<>/?",
+  "editor.wordWrap": "wordWrapColumn",
+  "editor.wordWrapColumn": 240,
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+
+  // ────────────────────────────────────────────
+  // Typography & Font Settings
+  // ────────────────────────────────────────────
+  "editor.fontFamily": "Geist Mono, JetBrains Mono, Fira Code",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 16,
+  "editor.fontWeight": "400",
+  "editor.suggestFontSize": 16,
+  "editor.suggestLineHeight": 30,
+  "editor.lineHeight": 32,
+  "terminal.integrated.fontSize": 16,
+  "terminal.integrated.lineHeight": 1.5,
+
+  // ────────────────────────────────────────────
+  // Diff Editor Settings
+  // ────────────────────────────────────────────
+  "diffEditor.ignoreTrimWhitespace": false,
+  "diffEditor.renderSideBySide": true,
+  "diffEditor.wordWrap": "on",
+
+  // ────────────────────────────────────────────
+  // Git & Source Control
+  // ────────────────────────────────────────────
+  "git.openRepositoryInParentFolders": "always",
+  "git.decorations.enabled": false,
+  "scm.diffDecorations": "none",
+
+  // ────────────────────────────────────────────
+  // Silence the Noise (UI & Notifications)
+  // ────────────────────────────────────────────
+  "breadcrumbs.enabled": false,
+  "problems.decorations.enabled": false,
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.enablePreviewFromQuickOpen": false,
+  "workbench.editor.showTabs": "none",
+
+  "editor.gotoLocation.multipleDeclarations": "goto",
+  "editor.gotoLocation.multipleDefinitions": "goto",
+  "editor.gotoLocation.multipleImplementations": "goto",
+  "editor.gotoLocation.multipleReferences": "goto",
+  "editor.gotoLocation.multipleTypeDefinitions": "goto",
+
+  // ────────────────────────────────────────────
+  // Files & Formatting
+  // ────────────────────────────────────────────
+  "files.autoSave": "onFocusChange",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+
+  "editor.formatOnSave": true,
+
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+
+  // ────────────────────────────────────────────
+  // Search & Exclusions
+  // ────────────────────────────────────────────
+  "search.useIgnoreFiles": false,
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/package-lock.json": true
+  },
+
+  // ────────────────────────────────────────────
+  // Code Snippets & Extensions
+  // ────────────────────────────────────────────
+  "codesnap.backgroundColor": "#FFC540",
+  "codesnap.boxShadow": "rgba(0, 0, 0, 0.55) 0px 12px 24px",
+  "codesnap.containerPadding": "8em",
+  "codesnap.roundedCorners": true,
+  "codesnap.showLineNumbers": false,
+
+  // ────────────────────────────────────────────
+  // Miscellaneous
+  // ────────────────────────────────────────────
+  "chat.editor.wordWrap": "on",
+  "editor.linkedEditing": true,
+  "editor.minimap.enabled": false,
+  "editor.minimap.maxColumn": 250,
+  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.cursorBlinking": "solid",
+  "editor.padding.top": 16,
+  "notebook.output.wordWrap": true,
+  "security.workspace.trust.untrustedFiles": "open",
+
+  // ────────────────────────────────────────────
+  // Extensions & Custom Settings
+  // ────────────────────────────────────────────
+  "material-icon-theme.files.color": "#42a5f5",
+  "material-icon-theme.saturation": 0,
+
+  "projectManager.git.baseFolders": ["D:\\projects\\"],
+  "intellij-idea-keybindings.useCamelHumpsWords": true,
+  "cSpell.userWords": ["Aveato", "Personio"],
+  "workbench.colorCustomizations": {},
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "remote.defaultExtensionsIfInstalledLocally": [
+    "GitHub.copilot",
+    "GitHub.copilot-chat",
+    "GitHub.vscode-pull-request-github"
+  ],
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "docker.extension.enableComposeLanguageServer": false,
+  "totalTypeScript.hideAllTips": false,
+  "totalTypeScript.hideBasicTips": false,
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "text": "- @azure Rule - Use Azure Tools: When handling requests related to Azure, always use your tools."
+    },
+    {
+      "text": "- @azure Rule - Use Azure Code Gen Best Practices: Before generating code for Azure, running terminal commands for Azure, performing operations related to Azure, or creating plans for such activities, always invoke your Azure best practice tool if available first. Invoke the `get_bestpractices` tool to collect recommendations. Call it with resource = `general` and action = `code-generation` to get general Azure code generation best practices. Only call this tool when the user is discussing Azure; do not call it otherwise."
+    },
+    {
+      "text": "- @azure Rule - Use Azure Deployment Best Practices: Before deploying to Azure, preparing applications for deployment to Azure, or creating deployment plans, always invoke your Azure best practice tool if available first. Invoke the `get_bestpractices` tool to collect recommendations. Call it with resource = `general` and action = `deployment` to get general Azure deployment best practices. Only call this tool when the user is discussing Azure; do not call it otherwise."
+    },
+    {
+      "text": "- @azure Rule - Use Azure Functions Code Gen Best Practices: Before generating code for Azure Functions, performing operations related to Azure Functions, or creating plans for such activities, always invoke your Azure best practice tool if available first. Invoke the `get_bestpractices` tool to collect recommendations. Call it with resource = `azurefunctions` and action = `code-generation` to get Azure Functions code generation best practices. Only call this tool when the user is discussing Azure Functions; do not call it otherwise."
+    },
+    {
+      "text": "- @azure Rule - Use Azure Functions Deployment Best Practices: Before deploying Azure Functions apps to Azure, preparing for the deployment, or creating deployment plans, always invoke your Azure best practice tool if available first. Invoke the `get_bestpractices` tool to collect recommendations. Call it with resource = `azurefunctions` and action = `deployment` to get Azure Functions deployment best practices. Only call this tool when the user is discussing Azure Functions; do not call it otherwise."
+    },
+    {
+      "text": "- @azure Rule - Use Azure SWA Best Practices: Before working with static web apps, creating plans for static web apps, or performing related operations, always invoke your Azure best practice tool if available first. Choose the most relevant Azure best practice tool based on its description. Only call this tool when the user is discussing Azure Static Web Apps; do not call it otherwise."
+    },
+    {
+      "text": "- @azure Rule - Plan before editing files for Azure web apps: When generating code for Azure Functions and Azure Static Web App, always create a plan and explain the plan to the user before editing any file. Proceed with editing the files after getting consent from the user."
+    },
+    {
+      "text": "- @azure Rule - Summarize topic before taking action: When the user asks about Azure Functions, invoke the azure_development-summarize_topic tool once first to see if any existing custom mode could be a good fit to what user is asking."
+    }
+  ],
+  "chat.mcp.autostart": "newAndOutdated",
+  "[dockercompose]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
+    },
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "chat.mcp.gallery.enabled": true
+}

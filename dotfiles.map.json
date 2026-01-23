@@ -1,14 +1,30 @@
 {
   "wezterm": {
-    "platforms": [
-      "windows"
-    ],
+    "platforms": ["windows"],
     "target": "C:\\Users\\lukas\\.wezterm.lua"
   },
   "git": {
-    "platforms": [
-      "windows"
-    ],
+    "platforms": ["windows"],
     "target": "C:\\Users\\lukas\\.gitconfig"
+  },
+  "mise-en-place": {
+    "target": "C:\\Users\\lukas\\.config\\mise\\config.toml",
+    "platforms": ["windows"]
+  },
+  "cli/starship": {
+    "target": "C:\\Users\\lukas\\.config\\starship.toml",
+    "platforms": ["windows"]
+  },
+  "editor/vscode-keybindings": {
+    "target": "C:\\Users\\lukas\\AppData\\Roaming\\Code\\User\\keybindings.json",
+    "platforms": ["windows"]
+  },
+  "editor/vscode-settings": {
+    "target": "C:\\Users\\lukas\\AppData\\Roaming\\Code\\User\\settings.json",
+    "platforms": ["windows"]
+  },
+  "editor/zed": {
+    "target": "C:\\Users\\lukas\\.config\\zed\\",
+    "platforms": ["windows"]
   }
 }
