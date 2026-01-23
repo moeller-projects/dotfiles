@@ -1,0 +1,100 @@
+[user]
+	name = Lukas Möller
+	email = hello@getmoeller.com
+	signingKey = 
+[include]
+	path = D:\\projects\\private\\gitalias\\gitalias.txt
+[alias]
+    nb = "!f() { norm_type() { t=\"$1\"; case \"$t\" in f|feat|feature) echo feature ;; b|bug|bugfix) echo bugfix ;; h|hot|hotfix) echo hotfix ;; r|rel|release) echo release ;; s|supp|support) echo support ;; *) echo invalid ;; esac; }; if [ $# -lt 2 ]; then echo 'Usage: git nb <type|shorthand> <branch-name>'; exit 1; fi; rawtype=\"$1\"; shift; type=$(norm_type \"$rawtype\"); if [ \"$type\" = \"invalid\" ]; then echo \"Invalid branch type: $rawtype\"; echo \"Valid types/shorthands: f/feat/feature, b/bug/bugfix, h/hot/hotfix, r/rel/release, s/supp/support\"; exit 1; fi; name=$(printf '%s-' \"$@\" | sed 's/-$//'); name=${name%-}; git checkout -b \"$type/$name\"; }; f"
+    np = "!f() { norm_type() { t=\"$1\"; case \"$t\" in f|feat|feature) echo feature ;; b|bug|bugfix) echo bugfix ;; h|hot|hotfix) echo hotfix ;; r|rel|release) echo release ;; s|supp|support) echo support ;; *) echo invalid ;; esac; }; if [ $# -lt 1 ]; then echo 'Usage: git np <type|shorthand>'; exit 1; fi; rawtype=\"$1\"; type=$(norm_type \"$rawtype\"); if [ \"$type\" = \"invalid\" ]; then echo \"Invalid branch type: $rawtype\"; echo \"Valid types/shorthands: f/feat/feature, b/bug/bugfix, h/hot/hotfix, r/rel/release, s/supp/support\"; exit 1; fi; branch=$(git symbolic-ref --short HEAD); if [[ \"$branch\" != \"$type\"/* ]]; then echo \"Current branch is not a $type branch\"; exit 1; fi; git push -u origin \"$branch\"; }; f"
+	arrange = rebase -i dev
+	recent = branch --sort=-committerdate
+	stash-unstaged = stash save --keep-index -u
+	store = "!f() { git stash push --include-untracked -m \"$*\"; }; f"
+    apply = "!f() { \
+            git stash list | nl -v 0; \
+            echo -n 'Apply which stash number? '; \
+            read idx; \
+            stash=$(git stash list | sed -n \"$((idx+1))p\" | cut -d: -f1); \
+            if [ -n \"$stash\" ]; then \
+            git stash apply \"$stash\"; \
+            else \
+            echo 'Invalid selection'; \
+            fi; \
+        }; f"
+[push]
+	default = current
+	autoSetupRemote = true
+[pull]
+	rebase = true
+[branch]
+	autosetupmerge = always
+[credential]
+	helper = store
+[help]
+	autocorrect = 1
+[rebase]
+	autoStash = true
+
+[color]
+    ui = auto
+
+[color "branch"]
+    current = bold brightyellow reverse
+    local = bold brightcyan
+    remote = bold brightgreen
+
+[color "diff"]
+    meta = bold brightmagenta
+    frag = bold brightblue
+    old = bold brightred
+    new = bold brightgreen
+    whitespace = reverse brightred
+
+[color "status"]
+    added = bold brightgreen
+    changed = bold brightyellow
+    untracked = bold brightred
+
+[color "interactive"]
+    prompt = bold brightcyan
+    header = bold brightmagenta
+    help = bold brightblue
+    error = bold brightred
+
+[color "grep"]
+    match = bold brightmagenta
+
+[color "commit"]
+    header = bold brightyellow
+    meta = bold brightcyan
+    message = bold brightgreen
+    date = bold brightmagenta
+
+[color "showbranch"]
+    default = bold brightyellow
+    current = bold brightgreen
+    local = bold brightcyan
+    remote = bold brightmagenta
+[safe]
+	directory = D:/projects/private/trigger.dev
+[pager]
+	diff = false
+[gpg]
+	format = openpgp
+	program = gpg
+[commit]
+	gpgSign = false
+[tag]
+	forceSignAnnotated = false
+[gpg "ssh"]
+	program = 
+	allowedSignersFile = 
+[core]
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+[merge]
+	conflictStyle = zdiff3

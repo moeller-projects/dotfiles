@@ -1,0 +1,313 @@
+local wezterm = require 'wezterm'
+local mux = wezterm.mux
+local act = wezterm.action
+
+-- ======================================================
+-- THEME CYCLER
+-- ======================================================
+local function themeCycler(window, _)
+  local currentScheme = window:effective_config().color_scheme
+  local schemes = { 'zenwritten_dark', 'zenwritten_light' }
+
+  for i = 1, #schemes do
+    if schemes[i] == currentScheme then
+      local overrides = window:get_config_overrides() or {}
+      local next = i % #schemes + 1
+      overrides.color_scheme = schemes[next]
+      wezterm.log_info("Switched to: " .. schemes[next])
+      window:set_config_overrides(overrides)
+      return
+    end
+  end
+end
+
+-- ======================================================
+-- STATIC WORKSPACES
+-- ======================================================
+local workspaces = {
+  dev = {
+    cwd = wezterm.home_dir .. "/dev",
+    tabs = {
+      {
+        title = "editor",
+        cmd = { "pwsh.exe", "-NoLogo" },
+        split = {
+          direction = "Right",
+          size = 0.3,
+          cmd = { "pwsh.exe", "-NoLogo" },
+        },
+      },
+      {
+        title = "git",
+        cmd = { "pwsh.exe", "-NoLogo" },
+      },
+    },
+  },
+
+  ops = {
+    cwd = wezterm.home_dir,
+    tabs = {
+      {
+        title = "monitoring",
+        cmd = { "pwsh.exe", "-NoLogo" },
+      },
+    },
+  },
+}
+
+-- ======================================================
+-- GIT ROOT DETECTION
+-- ======================================================
+local function get_git_root(cwd)
+  local success, stdout, _ = wezterm.run_child_process {
+    "git",
+    "-C",
+    cwd,
+    "rev-parse",
+    "--show-toplevel",
+  }
+
+  if success and stdout then
+    return stdout:gsub("%s+$", "")
+  end
+
+  return nil
+end
+
+local function basename(path)
+  return path:match("([^/\\]+)$")
+end
+
+-- ======================================================
+-- FIXED CWD DECODER (WINDOWS SAFE)
+-- ======================================================
+local function pane_cwd_path(pane)
+  local uri = pane:get_current_working_dir()
+  if not uri then
+    return nil
+  end
+
+  if type(uri) == "userdata" and uri.file_path then
+    return uri.file_path
+  end
+
+  local path = tostring(uri)
+  path = path:gsub("^file:///", "")
+  path = path:gsub("^file://", "")
+  path = path:gsub("%%(%x%x)", function(hex)
+    return string.char(tonumber(hex, 16))
+  end)
+
+  return path
+end
+
+-- ======================================================
+-- WORKSPACE BOOTSTRAPPER
+-- ======================================================
+local function switch_or_create_workspace(name, spec_override)
+  return function()
+    for _, ws in ipairs(mux.get_workspace_names()) do
+      if ws == name then
+        mux.set_active_workspace(name)
+        return
+      end
+    end
+
+    local spec = spec_override or workspaces[name]
+    if not spec then
+      wezterm.log_error("Unknown workspace: " .. name)
+      return
+    end
+
+    local tab, root_pane, window = mux.spawn_window {
+      workspace = name,
+      cwd = spec.cwd,
+      args = spec.tabs[1].cmd,
+    }
+
+    tab:set_title(spec.tabs[1].title)
+
+    if spec.tabs[1].split then
+      root_pane:split {
+        direction = spec.tabs[1].split.direction,
+        size = spec.tabs[1].split.size,
+        args = spec.tabs[1].split.cmd,
+      }
+    end
+
+    for i = 2, #spec.tabs do
+      local t = window:spawn_tab {
+        cwd = spec.cwd,
+        args = spec.tabs[i].cmd,
+      }
+      t:set_title(spec.tabs[i].title)
+    end
+
+    mux.set_active_workspace(name)
+  end
+end
+
+-- ======================================================
+-- INTERACTIVE WORKSPACE CREATION (NEW)
+-- ======================================================
+local function prompt_new_workspace(window, pane)
+  window:perform_action(
+    act.PromptInputLine {
+      description = "New workspace name",
+      action = wezterm.action_callback(function(win, _, name)
+        if not name or name == "" then
+          return
+        end
+
+        local cwd = pane_cwd_path(pane) or wezterm.home_dir
+
+        mux.spawn_window {
+          workspace = name,
+          cwd = cwd,
+          args = { "pwsh.exe", "-NoLogo" },
+        }
+
+        mux.set_active_workspace(name)
+      end),
+    },
+    pane
+  )
+end
+
+-- ======================================================
+-- DYNAMIC REPO WORKSPACE
+-- ======================================================
+local function switch_to_repo_workspace(window, pane)
+  local cwd = pane_cwd_path(pane)
+  if not cwd then return end
+
+  local git_root = get_git_root(cwd)
+  if not git_root then return end
+
+  local name = basename(git_root)
+
+  for _, ws in ipairs(mux.get_workspace_names()) do
+    if ws == name then
+      mux.set_active_workspace(name)
+      return
+    end
+  end
+
+  mux.spawn_window {
+    workspace = name,
+    cwd = git_root,
+    args = { "pwsh.exe", "-NoLogo" },
+  }
+
+  mux.set_active_workspace(name)
+end
+
+-- ======================================================
+-- STATUS LINE
+-- ======================================================
+wezterm.on('update-right-status', function(window)
+  local mode = window:active_key_table() or 'NORMAL'
+  local ws = mux.get_active_workspace()
+
+  window:set_right_status(
+    wezterm.format {
+      { Text = ' ' .. ws .. ' ' },
+      { Text = '[' .. mode .. '] ' },
+    }
+  )
+end)
+
+-- ======================================================
+-- CONFIG
+-- ======================================================
+local config = wezterm.config_builder()
+
+config.color_scheme = 'zenwritten_dark'
+config.font = wezterm.font_with_fallback {
+  'FiraCode Nerd Font',
+  'JetBrainsMono Nerd Font',
+  'Consolas',
+}
+config.font_size = 12
+config.harfbuzz_features = { 'zero' }
+config.window_decorations = "RESIZE"
+
+config.front_end = "WebGpu"
+config.animation_fps = 1
+config.cursor_blink_rate = 0
+
+config.default_prog = { "pwsh.exe", "-NoLogo" }
+
+-- ======================================================
+-- KEY TABLES
+-- ======================================================
+config.key_tables = {
+  leader = {
+    { key = 'h', action = act.ActivatePaneDirection 'Left' },
+    { key = 'j', action = act.ActivatePaneDirection 'Down' },
+    { key = 'k', action = act.ActivatePaneDirection 'Up' },
+    { key = 'l', action = act.ActivatePaneDirection 'Right' },
+
+    { key = 'v', action = act.SplitVertical { domain = 'CurrentPaneDomain' } },
+    { key = 's', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+    { key = 'z', action = act.TogglePaneZoomState },
+    { key = 'x', action = act.CloseCurrentPane { confirm = true } },
+
+    { key = 'c', action = act.SpawnTab 'CurrentPaneDomain' },
+    { key = 'n', action = act.ActivateTabRelative(1) },
+    { key = 'p', action = act.ActivateTabRelative(-1) },
+
+    { key = '1', action = wezterm.action_callback(switch_or_create_workspace("dev")) },
+    { key = '2', action = wezterm.action_callback(switch_or_create_workspace("ops")) },
+
+    { key = 'w', action = act.ShowLauncherArgs { flags = "FUZZY|WORKSPACES" } },
+
+    { key = 'g', action = wezterm.action_callback(switch_to_repo_workspace) },
+
+    -- NEW: interactive workspace creation
+    { key = 'N', action = wezterm.action_callback(prompt_new_workspace) },
+
+    {
+      key = 'r',
+      action = act.ActivateKeyTable { name = 'resize', one_shot = false },
+    },
+
+    { key = 'f', action = act.ShowLauncher },
+    { key = 'Escape', action = 'PopKeyTable' },
+  },
+
+  resize = {
+    { key = 'h', action = act.AdjustPaneSize { 'Left', 5 } },
+    { key = 'j', action = act.AdjustPaneSize { 'Down', 5 } },
+    { key = 'k', action = act.AdjustPaneSize { 'Up', 5 } },
+    { key = 'l', action = act.AdjustPaneSize { 'Right', 5 } },
+
+    { key = 'Escape', action = 'PopKeyTable' },
+    { key = 'Enter', action = 'PopKeyTable' },
+  },
+}
+
+-- ======================================================
+-- GLOBAL KEYS
+-- ======================================================
+config.keys = {
+  { key = 'l', mods = 'ALT', action = act.ShowLauncher },
+  { key = 't', mods = 'ALT', action = wezterm.action_callback(themeCycler) },
+  {
+    key = 'Space',
+    mods = 'ALT',
+    action = act.ActivateKeyTable {
+      name = 'leader',
+      timeout_milliseconds = 1000,
+    },
+  },
+}
+
+-- ======================================================
+-- AUTO START
+-- ======================================================
+wezterm.on("gui-startup", function(cmd)
+  switch_or_create_workspace("dev")()
+end)
+
+return config

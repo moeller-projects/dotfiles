@@ -1,1 +1,14 @@
-{}
+{
+  "wezterm": {
+    "platforms": [
+      "windows"
+    ],
+    "target": "C:\\Users\\lukas\\.wezterm.lua"
+  },
+  "git": {
+    "platforms": [
+      "windows"
+    ],
+    "target": "C:\\Users\\lukas\\.gitconfig"
+  }
+}
