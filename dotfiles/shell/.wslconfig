@@ -1,0 +1,9 @@
+[wsl2]
+memory=8GB            # 50–60% of your RAM
+processors=8          # match physical cores
+swap=0                # disable swap if you have enough RAM
+localhostForwarding=true
+dnsTunneling=true
+
+[experimental]
+autoMemoryReclaim=gradual
