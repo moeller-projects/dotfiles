@@ -1,0 +1,21 @@
+approval_policy = "never"
+model = "gpt-5.2-codex"
+preferred_auth_method = "apikey"
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "medium"
+
+[sandbox_workspace_write]
+network_access = true
+
+[notice]
+hide_gpt5_1_migration_prompt = true
+"hide_gpt-5.1-codex-max_migration_prompt" = true
+
+[notice.model_migrations]
+"gpt-5.1-codex" = "gpt-5.2-codex"
+
+[features]
+unified_exec = true
+shell_snapshot = true
+steer = true
+collab = true
