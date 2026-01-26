@@ -52,5 +52,17 @@
     "platforms": [
       "linux"
     ]
+  },
+  "ai-agents/codex/prompts": {
+    "target": "/home/lukas/.codex/prompts",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills": {
+    "target": "/home/lukas/.codex/skills",
+    "platforms": [
+      "linux"
+    ]
   }
 }
