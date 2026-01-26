@@ -64,5 +64,11 @@
     "platforms": [
       "linux"
     ]
+  },
+  "ai-agents/opencode/config.json": {
+    "target": "/home/lukas/.config/opencode/opencode.json",
+    "platforms": [
+      "linux"
+    ]
   }
 }
