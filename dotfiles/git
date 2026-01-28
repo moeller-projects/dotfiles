@@ -1,7 +1,15 @@
 [user]
 	name = Lukas Möller
+	email = lukas@laekkerai.com
+	signingKey =
+ [author "work"]
+	name = Lukas Möller
+	email = lukas@laekkerai.com
+    signingKey =
+ [author "personal"]
+	name = Lukas Möller
 	email = hello@getmoeller.com
-	signingKey = 
+    signingKey =
 [include]
 	path = D:\\projects\\private\\gitalias\\gitalias.txt
 [alias]
@@ -22,6 +30,37 @@
             echo 'Invalid selection'; \
             fi; \
         }; f"
+    sw = "!f() { \
+                branch=$(git branch --format='%(refname:short)' | fzf); \
+                [ -z \"$branch\" ] && return; \
+                if git switch \"$branch\"; then echo \"Switched to '$branch'.\"; fi; \
+            }; f"
+    author = "!f() { \
+      if [ $# -lt 1 ]; then \
+        echo 'Usage: git author <profile> [--global|-g]'; \
+        echo 'Available profiles:'; \
+        git config --get-regexp '^author\\..*\\.email$' 2>/dev/null | sed -E 's/^author\\.([^.]*)\\.email\\s+(.*)$/  \\1 <\\2>/' | sort; \
+        exit 1; \
+      fi; \
+      p=\"$1\"; shift; \
+      scope='--local'; \
+      [ \"$1\" = '--global' ] || [ \"$1\" = '-g' ] && scope='--global'; \
+      name=$(git config --get \"author.$p.name\"); \
+      email=$(git config --get \"author.$p.email\"); \
+      sk=$(git config --get \"author.$p.signingKey\"); \
+      if [ -z \"$name\" ] || [ -z \"$email\" ]; then echo \"Unknown author profile: $p\"; exit 1; fi; \
+      git config $scope user.name \"$name\"; \
+      git config $scope user.email \"$email\"; \
+      if [ -n \"$sk\" ]; then git config $scope user.signingKey \"$sk\"; else git config $scope --unset-all user.signingKey >/dev/null 2>&1 || true; fi; \
+      echo \"Author set ($scope): $name <$email>\"; \
+    }; f"
+    author-select = "!f() { \
+      profiles=$(git config --name-only --get-regexp '^author\\.[^.]+\\.name$' 2>/dev/null | sed -E 's/^author\\.([^.]+)\\.name$/\\1/' | sort -u); \
+      [ -z \"$profiles\" ] && echo 'No author profiles configured (see [author \"...\"] sections)' && exit 1; \
+      p=$(echo \"$profiles\" | fzf); \
+      [ -z \"$p\" ] && exit 0; \
+      git author \"$p\" \"$@\"; \
+    }; f"
 [push]
 	default = current
 	autoSetupRemote = true
@@ -88,8 +127,8 @@
 [tag]
 	forceSignAnnotated = false
 [gpg "ssh"]
-	program = 
-	allowedSignersFile = 
+	program =
+	allowedSignersFile =
 [core]
 	pager = delta
 [interactive]
