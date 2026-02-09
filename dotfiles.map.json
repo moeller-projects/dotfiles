@@ -1,58 +1,92 @@
 {
   "wezterm": {
-    "platforms": ["windows"],
+    "platforms": [
+      "windows"
+    ],
     "target": "C:\\Users\\lukas\\.wezterm.lua"
   },
   "git": {
-    "platforms": ["windows"],
+    "platforms": [
+      "windows"
+    ],
     "target": "C:\\Users\\lukas\\.gitconfig"
   },
   "mise-en-place": {
     "target": "C:\\Users\\lukas\\.config\\mise\\config.toml",
-    "platforms": ["windows"]
+    "platforms": [
+      "windows"
+    ]
   },
   "editor/zed": {
     "target": "C:\\Users\\lukas\\.config\\zed\\",
-    "platforms": ["windows"]
+    "platforms": [
+      "windows"
+    ]
   },
   "editor/vscode/settings.json": {
     "target": "C:\\Users\\lukas\\AppData\\Roaming\\Code\\User\\settings.json",
-    "platforms": ["windows"]
+    "platforms": [
+      "windows"
+    ]
   },
   "editor/vscode/keybindings.json": {
     "target": "C:\\Users\\lukas\\AppData\\Roaming\\Code\\User\\keybindings.json",
-    "platforms": ["windows"]
+    "platforms": [
+      "windows"
+    ]
   },
   "cli/starship.toml": {
     "target": "C:\\Users\\lukas\\.config\\starship.toml",
-    "platforms": ["windows"]
+    "platforms": [
+      "windows"
+    ]
   },
   "shell/.wslconfig": {
     "target": "C:\\Users\\lukas\\.wslconfig",
-    "platforms": ["windows"]
+    "platforms": [
+      "windows"
+    ]
   },
   "ai-agents/codex/config.toml": {
     "target": "/home/lukas/.codex/config.toml",
-    "platforms": ["linux"]
+    "platforms": [
+      "linux"
+    ]
   },
   "ai-agents/codex/prompts": {
     "target": "/home/lukas/.codex/prompts",
-    "platforms": ["linux"]
+    "platforms": [
+      "linux"
+    ]
   },
   "ai-agents/codex/skills/interactive-plan": {
     "target": "/home/lukas/.codex/skills/interactive-plan",
-    "platforms": ["linux"]
+    "platforms": [
+      "linux"
+    ]
   },
   "ai-agents/codex/skills/openspec": {
     "target": "/home/lukas/.codex/skills/openspec",
-    "platforms": ["linux"]
+    "platforms": [
+      "linux"
+    ]
   },
   "ai-agents/codex/skills/deep-research": {
     "target": "/home/lukas/.codex/skills/deep-research",
-    "platforms": ["linux"]
+    "platforms": [
+      "linux"
+    ]
   },
   "ai-agents/opencode/config.json": {
     "target": "/home/lukas/.config/opencode/opencode.json",
-    "platforms": ["linux"]
+    "platforms": [
+      "linux"
+    ]
+  },
+  "cli/openspec": {
+    "target": "/home/lukas/.openspec/",
+    "platforms": [
+      "linux"
+    ]
   }
 }
