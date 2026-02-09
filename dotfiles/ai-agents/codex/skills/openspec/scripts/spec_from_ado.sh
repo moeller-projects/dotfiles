@@ -21,6 +21,7 @@ desc="$(echo "$payload" | jq -r '.description')"
 wtype="$(echo "$payload" | jq -r '.type')"
 state="$(echo "$payload" | jq -r '.state')"
 tags="$(echo "$payload" | jq -r '.tags')"
+ac="$(echo "$payload" | jq -r '.acceptance_criteria')"
 
 # Create deterministic input text for openspec generate
 task="$(cat <<EOF
@@ -34,6 +35,9 @@ $title
 
 Description:
 $desc
+
+Acceptance Criteria:
+$ac
 EOF
 )"
 
