@@ -39,8 +39,16 @@
     "target": "/home/lukas/.codex/prompts",
     "platforms": ["linux"]
   },
-  "ai-agents/codex/skills/create-plan": {
-    "target": "/home/lukas/.codex/skills/create-plan",
+  "ai-agents/codex/skills/interactive-plan": {
+    "target": "/home/lukas/.codex/skills/interactive-plan",
+    "platforms": ["linux"]
+  },
+  "ai-agents/codex/skills/openspec": {
+    "target": "/home/lukas/.codex/skills/openspec",
+    "platforms": ["linux"]
+  },
+  "ai-agents/codex/skills/deep-research": {
+    "target": "/home/lukas/.codex/skills/deep-research",
     "platforms": ["linux"]
   },
   "ai-agents/opencode/config.json": {
