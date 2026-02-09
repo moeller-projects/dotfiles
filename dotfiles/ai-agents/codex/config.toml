@@ -21,9 +21,6 @@ apps = true
 personality = true
 
 # MCP Tools
-[mcp_servers.codex_apps]
-enabled = false
-
 [mcp_servers.context7]
 command = "bunx"
 args = ["-y", "@upstash/context7-mcp@latest"]
