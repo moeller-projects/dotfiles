@@ -1,3 +1,8 @@
+---
+name: openspec
+description: Spec-driven development workflow using OpenSpec CLI for specification, planning, and task generation.
+---
+
 # Skill: openspec (Production, deterministic)
 
 ## Purpose

@@ -1,3 +1,8 @@
+---
+name: deep-research
+description: Multi-agent deep research orchestration workflow for parallel data collection, analysis, and report synthesis.
+---
+
 # Skill: deep-research (Lean)
 
 ## Purpose
