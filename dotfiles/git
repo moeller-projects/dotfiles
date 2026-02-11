@@ -61,6 +61,54 @@
       [ -z \"$p\" ] && exit 0; \
       git author \"$p\" \"$@\"; \
     }; f"
+    # ---------------------------------------
+    # Create new worktree + new branch
+    # git wt-new feature/xyz [base]
+    # ---------------------------------------
+    wt-new = "!f() { \
+    branch=\"$1\"; \
+    base=\"${2:-origin/main}\"; \
+    repo=$(basename \"$(git rev-parse --show-toplevel)\"); \
+    clean=$(echo \"$branch\" | tr '/' '-'); \
+    mkdir -p ../wt; \
+    target=\"../wt/${repo}-${clean}\"; \
+    git worktree add -b \"$branch\" \"$target\" \"$base\"; \
+    }; f"
+
+    # ---------------------------------------
+    # Open existing branch in worktree
+    # git wt-open feature/xyz
+    # ---------------------------------------
+    wt-open = "!f() { \
+    branch=\"$1\"; \
+    repo=$(basename \"$(git rev-parse --show-toplevel)\"); \
+    clean=$(echo \"$branch\" | tr '/' '-'); \
+    mkdir -p ../wt; \
+    target=\"../wt/${repo}-${clean}\"; \
+    git worktree add \"$target\" \"$branch\"; \
+    }; f"
+
+    # ---------------------------------------
+    # Remove worktree by branch name
+    # git wt-rm feature/xyz
+    # ---------------------------------------
+    wt-rm = "!f() { \
+    branch=\"$1\"; \
+    repo=$(basename \"$(git rev-parse --show-toplevel)\"); \
+    clean=$(echo \"$branch\" | tr '/' '-'); \
+    target=\"../wt/${repo}-${clean}\"; \
+    git worktree remove \"$target\"; \
+    }; f"
+
+    # ---------------------------------------
+    # List worktrees
+    # ---------------------------------------
+    wt-list = worktree list
+
+    # ---------------------------------------
+    # Prune stale worktrees
+    # ---------------------------------------
+    wt-prune = worktree prune
 [push]
 	default = current
 	autoSetupRemote = true
