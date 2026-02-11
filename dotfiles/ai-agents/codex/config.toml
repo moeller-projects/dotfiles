@@ -1,4 +1,4 @@
-model = "gpt-5.3-codex"
+model = "gpt-5.2-codex"
 model_verbosity = "medium"
 preferred_auth_method = "apikey"
 approval_policy = "on-request"

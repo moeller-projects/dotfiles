@@ -13,13 +13,13 @@ spec="${1:?spec name required}"
 log "Validating via openspec CLI: $spec"
 openspec validate "$spec"
 
-# Convention: spec stored at specs/<name>.md (adjust if your openspec uses a different path)
-spec_file="specs/$spec.md"
+# Convention: spec stored at openspec/specs/<name>/spec.md
+spec_file="openspec/specs/$spec/spec.md"
 if [[ ! -f "$spec_file" ]]; then
   # Fallback: try to locate
-  found="$(ls -1 specs 2>/dev/null | grep -iE "^${spec}\.md$" || true)"
+  found="$(find openspec/specs -type f -name 'spec.md' 2>/dev/null | grep -iE "/${spec}/spec\.md$" || true)"
   if [[ -n "$found" ]]; then
-    spec_file="specs/$found"
+    spec_file="$found"
   else
     err "Cannot find spec file at $spec_file. Adjust validate_spec.sh to your openspec output path."
     exit 1
