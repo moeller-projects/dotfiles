@@ -2,23 +2,23 @@
 	name = Lukas Möller
 	email = lukas@laekkerai.com
 	signingKey =
- [author "work"]
-	name = Lukas Möller
-	email = lukas@laekkerai.com
+[author "work"]
+    name = Lukas Möller
+    email = lukas@laekkerai.com
     signingKey =
- [author "personal"]
-	name = Lukas Möller
-	email = hello@getmoeller.com
+[author "personal"]
+    name = Lukas Möller
+    email = hello@getmoeller.com
     signingKey =
 [include]
-	path = D:\\projects\\private\\gitalias\\gitalias.txt
+    path = D:\\projects\\private\\gitalias\\gitalias.txt
 [alias]
     nb = "!f() { norm_type() { t=\"$1\"; case \"$t\" in f|feat|feature) echo feature ;; b|bug|bugfix) echo bugfix ;; h|hot|hotfix) echo hotfix ;; r|rel|release) echo release ;; s|supp|support) echo support ;; *) echo invalid ;; esac; }; if [ $# -lt 2 ]; then echo 'Usage: git nb <type|shorthand> <branch-name>'; exit 1; fi; rawtype=\"$1\"; shift; type=$(norm_type \"$rawtype\"); if [ \"$type\" = \"invalid\" ]; then echo \"Invalid branch type: $rawtype\"; echo \"Valid types/shorthands: f/feat/feature, b/bug/bugfix, h/hot/hotfix, r/rel/release, s/supp/support\"; exit 1; fi; name=$(printf '%s-' \"$@\" | sed 's/-$//'); name=${name%-}; git checkout -b \"$type/$name\"; }; f"
     np = "!f() { norm_type() { t=\"$1\"; case \"$t\" in f|feat|feature) echo feature ;; b|bug|bugfix) echo bugfix ;; h|hot|hotfix) echo hotfix ;; r|rel|release) echo release ;; s|supp|support) echo support ;; *) echo invalid ;; esac; }; if [ $# -lt 1 ]; then echo 'Usage: git np <type|shorthand>'; exit 1; fi; rawtype=\"$1\"; type=$(norm_type \"$rawtype\"); if [ \"$type\" = \"invalid\" ]; then echo \"Invalid branch type: $rawtype\"; echo \"Valid types/shorthands: f/feat/feature, b/bug/bugfix, h/hot/hotfix, r/rel/release, s/supp/support\"; exit 1; fi; branch=$(git symbolic-ref --short HEAD); if [[ \"$branch\" != \"$type\"/* ]]; then echo \"Current branch is not a $type branch\"; exit 1; fi; git push -u origin \"$branch\"; }; f"
-	arrange = rebase -i dev
-	recent = branch --sort=-committerdate
-	stash-unstaged = stash save --keep-index -u
-	store = "!f() { git stash push --include-untracked -m \"$*\"; }; f"
+    arrange = rebase -i dev
+    recent = branch --sort=-committerdate
+    stash-unstaged = stash save --keep-index -u
+    store = "!f() { git stash push --include-untracked -m \"$*\"; }; f"
     apply = "!f() { \
             git stash list | nl -v 0; \
             echo -n 'Apply which stash number? '; \
@@ -110,18 +110,18 @@
     # ---------------------------------------
     wt-prune = worktree prune
 [push]
-	default = current
-	autoSetupRemote = true
+    default = current
+    autoSetupRemote = true
 [pull]
-	rebase = true
+    rebase = true
 [branch]
-	autosetupmerge = always
+    autosetupmerge = always
 [credential]
-	helper = store
+    helper = store
 [help]
-	autocorrect = 1
+    autocorrect = 1
 [rebase]
-	autoStash = true
+    autoStash = true
 
 [color]
     ui = auto
@@ -164,9 +164,9 @@
     local = bold brightcyan
     remote = bold brightmagenta
 [safe]
-	directory = D:/projects/private/trigger.dev
+    directory = D:/projects/private/trigger.dev
 [pager]
-	diff = false
+    diff = false
 [gpg]
 	format = openpgp
 	program = gpg
@@ -175,13 +175,14 @@
 [tag]
 	forceSignAnnotated = false
 [gpg "ssh"]
-	program =
-	allowedSignersFile =
+	program = 
+	allowedSignersFile = 
 [core]
-	pager = delta
+    pager = delta
+	longpaths = true
 [interactive]
-	diffFilter = delta --color-only
+    diffFilter = delta --color-only
 [delta]
-	navigate = true
+    navigate = true
 [merge]
-	conflictStyle = zdiff3
+    conflictStyle = zdiff3
