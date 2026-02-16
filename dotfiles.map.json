@@ -88,5 +88,227 @@
     "platforms": [
       "linux"
     ]
+  },
+  "ai-agents/codex/skills/angular-architect": {
+    "target": "/home/lukas/.codex/skills/angular-architect",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/api-designer": {
+    "target": "/home/lukas/.codex/skills/api-designer",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/architecture-designer": {
+    "target": "/home/lukas/.codex/skills/architecture-designer",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/chaos-engineer": {
+    "target": "/home/lukas/.codex/skills/chaos-engineer",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/cli-developer": {
+    "target": "/home/lukas/.codex/skills/cli-developer",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/cloud-architect": {
+    "target": "/home/lukas/.codex/skills/cloud-architect",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/code-documenter": {
+    "target": "/home/lukas/.codex/skills/code-documenter",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/code-reviewer": {
+    "target": "/home/lukas/.codex/skills/code-reviewer",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/csharp-developer": {
+    "target": "/home/lukas/.codex/skills/csharp-developer",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/database-optimizer": {
+    "target": "/home/lukas/.codex/skills/database-optimizer",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/debugging-wizard": {
+    "target": "/home/lukas/.codex/skills/debugging-wizard",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/devops-engineer": {
+    "target": "/home/lukas/.codex/skills/devops-engineer",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/dotnet-core-expert": {
+    "target": "/home/lukas/.codex/skills/dotnet-core-expert",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/embedded-systems": {
+    "target": "/home/lukas/.codex/skills/embedded-systems",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/fine-tuning-expert": {
+    "target": "/home/lukas/.codex/skills/fine-tuning-expert",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/fullstack-guardian": {
+    "target": "/home/lukas/.codex/skills/fullstack-guardian",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/graphql-architect": {
+    "target": "/home/lukas/.codex/skills/graphql-architect",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/javascript-pro": {
+    "target": "/home/lukas/.codex/skills/javascript-pro",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/kubernetes-specialist": {
+    "target": "/home/lukas/.codex/skills/kubernetes-specialist",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/legacy-modernizer": {
+    "target": "/home/lukas/.codex/skills/legacy-modernizer",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/mcp-developer": {
+    "target": "/home/lukas/.codex/skills/mcp-developer",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/microservices-architect": {
+    "target": "/home/lukas/.codex/skills/microservices-architect",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/ml-pipeline": {
+    "target": "/home/lukas/.codex/skills/ml-pipeline",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/monitoring-expert": {
+    "target": "/home/lukas/.codex/skills/monitoring-expert",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/playwright-expert": {
+    "target": "/home/lukas/.codex/skills/playwright-expert",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/prompt-engineer": {
+    "target": "/home/lukas/.codex/skills/prompt-engineer",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/rag-architect": {
+    "target": "/home/lukas/.codex/skills/rag-architect",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/rust-engineer": {
+    "target": "/home/lukas/.codex/skills/rust-engineer",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/secure-code-guardian": {
+    "target": "/home/lukas/.codex/skills/secure-code-guardian",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/security-reviewer": {
+    "target": "/home/lukas/.codex/skills/security-reviewer",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/spec-miner": {
+    "target": "/home/lukas/.codex/skills/spec-miner",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/sql-pro": {
+    "target": "/home/lukas/.codex/skills/sql-pro",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/sre-engineer": {
+    "target": "/home/lukas/.codex/skills/sre-engineer",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/test-master": {
+    "target": "/home/lukas/.codex/skills/test-master",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/the-fool": {
+    "target": "/home/lukas/.codex/skills/the-fool",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/typescript-pro": {
+    "target": "/home/lukas/.codex/skills/typescript-pro",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/websocket-engineer": {
+    "target": "/home/lukas/.codex/skills/websocket-engineer",
+    "platforms": [
+      "linux"
+    ]
   }
 }
