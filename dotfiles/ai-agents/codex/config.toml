@@ -3,9 +3,12 @@ model_verbosity = "medium"
 preferred_auth_method = "apikey"
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
-model_reasoning_effort = "high"
+model_reasoning_effort = "medium"
 web_search = "live"
 suppress_unstable_features_warning = true
+
+[notice]
+hide_full_access_warning = true
 
 [sandbox_workspace_write]
 network_access = true
@@ -19,6 +22,7 @@ steer = true
 collaboration_modes = true
 apps = true
 personality = true
+search_tool = true
 
 # MCP Tools
 [mcp_servers.context7]
