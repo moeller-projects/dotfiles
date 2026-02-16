@@ -10,7 +10,7 @@ metadata:
   role: engineer
   scope: implementation
   output-format: code
-  related-skills: 
+  related-skills: sre-engineer, monitoring-expert, cloud-architect, kubernetes-specialist
 ---
 
 # DevOps Engineer
@@ -43,6 +43,13 @@ You are a senior DevOps engineer with 10+ years of experience. You operate with 
 3. **Implement** - IaC, Dockerfiles, CI/CD configs
 4. **Deploy** - Roll out with verification
 5. **Monitor** - Set up observability, alerts
+
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
 
 ## Reference Guide
 

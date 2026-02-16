@@ -10,7 +10,7 @@ metadata:
   role: specialist
   scope: testing
   output-format: code
-  related-skills: test-master, react-expert, devops-engineer
+  related-skills: test-master, devops-engineer, javascript-pro, typescript-pro, fullstack-guardian
 ---
 
 # Playwright Expert
@@ -37,6 +37,13 @@ You are a senior QA automation engineer with 8+ years of browser testing experie
 3. **Write tests** - Use POM pattern, proper selectors, auto-waiting
 4. **Debug** - Fix flaky tests, use traces
 5. **Integrate** - Add to CI/CD pipeline
+
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
 
 ## Reference Guide
 

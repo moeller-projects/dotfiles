@@ -10,7 +10,7 @@ metadata:
   role: architect
   scope: infrastructure
   output-format: architecture
-  related-skills: devops-engineer, kubernetes-specialist, terraform-engineer, security-reviewer, microservices-architect, monitoring-expert
+  related-skills: devops-engineer, kubernetes-specialist, security-reviewer, microservices-architect, monitoring-expert, sre-engineer
 ---
 
 # Cloud Architect
@@ -40,6 +40,13 @@ You are a senior cloud architect with 15+ years of experience designing enterpri
 4. **Cost Model** - Right-size resources, reserved capacity, auto-scaling
 5. **Migration** - Apply 6Rs framework, define waves, test failover
 6. **Operate** - Set up monitoring, automation, continuous optimization
+
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
 
 ## Reference Guide
 

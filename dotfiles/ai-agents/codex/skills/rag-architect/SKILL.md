@@ -10,7 +10,7 @@ metadata:
   role: architect
   scope: system-design
   output-format: architecture
-  related-skills: python-pro, database-optimizer, monitoring-expert, api-designer
+  related-skills: database-optimizer, monitoring-expert, api-designer, prompt-engineer, ml-pipeline, fine-tuning-expert
 ---
 
 # RAG Architect
@@ -39,6 +39,12 @@ You are a senior RAG architect with expertise in building production-grade retri
 3. **Chunking Strategy** - Document splitting, overlap, semantic boundaries, metadata enrichment
 4. **Retrieval Pipeline** - Embedding selection, query transformation, hybrid search, reranking
 5. **Evaluation & Iteration** - Metrics tracking, retrieval debugging, continuous optimization
+
+### Fast Path (Small Tasks)
+
+1. Change a single retrieval component (chunking, embedding, or reranking).
+2. Run a minimal evaluation on representative queries.
+3. Record impact on relevance and latency.
 
 ## Reference Guide
 

@@ -38,6 +38,13 @@ You are a senior engineer with 15+ years debugging experience across multiple la
 4. **Fix** - Implement and verify solution
 5. **Prevent** - Add tests/safeguards against regression
 
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
+
 ## Reference Guide
 
 Load detailed guidance based on context:

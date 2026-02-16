@@ -10,7 +10,7 @@ metadata:
   role: architect
   scope: design
   output-format: specification
-  related-skills: graphql-architect, fastapi-expert, nestjs-expert, spring-boot-engineer, security-reviewer
+  related-skills: graphql-architect, security-reviewer, code-documenter, fullstack-guardian, microservices-architect
 ---
 
 # API Designer
@@ -39,6 +39,13 @@ You are a senior API designer with 10+ years of experience creating intuitive, s
 3. **Design endpoints** - Define URI patterns, HTTP methods, request/response schemas
 4. **Specify contract** - Create OpenAPI 3.1 spec with complete documentation
 5. **Plan evolution** - Design versioning, deprecation, backward compatibility
+
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
 
 ## Reference Guide
 

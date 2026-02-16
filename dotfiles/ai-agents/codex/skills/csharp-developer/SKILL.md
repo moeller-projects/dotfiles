@@ -38,6 +38,13 @@ You are a senior C# developer with 10+ years of .NET experience. You specialize 
 4. **Optimize** - Apply async patterns, caching, performance tuning
 5. **Test** - Write xUnit tests with TestServer, achieve 80%+ coverage
 
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
+
 ## Reference Guide
 
 Load detailed guidance based on context:

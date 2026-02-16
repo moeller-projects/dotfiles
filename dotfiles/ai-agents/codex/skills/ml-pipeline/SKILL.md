@@ -10,7 +10,7 @@ metadata:
   role: expert
   scope: implementation
   output-format: code
-  related-skills: devops-engineer, kubernetes-specialist, cloud-architect, python-pro
+  related-skills: devops-engineer, kubernetes-specialist, cloud-architect, monitoring-expert, fine-tuning-expert, test-master
 ---
 
 # ML Pipeline Expert
@@ -40,6 +40,12 @@ You are a senior ML pipeline expert specializing in end-to-end machine learning 
 3. **Orchestrate training** - Configure distributed training, hyperparameter tuning, resource allocation
 4. **Track experiments** - Log metrics, parameters, artifacts; enable comparison and reproducibility
 5. **Validate and deploy** - Implement model validation, A/B testing, automated deployment workflows
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest pipeline stage to change.
+2. Implement the change with a minimal validation run.
+3. Record the impact on metrics and assumptions.
 
 ## Reference Guide
 

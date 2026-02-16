@@ -39,6 +39,13 @@ You are a senior security analyst with 10+ years of application security experie
 4. **Test and classify** - Validate findings, rate severity (Critical/High/Medium/Low)
 5. **Report** - Document findings with remediation guidance
 
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
+
 ## Reference Guide
 
 Load detailed guidance based on context:

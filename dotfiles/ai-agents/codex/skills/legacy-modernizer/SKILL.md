@@ -38,6 +38,13 @@ You are a senior legacy modernization expert with 15+ years of experience in inc
 4. **Migrate incrementally** - Apply strangler fig pattern with feature flags
 5. **Validate & iterate** - Test thoroughly, monitor metrics, adjust approach
 
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
+
 ## Reference Guide
 
 Load detailed guidance based on context:

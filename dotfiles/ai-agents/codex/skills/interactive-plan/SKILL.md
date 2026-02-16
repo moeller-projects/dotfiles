@@ -1,223 +1,123 @@
 ---
 name: interactive-plan
 description: Interactive production planning with decision questions, task list, clean code, and test strategy.
+license: MIT
+metadata:
+  author: https://github.com/Jeffallan
+  version: "1.0.0"
+  domain: planning
+  triggers: implementation plan, planning, decision questions, task list, test strategy
+  role: expert
+  scope: planning
+  output-format: document
+  related-skills: test-master, architecture-designer
 ---
 
-# Interactive Planning Skill
+# Interactive Plan
 
-## Goal
-Create a production implementation plan using **interactive decision steps**.
+## Role Definition
 
-This skill:
-- Detects missing decisions
-- Asks structured questions
-- Accepts multiple choice or free-text answers
-- Builds a final implementation plan
-- Generates a task checklist
-- Enforces quality and testing expectations
+You create production-ready implementation plans using structured decision questions, explicit assumptions, and test-driven validation.
 
----
+## When to Use This Skill
 
-# Execution Mode
+- Planning a feature with ambiguous requirements or tradeoffs
+- Building a task checklist with risk and confidence
+- Defining test strategy and quality expectations
 
-Default:
-- Deterministic
-- Risk-aware
-- Minimal hallucination
-- Repo-aware if context exists
-- Tool-aware if scripts/tests/CI exist
+## Core Workflow
 
----
+1. Scan repository context (docs, tests, CI).
+2. Identify missing decisions and ask structured questions.
+3. Resolve decisions or record safe assumptions.
+4. Produce a complete implementation plan and task checklist.
+5. Define test strategy, risks, and mitigations.
 
-# Workflow
 
----
+### Fast Path (Small Tasks)
 
-## Phase 1 — Context Scan
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
 
-If repository context exists, quickly inspect:
+## Reference Guide
 
-- README / docs
-- Architecture files
-- Test setup
-- CI / CD commands
+Load detailed guidance based on context:
 
-Detect if possible:
+| Topic | Reference | Load When |
+|-------|-----------|-----------|
+| Overview | `references/index.md` | Quick map of all references |
+| Workflow | `references/workflow.md` | End-to-end planning flow |
+| Checklist | `references/checklist.md` | Plan quality checks |
+| Pitfalls | `references/pitfalls.md` | Avoiding weak plans |
+| Examples | `references/examples.md` | Sample planning outputs |
+| Templates | `references/templates.md` | Reusable plan templates |
+| Evaluation | `references/evaluation.md` | Plan acceptance criteria |
+| Tools | `references/tools.md` | Tool-aware planning |
 
-- Language / framework
-- Test framework
-- Deployment model
-- Risk areas
+## Constraints
 
-If tests exist:
-- Prefer extending existing tests over inventing new structure.
+### MUST DO
+- Ask structured decision questions when uncertainty exists.
+- Capture assumptions explicitly when unanswered.
+- Provide a task checklist with risk and confidence.
+- Include test strategy and failure scenarios.
 
----
+### MUST NOT DO
+- Skip repository context when available.
+- Produce plans without explicit scope boundaries.
 
-## Phase 2 — Decision Question Mode
+## Output Templates
 
-If planning uncertainty exists, ask up to **3 questions**.
+Implementation plan template:
 
-### Question Format (MANDATORY)
-
-```
-
-## Decision Needed
-
-### Q<n> — <Decision Topic>
-
-Why this matters: <Short explanation>
-
-Choose one:
-A) Option A
-B) Option B
-C) Option C
-D) Other: _______
-
-```
-
----
-
-## Answer Handling
-
-User may respond with:
-
-- Single letter (A / B / C)
-- Free text
-- Mixed answers
-
-If user does not answer:
-- Choose safest production default
-- Record as assumption
-
----
-
-## Phase 3 — Plan Generation
-
-After decisions are resolved (or safely assumed), generate final plan.
-
----
-
-# Quality Requirements
-
----
-
-## Clean Code Principles
-
-Plan must encourage:
-
-- Small functions
-- Clear naming
-- Single responsibility
-- Testability by design
-- No hidden side effects
-- Explicit error handling
-
----
-
-## Testing Requirements
-
-Must consider:
-
-### Unit Tests
-Business logic validation
-
-### Integration Tests
-System boundary behavior
-
-### Failure Tests
-Timeouts  
-Retries  
-Invalid input  
-Dependency failures  
-
-### Regression Tests
-If modifying existing behavior
-
----
-
-## Observability (if backend or infrastructure)
-
-Consider:
-
-- Structured logging
-- Metrics
-- Alert triggers
-- Health checks
-
----
-
-# Output Template
-
-```
-
+```markdown
 # Implementation Plan
 
 ## Approach
-
 <1–3 sentences describing approach>
 
----
-
 ## Scope
-
 ### In Scope
-
 *
 
 ### Out of Scope
-
 *
 
----
-
 ## Decisions
-
 | Decision   | Choice            | Reason |
 | ---------- | ----------------- | ------ |
 | <Decision> | <Selected Option> | <Why>  |
 
----
-
 ## Action Items
-
 [ ] Discovery / validation
 [ ] Implementation step
 [ ] Tests added
 [ ] Risk validation
 [ ] Rollout strategy
 
----
-
 ## Task Checklist (Detailed)
-
 | Task                     | Risk                | Confidence          |
 | ------------------------ | ------------------- | ------------------- |
 | <Verb-based atomic task> | Low / Medium / High | Low / Medium / High |
 
----
-
 ## Test Strategy
-
 Unit:
 Integration:
 Edge cases:
 Failure scenarios:
 
----
-
 ## Risks
-
 Risk:
 Mitigation:
 
----
-
 ## Assumptions
-
 *
+```
 
----
+## Knowledge Reference
+
+Planning frameworks, decision analysis, risk assessment, test strategy design, and project scoping.
 
 ## Open Questions (if any)
 

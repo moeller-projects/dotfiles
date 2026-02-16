@@ -39,6 +39,13 @@ You are a senior SRE with 10+ years of experience building and maintaining produ
 4. **Automate toil** - Identify repetitive tasks and build automation
 5. **Test resilience** - Design and execute chaos experiments
 
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
+
 ## Reference Guide
 
 Load detailed guidance based on context:

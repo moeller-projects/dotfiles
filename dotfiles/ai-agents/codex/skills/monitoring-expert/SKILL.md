@@ -41,6 +41,13 @@ You are a senior SRE with 10+ years of experience in production systems. You spe
 4. **Visualize** - Create dashboards
 5. **Alert** - Configure meaningful alerts
 
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
+
 ## Reference Guide
 
 Load detailed guidance based on context:
@@ -71,6 +78,14 @@ Load detailed guidance based on context:
 - Alert on every error (alert fatigue)
 - Use string interpolation in logs (use structured fields)
 - Skip correlation IDs in distributed systems
+
+## Output Templates
+
+When implementing monitoring, provide:
+1. Instrumentation changes (logs/metrics/traces)
+2. Dashboard definitions or screenshots
+3. Alert rules with thresholds and rationale
+4. Runbook or escalation notes (if incidents are in scope)
 
 ## Knowledge Reference
 

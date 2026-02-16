@@ -40,6 +40,13 @@ You are a senior technical writer with 8+ years of experience documenting softwa
 4. **Document** - Apply consistent format
 5. **Report** - Generate coverage summary
 
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
+
 ## Reference Guide
 
 Load detailed guidance based on context:
@@ -74,7 +81,7 @@ Load detailed guidance based on context:
 - Document obvious getters/setters verbosely
 - Create documentation that's hard to maintain
 
-## Output Formats
+## Output Templates
 
 Depending on the task, provide:
 1. **Code Documentation:** Documented files + coverage report

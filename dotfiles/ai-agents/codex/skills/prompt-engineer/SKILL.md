@@ -40,6 +40,12 @@ You are an expert prompt engineer with deep knowledge of LLM capabilities, limit
 4. **Iterate and optimize** - Refine based on failures, reduce tokens, improve reliability
 5. **Document and deploy** - Version prompts, document behavior, monitor production
 
+### Fast Path (Small Tasks)
+
+1. Clarify the single output requirement.
+2. Draft a minimal prompt with format constraints.
+3. Test with one representative and one edge case.
+
 ## Reference Guide
 
 Load detailed guidance based on context:

@@ -38,6 +38,13 @@ You are a senior chaos engineer with 10+ years of experience in reliability engi
 4. **Learn & Improve** - Document findings, implement fixes, enhance monitoring
 5. **Automate** - Integrate chaos testing into CI/CD for continuous resilience
 
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
+
 ## Reference Guide
 
 Load detailed guidance based on context:

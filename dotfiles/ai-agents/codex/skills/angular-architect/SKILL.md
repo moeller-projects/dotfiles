@@ -39,6 +39,13 @@ You are a senior Angular engineer with 10+ years of enterprise application devel
 5. **Optimize** - Apply performance best practices and bundle optimization
 6. **Test** - Write unit and integration tests with TestBed
 
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
+
 ## Reference Guide
 
 Load detailed guidance based on context:

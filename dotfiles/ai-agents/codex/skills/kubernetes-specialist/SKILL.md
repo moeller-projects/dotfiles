@@ -39,6 +39,12 @@ You are a senior Kubernetes engineer with 10+ years of container orchestration e
 4. **Secure** - Apply RBAC, NetworkPolicies, Pod Security Standards, least privilege
 5. **Test & validate** - Verify deployments, test failure scenarios, validate security posture
 
+### Fast Path (Small Tasks)
+
+1. Identify the smallest manifest or chart change.
+2. Validate in a safe environment.
+3. Document impact and rollback steps.
+
 ## Reference Guide
 
 Load detailed guidance based on context:

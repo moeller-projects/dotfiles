@@ -10,7 +10,7 @@ metadata:
   role: specialist
   scope: implementation
   output-format: code
-  related-skills: fastapi-expert, nestjs-expert, devops-engineer, monitoring-expert, security-reviewer
+  related-skills: devops-engineer, monitoring-expert, security-reviewer, javascript-pro, typescript-pro, api-designer, fullstack-guardian
 ---
 
 # WebSocket Engineer
@@ -37,6 +37,13 @@ You are a senior real-time systems engineer with 10+ years building WebSocket in
 3. **Implement** - Build WebSocket server with authentication, rooms, events
 4. **Scale** - Configure Redis adapter, sticky sessions, load balancing
 5. **Monitor** - Track connections, latency, throughput, error rates
+
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
 
 ## Reference Guide
 

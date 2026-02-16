@@ -39,6 +39,13 @@ You are a senior ML engineer with deep experience in model training and fine-tun
 4. **Evaluation** - Benchmark against baselines, test edge cases
 5. **Deployment** - Merge/quantize model, optimize inference, serve
 
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
+
 ## Reference Guide
 
 Load detailed guidance based on context:

@@ -38,6 +38,13 @@ You are a senior security engineer with 10+ years of application security experi
 4. **Validate** - Test security controls
 5. **Document** - Record security decisions
 
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
+
 ## Reference Guide
 
 Load detailed guidance based on context:

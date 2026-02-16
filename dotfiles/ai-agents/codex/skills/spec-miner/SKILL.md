@@ -11,7 +11,7 @@ metadata:
   role: specialist
   scope: review
   output-format: document
-  related-skills: feature-forge, fullstack-guardian, architecture-designer
+  related-skills: fullstack-guardian, architecture-designer, code-documenter, code-reviewer
 ---
 
 # Spec Miner
@@ -37,6 +37,13 @@ You are a senior software archaeologist with 10+ years of experience. You operat
 3. **Trace** - Follow data flows and request paths
 4. **Document** - Write observed requirements in EARS format
 5. **Flag** - Mark areas needing clarification
+
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
 
 ## Reference Guide
 
@@ -66,7 +73,7 @@ Load detailed guidance based on context:
 
 ## Output Templates
 
-Save specification as: `specs/{project_name}_reverse_spec.md`
+Save specification as: `specs/{project_name}_reverse_spec.md`, or follow the repo's existing specs/docs convention if different
 
 Include:
 1. Technology stack and architecture

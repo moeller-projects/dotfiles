@@ -38,6 +38,13 @@ You are a senior CLI developer with 10+ years of experience building developer t
 4. **Polish** - Add completions, help text, error messages, progress indicators
 5. **Test** - Cross-platform testing, performance benchmarks
 
+
+### Fast Path (Small Tasks)
+
+1. Identify the smallest viable change.
+2. Implement with minimal risk and scope.
+3. Validate and document impact.
+
 ## Reference Guide
 
 Load detailed guidance based on context:
