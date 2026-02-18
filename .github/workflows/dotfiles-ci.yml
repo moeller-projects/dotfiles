@@ -52,11 +52,11 @@ jobs:
           echo "hello" > dotfiles/test/file.txt
           echo "dirfile" > dotfiles/test/dir/a.txt
 
-          ./install.sh --dry-run
-          ./install.sh --check
+          bash ./install.sh --dry-run
+          bash ./install.sh --check
 
           echo "foreign" > "$HOME/.testfile"
-          ./install.sh --force
+          bash ./install.sh --force
 
           test -L "$HOME/.testfile"
           test -L "$HOME/.testdir"
@@ -78,8 +78,8 @@ jobs:
           mkdir -p "$SRC_DIR/newdir"
           echo "newdirfile" > "$SRC_DIR/newdir/a.txt"
 
-          ./add-dotfile.sh "$SRC_DIR/new-file.txt" test/new-file "~/.new-file" linux
-          ./add-dotfile.sh "$SRC_DIR/newdir" test/new-dir "~/.new-dir" linux
+          bash ./add-dotfile.sh "$SRC_DIR/new-file.txt" test/new-file "~/.new-file" linux
+          bash ./add-dotfile.sh "$SRC_DIR/newdir" test/new-dir "~/.new-dir" linux
 
           test -f dotfiles/test/new-file
           test -f dotfiles/test/new-dir/a.txt
@@ -110,18 +110,21 @@ jobs:
           $env:HOME = $env:TMP_HOME
           Set-Location (Join-Path $env:TMP_REPO 'repo')
 
-          @'
+          $testFile = Join-Path $env:TMP_HOME '.testfile'
+          $testDir = Join-Path $env:TMP_HOME '.testdir'
+
+          @"
           {
             "test\\file.txt": {
-              "target": "~\\.testfile",
+              "target": "$testFile",
               "platforms": ["windows"]
             },
             "test\\dir": {
-              "target": "~\\.testdir",
+              "target": "$testDir",
               "platforms": ["windows"]
             }
           }
-          '@ | Set-Content -Path dotfiles.map.json -Encoding UTF8
+          "@ | Set-Content -Path dotfiles.map.json -Encoding UTF8
 
           New-Item -ItemType Directory -Path dotfiles\test\dir -Force | Out-Null
           "hello" | Set-Content -Path dotfiles\test\file.txt
@@ -130,11 +133,11 @@ jobs:
           pwsh ./install.ps1 -DryRun
           pwsh ./install.ps1 -Check
 
-          "foreign" | Set-Content -Path (Join-Path $env:HOME '.testfile')
+          "foreign" | Set-Content -Path $testFile
           pwsh ./install.ps1 -Force
 
-          if (-not (Test-Path (Join-Path $env:HOME '.testfile'))) { throw 'target missing' }
-          if (-not (Test-Path (Join-Path $env:HOME '.testdir'))) { throw 'dir missing' }
+          if (-not (Test-Path $testFile)) { throw 'target missing' }
+          if (-not (Test-Path $testDir)) { throw 'dir missing' }
 
           $backupHit = Get-ChildItem -Path .backup -Recurse -Filter '.testfile' -ErrorAction SilentlyContinue
           if (-not $backupHit) { throw 'backup for .testfile not found' }
@@ -151,8 +154,10 @@ jobs:
           New-Item -ItemType Directory -Path (Join-Path $srcDir 'newdir') | Out-Null
           "newdirfile" | Set-Content -Path (Join-Path $srcDir 'newdir\a.txt')
 
-          pwsh ./add-dotfile.ps1 -Source (Join-Path $srcDir 'new-file.txt') -Key 'test/new-file' -Target '~\.new-file' -Platforms windows
-          pwsh ./add-dotfile.ps1 -Source (Join-Path $srcDir 'newdir') -Key 'test/new-dir' -Target '~\.new-dir' -Platforms windows
+          $newFileTarget = Join-Path $env:TMP_HOME '.new-file'
+          $newDirTarget = Join-Path $env:TMP_HOME '.new-dir'
+          pwsh ./add-dotfile.ps1 -Source (Join-Path $srcDir 'new-file.txt') -Key 'test/new-file' -Target $newFileTarget -Platforms windows
+          pwsh ./add-dotfile.ps1 -Source (Join-Path $srcDir 'newdir') -Key 'test/new-dir' -Target $newDirTarget -Platforms windows
 
           if (-not (Test-Path 'dotfiles\test\new-file')) { throw 'new file missing' }
           if (-not (Test-Path 'dotfiles\test\new-dir\a.txt')) { throw 'new dir missing' }

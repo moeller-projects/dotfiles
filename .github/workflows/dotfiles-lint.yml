@@ -38,4 +38,4 @@ jobs:
       - name: Lint PowerShell scripts
         shell: pwsh
         run: |
-          Invoke-ScriptAnalyzer -Path install.ps1,add-dotfile.ps1 -Severity Warning -EnableExit
+          Invoke-ScriptAnalyzer -Path @('install.ps1','add-dotfile.ps1') -Severity Warning -EnableExit
