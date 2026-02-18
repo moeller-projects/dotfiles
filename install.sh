@@ -78,7 +78,10 @@ PY
 }
 
 resolve_home() {
-  [[ $1 == ~/* ]] && echo "$HOME/${1:2}" || echo "$1"
+  case "$1" in
+    \~/*) echo "$HOME/${1:2}" ;;
+    *) echo "$1" ;;
+  esac
 }
 
 ensure_dir() {
@@ -130,7 +133,7 @@ jq -e '
 # ------------------------------------------------------------
 # Transcript (not in --check)
 # ------------------------------------------------------------
-if ! $CHECK; then
+if ! $CHECK && ! $DRY_RUN; then
   ensure_dir "$BACKUP_RUN_DIR"
   if ! exec > >(tee -a "$TRANSCRIPT") 2>&1; then
     err "Failed to start transcript: $TRANSCRIPT"
