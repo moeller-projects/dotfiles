@@ -1,0 +1,162 @@
+name: dotfiles-ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+      - name: Prepare temp repo
+        run: |
+          set -euo pipefail
+          TMP_REPO="$(mktemp -d)"
+          TMP_HOME="$(mktemp -d)"
+          echo "TMP_REPO=$TMP_REPO" >> "$GITHUB_ENV"
+          echo "TMP_HOME=$TMP_HOME" >> "$GITHUB_ENV"
+          cp -a . "$TMP_REPO/repo"
+
+      - name: Test install.sh
+        env:
+          HOME: ${{ env.TMP_HOME }}
+        run: |
+          set -euo pipefail
+          cd "$TMP_REPO/repo"
+
+          cat > dotfiles.map.json <<'JSON'
+          {
+            "test/file.txt": {
+              "target": "~/.testfile",
+              "platforms": ["linux"]
+            },
+            "test/dir": {
+              "target": "~/.testdir",
+              "platforms": ["linux"]
+            }
+          }
+          JSON
+
+          mkdir -p dotfiles/test/dir
+          echo "hello" > dotfiles/test/file.txt
+          echo "dirfile" > dotfiles/test/dir/a.txt
+
+          ./install.sh --dry-run
+          ./install.sh --check
+
+          echo "foreign" > "$HOME/.testfile"
+          ./install.sh --force
+
+          test -L "$HOME/.testfile"
+          test -L "$HOME/.testdir"
+
+          if ! find .backup -type f -name ".testfile" | grep -q .; then
+            echo "backup for .testfile not found"
+            exit 1
+          fi
+
+      - name: Test add-dotfile.sh
+        env:
+          HOME: ${{ env.TMP_HOME }}
+        run: |
+          set -euo pipefail
+          cd "$TMP_REPO/repo"
+
+          SRC_DIR="$(mktemp -d)"
+          echo "newfile" > "$SRC_DIR/new-file.txt"
+          mkdir -p "$SRC_DIR/newdir"
+          echo "newdirfile" > "$SRC_DIR/newdir/a.txt"
+
+          ./add-dotfile.sh "$SRC_DIR/new-file.txt" test/new-file "~/.new-file" linux
+          ./add-dotfile.sh "$SRC_DIR/newdir" test/new-dir "~/.new-dir" linux
+
+          test -f dotfiles/test/new-file
+          test -f dotfiles/test/new-dir/a.txt
+
+          jq -e '."test/new-file"' dotfiles.map.json >/dev/null
+          jq -e '."test/new-dir"' dotfiles.map.json >/dev/null
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare temp repo
+        shell: pwsh
+        run: |
+          $tmpRepo = Join-Path $env:TEMP ([System.Guid]::NewGuid().ToString())
+          $tmpHome = Join-Path $env:TEMP ([System.Guid]::NewGuid().ToString())
+          New-Item -ItemType Directory -Path $tmpRepo | Out-Null
+          New-Item -ItemType Directory -Path $tmpHome | Out-Null
+          Copy-Item -Path . -Destination (Join-Path $tmpRepo 'repo') -Recurse
+          "TMP_REPO=$tmpRepo" | Out-File -FilePath $env:GITHUB_ENV -Append
+          "TMP_HOME=$tmpHome" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Test install.ps1
+        shell: pwsh
+        run: |
+          $env:HOME = $env:TMP_HOME
+          Set-Location (Join-Path $env:TMP_REPO 'repo')
+
+          @'
+          {
+            "test\\file.txt": {
+              "target": "~\\.testfile",
+              "platforms": ["windows"]
+            },
+            "test\\dir": {
+              "target": "~\\.testdir",
+              "platforms": ["windows"]
+            }
+          }
+          '@ | Set-Content -Path dotfiles.map.json -Encoding UTF8
+
+          New-Item -ItemType Directory -Path dotfiles\test\dir -Force | Out-Null
+          "hello" | Set-Content -Path dotfiles\test\file.txt
+          "dirfile" | Set-Content -Path dotfiles\test\dir\a.txt
+
+          pwsh ./install.ps1 -DryRun
+          pwsh ./install.ps1 -Check
+
+          "foreign" | Set-Content -Path (Join-Path $env:HOME '.testfile')
+          pwsh ./install.ps1 -Force
+
+          if (-not (Test-Path (Join-Path $env:HOME '.testfile'))) { throw 'target missing' }
+          if (-not (Test-Path (Join-Path $env:HOME '.testdir'))) { throw 'dir missing' }
+
+          $backupHit = Get-ChildItem -Path .backup -Recurse -Filter '.testfile' -ErrorAction SilentlyContinue
+          if (-not $backupHit) { throw 'backup for .testfile not found' }
+
+      - name: Test add-dotfile.ps1
+        shell: pwsh
+        run: |
+          $env:HOME = $env:TMP_HOME
+          Set-Location (Join-Path $env:TMP_REPO 'repo')
+
+          $srcDir = Join-Path $env:TEMP ([System.Guid]::NewGuid().ToString())
+          New-Item -ItemType Directory -Path $srcDir | Out-Null
+          "newfile" | Set-Content -Path (Join-Path $srcDir 'new-file.txt')
+          New-Item -ItemType Directory -Path (Join-Path $srcDir 'newdir') | Out-Null
+          "newdirfile" | Set-Content -Path (Join-Path $srcDir 'newdir\a.txt')
+
+          pwsh ./add-dotfile.ps1 -Source (Join-Path $srcDir 'new-file.txt') -Key 'test/new-file' -Target '~\.new-file' -Platforms windows
+          pwsh ./add-dotfile.ps1 -Source (Join-Path $srcDir 'newdir') -Key 'test/new-dir' -Target '~\.new-dir' -Platforms windows
+
+          if (-not (Test-Path 'dotfiles\test\new-file')) { throw 'new file missing' }
+          if (-not (Test-Path 'dotfiles\test\new-dir\a.txt')) { throw 'new dir missing' }
+
+          $map = Get-Content dotfiles.map.json -Raw | ConvertFrom-Json
+          if (-not $map.'test/new-file') { throw 'map missing new-file' }
+          if (-not $map.'test/new-dir') { throw 'map missing new-dir' }
