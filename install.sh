@@ -78,7 +78,7 @@ PY
 }
 
 resolve_home() {
-  [[ "$1" == "~/"* ]] && echo "$HOME/${1:2}" || echo "$1"
+  [[ $1 == ~/* ]] && echo "$HOME/${1:2}" || echo "$1"
 }
 
 ensure_dir() {
@@ -138,7 +138,14 @@ if ! $CHECK; then
   fi
 fi
 
-info "Mode     : $([[ $CHECK == true ]] && echo CHECK || ([[ $DRY_RUN == true ]] && echo DRY-RUN || echo INSTALL))"
+if [[ $CHECK == true ]]; then
+  MODE="CHECK"
+elif [[ $DRY_RUN == true ]]; then
+  MODE="DRY-RUN"
+else
+  MODE="INSTALL"
+fi
+info "Mode     : $MODE"
 info "RepoRoot : $REPO_ROOT"
 
 # ------------------------------------------------------------
