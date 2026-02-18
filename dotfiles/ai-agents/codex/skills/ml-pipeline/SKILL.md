@@ -10,7 +10,7 @@ metadata:
   role: expert
   scope: implementation
   output-format: code
-  related-skills: devops-engineer, kubernetes-specialist, cloud-architect, monitoring-expert, fine-tuning-expert, test-master
+  related-skills: devops-engineer, kubernetes-specialist, cloud-architect, monitoring-expert, fine-tuning-expert, test-master, rag-architect
 ---
 
 # ML Pipeline Expert

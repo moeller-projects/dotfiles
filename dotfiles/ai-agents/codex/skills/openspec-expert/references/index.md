@@ -1,6 +1,6 @@
-# Openspec References
+# OpenSpec Expert References
 
-This folder contains supporting guidance for the `openspec` skill.
+This folder contains supporting guidance for the `openspec-expert` skill.
 
 ## Contents
 - `workflow.md` — step-by-step execution flow and decision points
@@ -10,3 +10,6 @@ This folder contains supporting guidance for the `openspec` skill.
 - `templates.md` — reusable templates and snippets
 - `evaluation.md` — success criteria and test scenarios
 - `tools.md` — allowed tools and safe usage patterns
+- `diffing.md` — diffing and version review guidance
+- `review.md` — review and sign-off workflow
+- `quality-scoring.md` — scoring rubric and thresholds

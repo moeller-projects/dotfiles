@@ -10,7 +10,7 @@ metadata:
   role: expert
   scope: design
   output-format: document
-  related-skills: test-master
+  related-skills: test-master, fine-tuning-expert, rag-architect
 ---
 
 # Prompt Engineer

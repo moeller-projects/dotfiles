@@ -10,7 +10,7 @@ metadata:
   role: architect
   scope: design
   output-format: specification
-  related-skills: graphql-architect, security-reviewer, code-documenter, fullstack-guardian, microservices-architect
+  related-skills: graphql-architect, security-reviewer, code-documenter, fullstack-guardian, microservices-architect, architecture-designer, openspec
 ---
 
 # API Designer

@@ -11,7 +11,7 @@ metadata:
   role: specialist
   scope: review
   output-format: document
-  related-skills: fullstack-guardian, architecture-designer, code-documenter, code-reviewer
+  related-skills: fullstack-guardian, architecture-designer, code-documenter, code-reviewer, legacy-modernizer
 ---
 
 # Spec Miner

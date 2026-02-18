@@ -10,7 +10,7 @@ metadata:
   role: specialist
   scope: implementation
   output-format: code
-  related-skills: devops-engineer
+  related-skills: devops-engineer, bash-specialist, pwsh-specialist
 ---
 
 # CLI Developer

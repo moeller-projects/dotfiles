@@ -10,7 +10,7 @@ metadata:
   role: specialist
   scope: architecture
   output-format: code+analysis
-  related-skills: test-master, devops-engineer
+  related-skills: test-master, devops-engineer, spec-miner
 ---
 
 # Legacy Modernizer

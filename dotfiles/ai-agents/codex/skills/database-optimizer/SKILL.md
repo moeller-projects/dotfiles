@@ -10,7 +10,7 @@ metadata:
   role: specialist
   scope: optimization
   output-format: analysis-and-code
-  related-skills: devops-engineer
+  related-skills: devops-engineer, sql-pro
 ---
 
 # Database Optimizer

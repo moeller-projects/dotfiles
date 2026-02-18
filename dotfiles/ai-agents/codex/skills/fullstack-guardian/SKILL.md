@@ -10,7 +10,7 @@ metadata:
   role: expert
   scope: implementation
   output-format: code
-  related-skills: test-master, devops-engineer, security-reviewer, api-designer
+  related-skills: test-master, devops-engineer, security-reviewer, api-designer, javascript-pro, typescript-pro, secure-code-guardian
 ---
 
 # Fullstack Guardian

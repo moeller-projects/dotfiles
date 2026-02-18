@@ -65,8 +65,8 @@
       "linux"
     ]
   },
-  "ai-agents/codex/skills/openspec": {
-    "target": "/home/lukas/.codex/skills/openspec",
+  "ai-agents/codex/skills/openspec-expert": {
+    "target": "/home/lukas/.codex/skills/openspec-expert",
     "platforms": [
       "linux"
     ]

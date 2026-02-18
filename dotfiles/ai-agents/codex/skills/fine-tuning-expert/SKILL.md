@@ -10,7 +10,7 @@ metadata:
   role: expert
   scope: implementation
   output-format: code
-  related-skills: devops-engineer
+  related-skills: devops-engineer, ml-pipeline, prompt-engineer
 ---
 
 # Fine-Tuning Expert

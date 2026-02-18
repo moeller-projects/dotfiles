@@ -10,7 +10,7 @@ metadata:
   role: expert
   scope: design
   output-format: document
-  related-skills: fullstack-guardian, devops-engineer, secure-code-guardian
+  related-skills: fullstack-guardian, devops-engineer, secure-code-guardian, cloud-architect, microservices-architect, api-designer
 ---
 
 # Architecture Designer

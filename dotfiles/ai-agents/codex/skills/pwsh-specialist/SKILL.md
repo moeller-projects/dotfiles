@@ -10,7 +10,7 @@ metadata:
   role: specialist
   scope: implementation
   output-format: code
-  related-skills: cli-developer, debugging-wizard, test-master, security-reviewer
+  related-skills: cli-developer, debugging-wizard, test-master, security-reviewer, bash-specialist
 ---
 
 # PowerShell Specialist

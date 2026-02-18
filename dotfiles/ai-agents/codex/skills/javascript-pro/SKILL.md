@@ -10,7 +10,7 @@ metadata:
   role: specialist
   scope: implementation
   output-format: code
-  related-skills: fullstack-guardian
+  related-skills: fullstack-guardian, typescript-pro
 ---
 
 # JavaScript Pro
