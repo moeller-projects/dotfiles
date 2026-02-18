@@ -17,6 +17,7 @@ network_access = true
 skills = true
 unified_exec = true
 shell_snapshot = true
+use_linux_sandbox_bwrap = true
 multi_agent = true
 steer = true
 collaboration_modes = true
