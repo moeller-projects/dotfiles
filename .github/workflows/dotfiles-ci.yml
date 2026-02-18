@@ -113,18 +113,17 @@ jobs:
           $testFile = Join-Path $env:TMP_HOME '.testfile'
           $testDir = Join-Path $env:TMP_HOME '.testdir'
 
-          @"
-          {
-            "test\\file.txt": {
-              "target": "$testFile",
-              "platforms": ["windows"]
-            },
-            "test\\dir": {
-              "target": "$testDir",
-              "platforms": ["windows"]
+          $map = @{
+            'test\file.txt' = @{
+              target = $testFile
+              platforms = @('windows')
+            }
+            'test\dir' = @{
+              target = $testDir
+              platforms = @('windows')
             }
           }
-          "@ | Set-Content -Path dotfiles.map.json -Encoding UTF8
+          $map | ConvertTo-Json -Depth 5 | Set-Content -Path dotfiles.map.json -Encoding UTF8
 
           New-Item -ItemType Directory -Path dotfiles\test\dir -Force | Out-Null
           "hello" | Set-Content -Path dotfiles\test\file.txt
