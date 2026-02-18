@@ -329,6 +329,12 @@
       "linux"
     ]
   },
+  "ai-agents/codex/skills/eco-mode": {
+    "target": "/home/lukas/.codex/skills/eco-mode",
+    "platforms": [
+      "linux"
+    ]
+  },
   "ai-agents/codex/skills/websocket-engineer": {
     "target": "/home/lukas/.codex/skills/websocket-engineer",
     "platforms": [
