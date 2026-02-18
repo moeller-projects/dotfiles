@@ -4,20 +4,32 @@
 - `dotfiles/`: Repository-owned files and directories that will be linked into the home directory.
 - `dotfiles.map.json`: Map of repo paths (keys) to target locations (values). Each key mirrors the path under `dotfiles/`.
 - `install.ps1`: Idempotent installer that links files from `dotfiles/` to targets.
+- `install.sh`: Bash installer for Unix-like environments.
 - `add-dotfile.ps1`: Helper that copies a file/folder into `dotfiles/` and updates `dotfiles.map.json`.
+- `add-dotfile.sh`: Bash helper that copies a file/folder into `dotfiles/` and updates `dotfiles.map.json`.
 
 ## Build, Test, and Development Commands
 This repo is script-driven; there is no build step.
 - `pwsh ./install.ps1`: Install dotfiles by creating links (or copying on Windows if symlinks fail).
 - `pwsh ./install.ps1 -DryRun`: Show intended actions without changing the system.
 - `pwsh ./install.ps1 -Check`: Validate current targets and report missing/foreign items.
-- `pwsh ./install.ps1 -Force`: Overwrite non-repo targets.
+- `pwsh ./install.ps1 -Force`: Overwrite non-repo targets (backup still occurs).
 - `pwsh ./add-dotfile.ps1 -Source "<path>" -Key "git/.gitconfig" -Target "~/.gitconfig"`: Add a new file and map it.
+- `./install.sh`: Install dotfiles by creating links (Bash; requires `jq`).
+- `./install.sh --dry-run`: Show intended actions without changing the system.
+- `./install.sh --check`: Validate current targets and report missing/foreign items.
+- `./install.sh --force`: Overwrite non-repo targets (backup still occurs).
+- `./add-dotfile.sh "<path>" "git/.gitconfig" "~/.gitconfig" "linux,macos"`: Add a new file and map it.
+
+Prerequisites:
+- PowerShell 7+ recommended (`pwsh`).
+- `jq` required for Bash scripts.
 
 ## Coding Style & Naming Conventions
 - PowerShell scripts use 4-space indentation and `PascalCase` for functions (e.g., `Process-Entry`).
 - Use descriptive parameter names and keep scripts idempotent.
 - Mapping keys should mirror the on-disk path under `dotfiles/` (e.g., `nvim/init.lua`).
+- Platforms should be `windows`, `linux`, or `macos` (avoid `darwin`).
 
 ## Testing Guidelines
 - No automated test suite exists. Use `-DryRun` and `-Check` to validate behavior before applying changes.
@@ -30,3 +42,4 @@ This repo is script-driven; there is no build step.
 ## Security & Configuration Tips
 - Review targets in `dotfiles.map.json` carefully; `-Force` can overwrite existing files.
 - Keep secrets out of `dotfiles/`; prefer references to secure stores or local-only files.
+- `add-dotfile.ps1` follows symlinks; if the symlink target is outside `$HOME`, it prompts for confirmation.

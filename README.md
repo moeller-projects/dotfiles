@@ -5,7 +5,7 @@ A small, script-driven dotfiles repo with an idempotent installer and a simple m
 ## Features
 - Stateless install: no bookkeeping, safe re-runs
 - Cross-platform targeting (windows/linux/macos)
-- Repo-owned symlinks; optional force overwrite of foreign targets
+- Repo-owned symlinks; optional force overwrite of foreign targets (with backup)
 - Simple map file to define source-to-target links
 
 ## Repository Layout
@@ -74,7 +74,7 @@ Rules:
 - Bash: `--dry-run`, `--check`, `--force`
 - Dry run shows actions without changes
 - Check validates current targets and reports missing/foreign items
-- Force overwrites non-repo targets
+- Force overwrites non-repo targets (backup still occurs)
 
 On Windows, if symlink creation fails, the installer falls back to copying the file/folder.
 
@@ -89,12 +89,32 @@ pwsh ./add-dotfile.ps1 -Source "$HOME\.config\nvim" -Key "nvim" -Target "~/.conf
 ./add-dotfile.sh "$HOME/.config/nvim" "nvim" "~/.config/nvim" "linux,macos"
 ```
 
+`add-dotfile.ps1` follows symlinks. If the symlink target is outside `$HOME`, it prompts for confirmation.
+
 `add-dotfile.sh` defaults platforms to `linux` if the optional platforms argument is omitted.
 
 Example without platforms (defaults to `linux`):
 
 ```bash
 ./add-dotfile.sh "$HOME/.config/nvim" "nvim" "~/.config/nvim"
+```
+
+PowerShell examples:
+
+```powershell
+# Explicit platforms
+pwsh ./add-dotfile.ps1 -Source "$HOME\.config\nvim" -Key "nvim" -Target "~/.config/nvim" -Platforms windows,linux,macos
+```
+
+```powershell
+# Symlink outside HOME prompts for confirmation
+pwsh ./add-dotfile.ps1 -Source "$HOME\.config\some-link" -Key "some-link" -Target "~/.config/some-link"
+```
+
+Dry run and explicit platforms:
+
+```bash
+./add-dotfile.sh "$HOME/.config/nvim" "nvim" "~/.config/nvim" --platforms=linux,macos --dry-run
 ```
 
 ## Safety Notes
