@@ -1,35 +1,81 @@
+############################################################
+# MODEL SELECTION
+############################################################
+
 model = "gpt-5.2-codex"
-model_verbosity = "medium"
 preferred_auth_method = "apikey"
+
+# Reduce reasoning and verbosity to lower token usage
+model_reasoning_effort = "low"     # was "medium"
+model_verbosity = "low"            # was "medium"
+
+
+############################################################
+# COST CONTROL – PRIMARY TOKEN LEVERS
+############################################################
+
+# Hard cap for tool outputs (default ~10000, too high)
+tool_output_token_limit = 3000
+
+# Limit AGENTS.md / project instruction overhead
+project_doc_max_bytes = 12288      # was implicit 32768 default
+
+# Disable live web search by default (major cost amplifier)
+web_search = "disabled"            # was "live"
+
+
+############################################################
+# EXECUTION & SAFETY
+############################################################
+
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
-model_reasoning_effort = "medium"
-web_search = "live"
+
+[sandbox_workspace_write]
+network_access = true
+
+
+############################################################
+# UX / WARNINGS
+############################################################
+
 suppress_unstable_features_warning = true
 
 [notice]
 hide_full_access_warning = true
 
-[sandbox_workspace_write]
-network_access = true
+
+############################################################
+# FEATURE FLAGS (Capability vs Cost Tradeoff)
+############################################################
 
 [features]
+
+# Keep essential dev productivity
 skills = true
 unified_exec = true
 shell_snapshot = true
-use_linux_sandbox_bwrap = true
-multi_agent = true
+
+# Advanced features – enable only if needed
+multi_agent = true          # consider disabling if not required
 steer = true
 collaboration_modes = true
 apps = true
 personality = true
-search_tool = true
 
-# MCP Tools
+# Disable search tool since web_search is disabled
+search_tool = false
+
+
+############################################################
+# MCP TOOLS
+############################################################
+
 [mcp_servers.context7]
 command = "bunx"
 args = ["-y", "@upstash/context7-mcp@latest"]
 
+# Optional Chrome MCP
 # [mcp_servers.chrome]
 # command = "bunx"
 # args = ["chrome-devtools-mcp@latest"]
