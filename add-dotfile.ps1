@@ -28,6 +28,20 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+Set-StrictMode -Version Latest
+
+# ------------------------------------------------------------
+# Logging
+# ------------------------------------------------------------
+function Info($m)
+{ Write-Information "[INFO]  $m" -InformationAction Continue
+}
+function Warn($m)
+{ Write-Warning $m
+}
+function Err ($m)
+{ Write-Error $m
+}
 
 # ------------------------------------------------------------
 # Paths
@@ -49,22 +63,20 @@ if (-not (Test-Path $DotfilesRoot))
     throw "dotfiles/ directory missing"
 }
 
-# ------------------------------------------------------------
-# Copy into repo (file OR directory)
-# ------------------------------------------------------------
-$RepoPath = Join-Path $DotfilesRoot $Key
-$RepoDir  = Split-Path -Parent $RepoPath
-
-New-Item -ItemType Directory -Path $RepoDir -Force | Out-Null
-
-if ((Get-Item $Source).PSIsContainer)
+# Validate key (no absolute paths or traversal)
+if ($Key -match '^\s*[\\/]' -or $Key -match '\.\.')
 {
-    Copy-Item -Path $Source -Destination $RepoPath -Recurse -Force
-    Write-Host "[OK] Added directory: dotfiles/$Key" -ForegroundColor Green
-} else
+    throw "Key must be a relative path without '..': $Key"
+}
+
+# Validate platforms
+$validPlatforms = @('windows', 'linux', 'macos')
+foreach ($p in $Platforms)
 {
-    Copy-Item -Path $Source -Destination $RepoPath -Force
-    Write-Host "[OK] Added file: dotfiles/$Key" -ForegroundColor Green
+    if ($validPlatforms -notcontains $p)
+    {
+        throw "Invalid platform: $p"
+    }
 }
 
 # ------------------------------------------------------------
@@ -84,6 +96,57 @@ if ($Map.PSObject.Properties.Name -contains $Key)
 }
 
 # ------------------------------------------------------------
+# Resolve symlinks (safety check outside HOME)
+# ------------------------------------------------------------
+$sourceItem = Get-Item -LiteralPath $Source
+$copySource = $Source
+if ($sourceItem.LinkType)
+{
+    $resolvedSource = (Resolve-Path -LiteralPath $Source).Path
+    $homeResolved = (Resolve-Path -LiteralPath $HOME).Path
+    $comparison = if ($IsWindows) { [StringComparison]::OrdinalIgnoreCase } else { [StringComparison]::Ordinal }
+    if (-not $resolvedSource.StartsWith($homeResolved, $comparison))
+    {
+        Warn "Symlink target is outside HOME: $resolvedSource"
+        $confirm = Read-Host "Continue and copy target contents? (y/N)"
+        if ($confirm -notin @('y','Y','yes','YES'))
+        {
+            throw "Aborted by user."
+        }
+    }
+    $copySource = $resolvedSource
+}
+
+# ------------------------------------------------------------
+# Copy into repo (file OR directory)
+# ------------------------------------------------------------
+$RepoPath = Join-Path $DotfilesRoot $Key
+$RepoDir  = Split-Path -Parent $RepoPath
+
+if (Test-Path $RepoPath)
+{
+    throw "Destination already exists: $RepoPath"
+}
+
+New-Item -ItemType Directory -Path $RepoDir -Force | Out-Null
+
+if ((Get-Item $copySource).PSIsContainer)
+{
+    if ((Get-Command Copy-Item).Parameters.ContainsKey('FollowSymlink'))
+    {
+        Copy-Item -Path $copySource -Destination $RepoPath -Recurse -Force -FollowSymlink
+    } else
+    {
+        Copy-Item -Path $copySource -Destination $RepoPath -Recurse -Force
+    }
+    Info "Added directory: dotfiles/$Key"
+} else
+{
+    Copy-Item -Path $copySource -Destination $RepoPath -Force
+    Info "Added file: dotfiles/$Key"
+}
+
+# ------------------------------------------------------------
 # Add mapping entry
 # ------------------------------------------------------------
 $Map | Add-Member -MemberType NoteProperty -Name $Key -Value @{
@@ -95,4 +158,4 @@ $Map |
     ConvertTo-Json -Depth 5 |
     Set-Content $MapFile -Encoding UTF8
 
-Write-Host "[OK] Updated dotfiles.map.json" -ForegroundColor Green
+Info "Updated dotfiles.map.json"

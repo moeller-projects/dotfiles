@@ -62,6 +62,21 @@ err()  { echo "[ERROR] $*" >&2; }
 # ------------------------------------------------------------
 # Helpers
 # ------------------------------------------------------------
+resolve_path() {
+  local path="$1"
+  if command -v realpath >/dev/null 2>&1; then
+    realpath "$path"
+  elif command -v python3 >/dev/null 2>&1; then
+    python3 - <<'PY' "$path"
+import os,sys
+print(os.path.realpath(sys.argv[1]))
+PY
+  else
+    warn "Unable to resolve path; realpath/python3 not found: $path"
+    printf '%s\n' "$path"
+  fi
+}
+
 resolve_home() {
   [[ "$1" == "~/"* ]] && echo "$HOME/${1:2}" || echo "$1"
 }
@@ -80,7 +95,7 @@ is_repo_owned_link() {
   local target="$1"
   [[ -L "$target" ]] || return 1
   local resolved
-  resolved="$(readlink -f "$target")"
+  resolved="$(resolve_path "$target")"
   [[ "$resolved" == "$REPO_ROOT"* ]]
 }
 
@@ -93,7 +108,11 @@ backup_target() {
   if $DRY_RUN; then
     info "Would backup: $target -> $dest"
   else
-    cp -a "$target" "$dest"
+    if [[ -L "$target" ]]; then
+      cp -aL "$target" "$dest"
+    else
+      cp -a "$target" "$dest"
+    fi
     info "Backed up: $target"
   fi
 }
@@ -102,13 +121,21 @@ backup_target() {
 # Validation
 # ------------------------------------------------------------
 [[ -f "$MAP_FILE" ]] || { err "Mapping file not found: $MAP_FILE"; exit 1; }
+jq -e '
+  to_entries | all(
+    .key and (.value.target | type == "string")
+  )
+' "$MAP_FILE" >/dev/null || { err "Invalid map file format: $MAP_FILE"; exit 1; }
 
 # ------------------------------------------------------------
 # Transcript (not in --check)
 # ------------------------------------------------------------
 if ! $CHECK; then
   ensure_dir "$BACKUP_RUN_DIR"
-  exec > >(tee -a "$TRANSCRIPT") 2>&1
+  if ! exec > >(tee -a "$TRANSCRIPT") 2>&1; then
+    err "Failed to start transcript: $TRANSCRIPT"
+    exit 1
+  fi
 fi
 
 info "Mode     : $([[ $CHECK == true ]] && echo CHECK || ([[ $DRY_RUN == true ]] && echo DRY-RUN || echo INSTALL))"
@@ -126,7 +153,9 @@ while IFS="|" read -r key target platforms; do
 
   if [[ -n "$platforms" ]]; then
     uname_s="$(uname | tr '[:upper:]' '[:lower:]')"
-    [[ "$platforms" == *"$uname_s"* ]] || continue
+    if ! printf '%s\n' "$platforms" | tr ',' '\n' | grep -Fxq "$uname_s"; then
+      continue
+    fi
   fi
 
   info "Processing: $key"
@@ -143,7 +172,10 @@ while IFS="|" read -r key target platforms; do
   fi
 
   if [[ -e "$TARGET" ]] && ! is_repo_owned_link "$TARGET"; then
-    $FORCE || backup_target "$TARGET"
+    if $FORCE; then
+      info "Force enabled; backing up then overwriting: $TARGET"
+    fi
+    backup_target "$TARGET"
     if $DRY_RUN; then
       info "Would remove: $TARGET"
     else

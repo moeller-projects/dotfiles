@@ -21,6 +21,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+Set-StrictMode -Version Latest
 
 # ------------------------------------------------------------
 # Paths & run context
@@ -33,18 +34,19 @@ $BackupRoot   = Join-Path $RepoRoot '.backup'
 $Timestamp    = Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'
 $BackupRunDir = Join-Path $BackupRoot $Timestamp
 $Transcript   = Join-Path $BackupRunDir 'transcript.txt'
+$TranscriptStarted = $false
 
 # ------------------------------------------------------------
 # Logging
 # ------------------------------------------------------------
 function Info($m)
-{ Write-Host "[INFO]  $m" -ForegroundColor Cyan
+{ Write-Information "[INFO]  $m" -InformationAction Continue
 }
 function Warn($m)
-{ Write-Host "[WARN]  $m" -ForegroundColor Yellow
+{ Write-Warning $m
 }
 function Err ($m)
-{ Write-Host "[ERROR] $m" -ForegroundColor Red
+{ Write-Error $m
 }
 
 # ------------------------------------------------------------
@@ -70,7 +72,7 @@ function Get-Platform
 function Resolve-HomePath
 {
     param([string]$Path)
-    if ($Path -like "~/*")
+    if ($Path -like "~/*" -or $Path -like "~\*")
     {
         return Join-Path $HOME $Path.Substring(2)
     }
@@ -124,6 +126,7 @@ function Backup-Target
 
     # normalize path for backup layout
     $relative = $Target -replace '^[A-Za-z]:\\', ''
+    $relative = $relative.TrimStart('\','/')
     $backupPath = Join-Path $BackupRunDir $relative
     $backupDir  = Split-Path -Parent $backupPath
 
@@ -170,10 +173,10 @@ function Process-Entry
 
     if ($exists -and -not $repoOwned)
     {
-        if (-not $Force)
-        {
-            Backup-Target $Target
+        if ($Force)
+        { Info "Force enabled; backing up then overwriting: $Target"
         }
+        Backup-Target $Target
 
         if ($DryRun)
         {
@@ -205,6 +208,9 @@ function Process-Entry
     } else
     {
         & ln -sfn $Source $Target
+        if ($LASTEXITCODE -ne 0)
+        { throw "ln failed with exit code $LASTEXITCODE for $Target"
+        }
     }
 
     Info "Linked: $Target -> $Source"
@@ -225,7 +231,12 @@ if (-not (Test-Path $MapFile))
 if (-not $Check)
 {
     Ensure-Directory $BackupRunDir
-    Start-Transcript -Path $Transcript | Out-Null
+    try
+    { Start-Transcript -Path $Transcript | Out-Null
+      $TranscriptStarted = $true
+    } catch
+    { throw "Failed to start transcript at $Transcript. $($_.Exception.Message)"
+    }
 }
 
 try
@@ -238,6 +249,13 @@ try
 
     Info "Mode     : $(if ($Check) {'CHECK'} elseif ($DryRun) {'DRY-RUN'} else {'INSTALL'})"
     Info "Platform : $Platform"
+
+    foreach ($p in $Map.PSObject.Properties)
+    {
+        if (-not $p.Value.target -or -not ($p.Value.target -is [string]))
+        { throw "Invalid map entry for key '$($p.Name)': target is required and must be a string."
+        }
+    }
 
     # --------------------------------------------------------
     # Process mappings
@@ -267,7 +285,7 @@ try
     Info "Done."
 } finally
 {
-    if (-not $Check)
+    if (-not $Check -and $TranscriptStarted)
     {
         Stop-Transcript | Out-Null
     }
