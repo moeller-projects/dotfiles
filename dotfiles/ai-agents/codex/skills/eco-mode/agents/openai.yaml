@@ -1,4 +1,0 @@
-interface:
-  display_name: "Eco Mode"
-  short_description: "Lower token usage with strict context/output rules"
-  default_prompt: "Apply eco-mode policies: minimize context, prefer diffs/snippets, cap output, limit iterations, and route to cheaper models when possible."
