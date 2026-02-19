@@ -1,7 +1,7 @@
-—
+---
 name: budget-guard
 description: Deterministic cost-control guardrail for Codex CLI and agentic workflows. Enforces strict token/tool/attempt budgets, cost-optimized routing, state memory discipline, hash-based rescan prevention, search storm protection, CI-safe termination, and explicit build/test confirmation.
-—
+---
 
 # Budget Guard v2.1
 
