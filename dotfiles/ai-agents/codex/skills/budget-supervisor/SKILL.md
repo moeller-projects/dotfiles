@@ -1,7 +1,7 @@
-—
+---
 name: budget-supervisor
 description: Production-grade session-level FinOps governor for Codex CLI. Authoritatively enforces rolling token/tool/time budgets across tasks and sub-agents, allocates per-task envelopes, resolves tier conflicts, locks/unlocks escalation, detects spend drift, logs overrides, and activates/parameterizes budget-guard deterministically per task.
-—
+---
 
 # Budget Enforcement Supervisor (BES) v2
 
