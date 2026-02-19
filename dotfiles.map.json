@@ -329,8 +329,14 @@
       "linux"
     ]
   },
-  "ai-agents/codex/skills/eco-mode": {
-    "target": "/home/lukas/.codex/skills/eco-mode",
+  "ai-agents/codex/skills/budget-guard": {
+    "target": "/home/lukas/.codex/skills/budget-guard",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "ai-agents/codex/skills/budget-supervisor": {
+    "target": "/home/lukas/.codex/skills/budget-supervisor",
     "platforms": [
       "linux"
     ]
