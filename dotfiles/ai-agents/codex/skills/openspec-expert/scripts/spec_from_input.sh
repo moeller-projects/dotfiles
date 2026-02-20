@@ -13,6 +13,7 @@ task=""
 title=""
 description=""
 acceptance=""
+
 if [[ -f "$input" ]]; then
   task="$(cat "$input")"
   log "Using file input: $input"
@@ -20,11 +21,13 @@ else
   task="$input"
 fi
 
+# Try parse JSON input
 if jq -e . >/dev/null 2>&1 <<<"$task"; then
   title="$(echo "$task" | jq -r '.title // ""')"
   description="$(echo "$task" | jq -r '.description // ""')"
   acceptance="$(echo "$task" | jq -r '.acceptance_criteria // ""')"
 else
+  # Parse structured text blocks best-effort
   if grep -q '^Title:' <<<"$task"; then
     title="$(awk 'f && NF {print; exit} /^Title:/{f=1}' <<<"$task")"
   fi
@@ -37,7 +40,7 @@ else
 fi
 
 name_source="$task"
-if [[ -n "$title" ]]; then
+if [[ -n "${title:-}" ]]; then
   name_source="$title"
 fi
 
@@ -56,19 +59,18 @@ openspec_spec_dir="$openspec_dir/specs/$spec_name"
 openspec_spec_file="$openspec_spec_dir/spec.md"
 
 mkdir -p "$openspec_spec_dir"
+
+# Governance-required metadata
+default_version="${OPEN_SPEC_DEFAULT_VERSION:-0.1.0}"
+default_risk_tier="${OPEN_SPEC_DEFAULT_RISK_TIER:-Medium}"
+
 if [[ ! -f "$openspec_spec_file" ]]; then
   log "Creating spec stub: $openspec_spec_file"
   cat > "$openspec_spec_file" <<EOF
+Version: $default_version
+Risk Tier: $default_risk_tier
+
 # ${title:-$spec_name}
-
-## Purpose
-${description:-TBD}
-
-## Requirements
-### Requirement: ${title:-$spec_name}
-#### Scenario: Base
-- **WHEN** TBD
-- **THEN** TBD
 
 ## Overview
 ${description:-TBD}
@@ -84,10 +86,16 @@ ${description:-TBD}
 FR-1: ${acceptance:-TBD}
 
 ## Non-Functional Requirements
-NFR-1: TBD
+NFR-1: TBD (e.g., latency, throughput, availability, security constraints)
 
 ## Acceptance Criteria
 AC-1: ${acceptance:-TBD}
+
+## Scenarios
+### Scenario: Base
+- **GIVEN** TBD
+- **WHEN** TBD
+- **THEN** TBD
 
 ## Open Questions
 - TBD

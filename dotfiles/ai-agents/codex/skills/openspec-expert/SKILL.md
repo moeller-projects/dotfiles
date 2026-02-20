@@ -27,12 +27,22 @@ This skill enforces governance — not just generation.
 
 # 1. Deterministic Execution Model
 
-All specs must be generated and validated via:
+All specs must be generated via:
 
-- `scripts/spec_from_input.sh`
-- `scripts/spec_from_ado.sh`
-- `scripts/validate_spec.sh`
-- `scripts/score_spec.sh`
+- scripts/spec_from_input.sh
+- scripts/spec_from_ado.sh
+
+Validation & governance:
+
+- scripts/validate_spec.sh
+- scripts/score_spec.sh
+- scripts/enforce_version.sh
+- scripts/diff_spec.sh
+- scripts/emit_artifact.sh
+
+In CI environments:
+
+- scripts/ci_gate.sh (authoritative atomic enforcement)
 
 Hand-written full specs are prohibited unless CLI is unavailable.
 
@@ -197,17 +207,24 @@ No automatic execution — emit recommendation.
 
 ---
 
-# 10. CI Mode
+# 10. CI Mode (Authoritative Entry Point)
 
-In CI:
+In CI environments, governance MUST be executed via:
 
-* Risk tier must be declared.
-* Score must be >= 80.
-* All policies must pass.
-* Diff summary required.
-* Sign-off status must be explicit.
+scripts/ci_gate.sh <spec> [base_ref]
 
-If missing → fail pipeline.
+This script enforces atomically:
+
+1. openspec validation
+2. Policy gates (structure, style, security)
+3. Quality scoring (>= 80 required)
+4. Version governance enforcement
+5. Diff intelligence validation
+6. Structured artifact emission
+
+CI MUST NOT orchestrate individual scripts separately.
+
+If any step fails → exit non-zero → pipeline fails.
 
 ---
 
@@ -241,6 +258,7 @@ This skill guarantees:
 * Version discipline
 * Review accountability
 * CI-safe workflows
+* Atomic CI gate enforcement via ci_gate.sh
 
 ---
 
@@ -266,3 +284,13 @@ Use when:
 Append:
 
 --END-OPENSPEC-EXPERT--
+
+---
+
+# 15. Execution Modes
+
+| Mode        | Entry Point          | Purpose                          |
+|-------------|---------------------|----------------------------------|
+| Interactive | Individual scripts  | Iterative refinement             |
+| CI          | ci_gate.sh          | Atomic enforcement               |
+| Audit       | emit_artifact.sh    | Governance reporting only        |

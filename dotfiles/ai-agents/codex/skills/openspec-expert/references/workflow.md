@@ -2,9 +2,25 @@
 
 1. Clarify goal, success criteria, and input type.
 2. Generate the spec using the appropriate script.
-3. Validate with `scripts/validate_spec.sh` and collect results.
-4. Run CI/policy gates and record pass/fail.
-5. Produce a diff against the prior version and summarize changes.
-6. Conduct review and sign-off (Tech lead + QA).
-7. Score quality and remediate until score >= 80.
-8. Report the final output contract.
+3. Run governance locally via:
+   - validate_spec.sh
+   - score_spec.sh
+   - enforce_version.sh
+   - diff_spec.sh
+
+4. In CI environments, execute ONLY:
+   - scripts/ci_gate.sh <spec>
+
+5. ci_gate.sh performs atomic enforcement:
+   - openspec validation
+   - policy gates
+   - quality scoring (>= 80)
+   - version governance
+   - diff intelligence
+   - artifact emission
+
+6. Review artifact.json and gates.json for structured diagnostics.
+
+7. Conduct review and sign-off (Tech lead + QA).
+
+8. Report final output contract.

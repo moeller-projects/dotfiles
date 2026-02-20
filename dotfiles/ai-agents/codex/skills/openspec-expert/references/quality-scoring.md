@@ -25,3 +25,14 @@ Specs must score at least 80/100 to pass.
 - If score < 80, identify the lowest-scoring categories first.
 - Update the spec, re-run validation, and rescore.
 - Record the final score and any remaining risks.
+
+### Additional Enforcement Signals
+
+The scoring engine also evaluates:
+
+- Duplicate FR/AC identifiers (penalized)
+- AC count relative to FR count (traceability heuristic)
+- Presence of measurable constraints (latency, %, SLO, etc.)
+- Vague language penalties
+
+Remediation hints are emitted deterministically.

@@ -16,3 +16,15 @@ Use diffing to make changes reviewable and traceable.
 - No accidental deletions of constraints or acceptance criteria.
 - Newly introduced risks or dependencies are documented.
 - Version note is updated when behavior changes.
+
+## Semantic Change Detection
+
+The diff engine detects:
+
+- Added FR/AC IDs
+- Removed FR/AC IDs
+- Modified FR/AC IDs
+- Semantic change signals (text changes beyond ID changes)
+
+Even if IDs remain unchanged, semantic_change_detected = true
+indicates potential behavioral impact and must be reviewed.

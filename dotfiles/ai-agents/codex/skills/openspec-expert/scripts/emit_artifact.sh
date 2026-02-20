@@ -16,10 +16,24 @@ if [[ ! -f "$spec_file" ]]; then
   if [[ -n "$found" ]]; then spec_file="$found"; else err "Cannot find spec file for '$spec'"; exit 1; fi
 fi
 
-# Run validate + capture pass/fail
+artifact_dir="$(dirname "$spec_file")"
+gates_file="$artifact_dir/gates.json"
+out_file="$artifact_dir/artifact.json"
+
+# Run validate (writes gates.json)
 validation="pass"
 if ! "$DIR/validate_spec.sh" "$spec" >/dev/null 2>&1; then
   validation="fail"
+fi
+
+# Read gate states if available
+structure_gate="$validation"
+style_gate="$validation"
+security_gate="$validation"
+if [[ -f "$gates_file" ]]; then
+  structure_gate="$(jq -r '.gates.structure // "fail"' "$gates_file")"
+  style_gate="$(jq -r '.gates.style // "fail"' "$gates_file")"
+  security_gate="$(jq -r '.gates.security // "fail"' "$gates_file")"
 fi
 
 # Run version governance (requires metadata lines)
@@ -30,28 +44,29 @@ fi
 
 # Score
 score_json="$("$DIR/score_spec.sh" "$spec")"
-passing="$(jq -r '.passing' <<<"$score_json")"
 total_score="$(jq -r '.total_score' <<<"$score_json")"
 breakdown="$(jq '.breakdown' <<<"$score_json")"
 hints="$(jq '.remediation_hints' <<<"$score_json")"
+signals="$(jq '.signals' <<<"$score_json")"
 
 # Diff summary
 diff_json="$("$DIR/diff_spec.sh" "$spec" "$base_ref")"
 diff_available="$(jq -r '.diff_available' <<<"$diff_json")"
+semantic_change="$(jq -r '.semantic_change_detected' <<<"$diff_json")"
 diff_summary="$(jq '{added:.added, modified:.modified, removed:.removed}' <<<"$diff_json")"
 
 # Extract metadata from spec (same rules as enforce_version)
 version="$(awk 'NR<=40{ if($0 ~ "^Version[[:space:]]*:"){sub("^Version[[:space:]]*:[[:space:]]*",""); print; exit}}' "$spec_file")"
 risk_tier="$(awk 'NR<=40{ if($0 ~ "^Risk Tier[[:space:]]*:"){sub("^Risk Tier[[:space:]]*:[[:space:]]*",""); print; exit}}' "$spec_file")"
 
-artifact_dir="$(dirname "$spec_file")"
-out_file="$artifact_dir/artifact.json"
-
-# Gates (policy scripts are already run by validate_spec.sh; emit summarized gate states)
-# If validate failed we do not attempt to pinpoint which policy failed here (keeps deterministic and simple).
-structure_gate="$validation"
-style_gate="$validation"
-security_gate="$validation"
+# Minimal downstream recommendations (deterministic, based on diff signals)
+recs=()
+if [[ "$semantic_change" == "true" ]]; then
+  recs+=("Review semantic changes (possible breaking behavior even if IDs unchanged).")
+fi
+if [[ "$risk_tier" =~ ^(High|Critical)$ ]]; then
+  recs+=("Trigger threat-modeler for High/Critical risk tier.")
+fi
 
 jq -n \
   --arg spec_name "$spec" \
@@ -61,13 +76,16 @@ jq -n \
   --arg validation "$validation" \
   --argjson quality_score "$total_score" \
   --argjson breakdown "$breakdown" \
+  --argjson signals "$signals" \
   --argjson diff "$diff_summary" \
   --arg diff_available "$diff_available" \
+  --arg semantic_change "$semantic_change" \
   --arg structure "$structure_gate" \
   --arg style "$style_gate" \
   --arg security "$security_gate" \
   --arg version_gate "$version_gate" \
   --argjson remediation_hints "$hints" \
+  --argjson downstream_recommendations "$(printf '%s\n' "${recs[@]:-}" | sed '/^\s*$/d' | jq -R . | jq -s .)" \
 '
 {
   spec_name: $spec_name,
@@ -87,11 +105,13 @@ jq -n \
     score: $quality_score,
     passing: ($quality_score >= 80),
     breakdown: $breakdown,
+    signals: $signals,
     remediation_hints: $remediation_hints
   },
 
   diff: {
     available: ($diff_available == "true"),
+    semantic_change_detected: ($semantic_change == "true"),
     summary: $diff
   },
 
@@ -101,7 +121,7 @@ jq -n \
     timestamp: ""
   },
 
-  downstream_recommendations: []
+  downstream_recommendations: $downstream_recommendations
 }
 ' | tee "$out_file" >/dev/null
 

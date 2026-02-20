@@ -17,23 +17,29 @@ if [[ ! -f "$spec_file" ]]; then
   if [[ -n "$found" ]]; then spec_file="$found"; else err "Cannot find spec file for '$spec'"; exit 1; fi
 fi
 
+empty_diff() {
+  jq -n --arg spec "$spec" --arg file "$spec_file" --arg base "$base_ref" '
+    {
+      spec_name:$spec,
+      spec_file:$file,
+      base_ref:$base,
+      diff_available:false,
+      semantic_change_detected:false,
+      added:{fr:[],ac:[]},
+      removed:{fr:[],ac:[]},
+      modified:{fr:[],ac:[]}
+    }'
+}
+
 if ! command -v git >/dev/null 2>&1; then
   warn "git not found; emitting empty diff summary"
-  jq -n --arg spec "$spec" --arg file "$spec_file" --arg base "$base_ref" '
-    { spec_name:$spec, spec_file:$file, base_ref:$base,
-      diff_available:false,
-      added:{fr:[],ac:[]}, removed:{fr:[],ac:[]}, modified:{fr:[],ac:[]}
-    }'
+  empty_diff
   exit 0
 fi
 
 if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   warn "not a git repo; emitting empty diff summary"
-  jq -n --arg spec "$spec" --arg file "$spec_file" --arg base "$base_ref" '
-    { spec_name:$spec, spec_file:$file, base_ref:$base,
-      diff_available:false,
-      added:{fr:[],ac:[]}, removed:{fr:[],ac:[]}, modified:{fr:[],ac:[]}
-    }'
+  empty_diff
   exit 0
 fi
 
@@ -58,10 +64,20 @@ final_removed_ac="$(comm -23 <(printf '%s\n' $removed_ac | sort) <(printf '%s\n'
 
 to_json_array() { printf '%s\n' "$1" | sed '/^\s*$/d' | jq -R . | jq -s .; }
 
+# Semantic change signal (beyond ID add/remove):
+# Any +/- line touching spec content that does NOT merely add/remove the same ID-only token.
+semantic_change="false"
+if grep -qE '^[+-](?!\+\+\+|---).*[A-Za-z0-9]' <<<"$diff"; then
+  # If there are any changed lines besides headers, we consider semantic change possible.
+  # This is intentionally conservative.
+  semantic_change="true"
+fi
+
 jq -n \
   --arg spec "$spec" \
   --arg file "$spec_file" \
   --arg base "$base_ref" \
+  --arg semantic "$semantic_change" \
   --argjson added_fr "$(to_json_array "$final_added_fr")" \
   --argjson removed_fr "$(to_json_array "$final_removed_fr")" \
   --argjson modified_fr "$(to_json_array "$modified_fr")" \
@@ -74,6 +90,7 @@ jq -n \
   spec_file: $file,
   base_ref: $base,
   diff_available: true,
+  semantic_change_detected: ($semantic == "true"),
   added: { fr: $added_fr, ac: $added_ac },
   removed: { fr: $removed_fr, ac: $removed_ac },
   modified: { fr: $modified_fr, ac: $modified_ac }

@@ -20,3 +20,16 @@ All specs require sign-off by both Tech lead and QA before completion.
 
 - Capture reviewer names and approval timestamp in the output summary.
 - Note any conditional approvals or follow-up actions.
+
+## Artifact-Based Review
+
+Reviewers must inspect:
+
+- artifact.json (quality score, diff summary, risk tier)
+- gates.json (structure/style/security results)
+
+Manual review must confirm:
+
+- semantic_change_detected flags
+- risk tier appropriateness
+- version bump rationale
