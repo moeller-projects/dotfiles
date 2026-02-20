@@ -1,98 +1,268 @@
 ---
 name: openspec-expert
-description: Expert spec-driven development with the OpenSpec CLI, including ADO work item ingestion, deterministic spec generation, CI and policy validation, spec diffing and versioning review, formal sign-off, and quality scoring. Use when handling OpenSpec specs, requirements-to-spec workflows, spec validation gates, review workflows, or quality scoring.
+description: Enterprise-grade OpenSpec governance engine with deterministic generation, risk-tier gating, automated quality scoring, version enforcement, diff intelligence, structured artifact emission, and CI-safe validation workflows.
 license: MIT
 metadata:
   author: https://github.com/Jeffallan
-  version: "1.0.0"
+  version: "2.0.0"
   domain: specification
-  triggers: openspec, OpenSpec CLI, spec-driven development, requirements, ADO work item, spec validation, CI gate, spec diff, spec review, quality scoring
   role: expert
   scope: planning
-  output-format: document
-  related-skills: deep-research, api-designer, devops-engineer, sre-engineer
+  output-format: structured-document
+  risk-aware: true
+  ci-safe: true
+  artifact-emission: true
+  related-skills: deep-research, refactor-engine, threat-modeler, test-forge, analysis-cache
 ---
 
-# OpenSpec Expert
+# OpenSpec Expert v2
 
 ## Role Definition
 
-Generate, validate, and govern OpenSpec specifications using a deterministic, CI-safe workflow with review and quality gates.
+Engineer, validate, govern, and version OpenSpec specifications using deterministic CLI workflows with structured artifact emission, risk-tier enforcement, quality scoring, and CI-safe validation gates.
 
-## When to Use This Skill
+This skill enforces governance — not just generation.
 
-- Converting requirements into OpenSpec specifications
-- Generating specs from ADO work items or structured inputs
-- Validating specs under CI and policy constraints
-- Reviewing spec diffs and version changes
-- Enforcing sign-off and quality scoring thresholds
+---
 
-## Core Workflow
+# 1. Deterministic Execution Model
 
-1. Select input type (task text, ADO work item, or requirements JSON).
-2. Generate the spec with the appropriate script under `scripts/`.
-3. Validate with `scripts/validate_spec.sh` and record results.
-4. Produce and review spec diff and version notes.
-5. Run review and sign-off (Tech lead + QA).
-6. Apply quality scoring; require a score of at least 80/100 or remediate.
-7. Report the output contract.
+All specs must be generated and validated via:
 
-### Fast Path (Small Tasks)
+- `scripts/spec_from_input.sh`
+- `scripts/spec_from_ado.sh`
+- `scripts/validate_spec.sh`
+- `scripts/score_spec.sh`
 
-1. Identify the smallest viable change.
-2. Generate and validate the spec.
-3. Summarize diff, review status, and quality score.
+Hand-written full specs are prohibited unless CLI is unavailable.
 
-## Reference Guide
+---
 
-Load detailed guidance based on context:
+# 2. Risk Tier Classification (Mandatory)
 
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
-| Overview | `references/index.md` | Quick map of all references |
-| Workflow | `references/workflow.md` | Running OpenSpec end-to-end |
-| Checklist | `references/checklist.md` | Validation and CI checks |
-| Pitfalls | `references/pitfalls.md` | Avoiding spec failures |
-| Examples | `references/examples.md` | Example OpenSpec runs |
-| Templates | `references/templates.md` | Input templates |
-| Evaluation | `references/evaluation.md` | Acceptance criteria |
-| Tools | `references/tools.md` | CLI usage and safety |
-| Diffing | `references/diffing.md` | Diffing and version review |
-| Review | `references/review.md` | Sign-off workflow |
-| Quality | `references/quality-scoring.md` | Scoring rubric and thresholds |
+Every spec must declare a risk tier before generation:
 
-## Constraints
+| Tier | Criteria | Required Gates |
+|------|----------|----------------|
+| Low | Cosmetic / internal | Structure + style |
+| Medium | Feature change | + Diff review |
+| High | Cross-module impact | + Security review |
+| Critical | Behavioral/API change | + Architecture board sign-off |
 
-### MUST DO
-- Use the provided scripts under `scripts/`.
-- Validate with `scripts/validate_spec.sh`.
-- Apply CI/policy gates as part of validation.
-- Require Tech lead + QA sign-off before marking complete.
-- Enforce quality score >= 80/100 or remediate.
+Risk tier must be included in output contract.
 
-### MUST NOT DO
-- Hand-write full specs when CLI + scripts can generate them.
-- Skip validation or review gates for convenience.
+---
 
-## Output Templates
+# 3. Version Governance (Mandatory)
 
-Allowed inputs:
-- Plain task text (feature/bug description)
-- Azure DevOps work item id (preferred for team workflows)
-- Requirements JSON (from `deep-research`)
+If spec modifies:
 
-Primary entrypoints:
-- `scripts/spec_from_input.sh "<task text or path>"`
-- `scripts/spec_from_ado.sh <workitem-id>`
+- Functional behavior
+- API contracts
+- Acceptance criteria
+- Constraints
+- Security posture
 
-Output contract:
+Then:
+
+- Version bump required
+- Diff summary required
+- Compatibility impact documented
+
+Version bump rules:
+
+- Patch → wording clarification
+- Minor → additive requirement
+- Major → breaking behavior change
+
+---
+
+# 4. Core Workflow (v2)
+
+1. Determine risk tier.
+2. Select input source.
+3. Generate spec via script.
+4. Validate via `validate_spec.sh`.
+5. Execute policy gates.
+6. Run deterministic quality scoring.
+7. Generate structured diff summary.
+8. Apply version governance rules.
+9. Collect required sign-offs.
+10. Emit structured artifact.
+
+---
+
+# 5. Deterministic Quality Scoring (New Requirement)
+
+Scoring must be automated via script.
+
+Score breakdown:
+
+- Requirements coverage (25)
+- Acceptance/testability (20)
+- Constraints & risks (20)
+- Clarity & structure (20)
+- Validation readiness (15)
+
+Minimum passing score: 80/100.
+
+If < 80:
+- Remediate weakest category.
+- Re-run validation + scoring.
+
+---
+
+# 6. Diff Intelligence Enforcement
+
+Diff summary must include:
+
+- Added requirements
+- Modified requirements
+- Removed requirements
+- Acceptance criteria changes
+- Constraint changes
+- Security impact
+- Version bump rationale
+
+Accidental deletions are blocking failures.
+
+---
+
+# 7. Policy Enforcement (Mandatory)
+
+Run:
+
+- `10_spec_structure.sh`
+- `20_requirements_style.sh`
+- `30_security_redactions.sh`
+
+Failure is blocking.
+
+Optional (recommended for v2+):
+- Sequential FR numbering validation
+- AC-to-FR mapping validation
+- Duplicate requirement detection
+
+---
+
+# 8. Structured Artifact Emission (New)
+
+After successful validation, emit structured JSON artifact:
+
+```json
+{
+  "spec_name": "",
+  "risk_tier": "",
+  "version": "",
+  "validation": "pass",
+  "quality_score": 0,
+  "diff_summary": {
+    "added": [],
+    "modified": [],
+    "removed": []
+  },
+  "gates": {
+    "structure": "pass",
+    "style": "pass",
+    "security": "pass"
+  },
+  "signoff": {
+    "tech_lead": "",
+    "qa": "",
+    "timestamp": ""
+  }
+}
+````
+
+This enables integration with:
+
+* analysis-cache
+* CI dashboards
+* release governance
+
+---
+
+# 9. Cross-Skill Coordination Hooks
+
+If spec changes:
+
+| Condition                     | Trigger Suggestion      |
+| ----------------------------- | ----------------------- |
+| API modified                  | Trigger refactor-engine |
+| Boundary changed              | Trigger threat-modeler  |
+| FR modified                   | Trigger test-forge      |
+| Performance constraints added | Trigger perf-analyst    |
+
+No automatic execution — emit recommendation.
+
+---
+
+# 10. CI Mode
+
+In CI:
+
+* Risk tier must be declared.
+* Score must be >= 80.
+* All policies must pass.
+* Diff summary required.
+* Sign-off status must be explicit.
+
+If missing → fail pipeline.
+
+---
+
+# 11. Output Contract (Required)
+
+Every execution must return:
+
 1. Spec name
-2. Paths touched (spec file)
-3. Validation status (pass/fail)
-4. Diff summary and version notes
-5. Review status (Tech lead + QA)
-6. Quality score (>= 80/100) and remediation notes if below
+2. Risk tier
+3. Version + bump reason
+4. Paths touched
+5. Validation status
+6. Policy gate results
+7. Diff summary
+8. Quality score
+9. Sign-off status
+10. Suggested downstream actions
 
-## Knowledge Reference
+No narrative-only responses.
 
-Spec-driven development, deterministic CLI workflows, validation pipelines, review governance, and quality scoring.
+---
+
+# 12. Governance Guarantees
+
+This skill guarantees:
+
+* Deterministic generation
+* Structured validation
+* Enforced quality threshold
+* Risk-tier governance
+* Version discipline
+* Review accountability
+* CI-safe workflows
+
+---
+
+# 13. Blocker Format
+
+Return only:
+
+* BLOCKER:
+* REQUIRED INPUT:
+* NEXT QUESTION:
+
+Use when:
+
+* Risk tier missing
+* Version unclear
+* Diff baseline missing
+* Validation failed
+
+---
+
+# 14. End Marker
+
+Append:
+
+--END-OPENSPEC-EXPERT--
