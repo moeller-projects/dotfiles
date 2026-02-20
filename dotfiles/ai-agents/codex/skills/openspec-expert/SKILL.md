@@ -4,7 +4,7 @@ description: Enterprise-grade OpenSpec governance engine with deterministic gene
 license: MIT
 metadata:
   author: https://github.com/Jeffallan
-  version: "2.0.0"
+  version: "2.1.0"
   domain: specification
   role: expert
   scope: planning
@@ -15,11 +15,11 @@ metadata:
   related-skills: deep-research, refactor-engine, threat-modeler, test-forge, analysis-cache
 ---
 
-# OpenSpec Expert v2
+# OpenSpec Expert v2.1
 
 ## Role Definition
 
-Engineer, validate, govern, and version OpenSpec specifications using deterministic CLI workflows with structured artifact emission, risk-tier enforcement, quality scoring, and CI-safe validation gates.
+Engineer, validate, govern, and version OpenSpec specifications using deterministic CLI workflows with structured artifact emission, risk-tier enforcement, quality scoring, diff intelligence, and atomic CI validation.
 
 This skill enforces governance — not just generation.
 
@@ -29,20 +29,20 @@ This skill enforces governance — not just generation.
 
 All specs must be generated via:
 
-- scripts/spec_from_input.sh
-- scripts/spec_from_ado.sh
+- `scripts/spec_from_input.sh`
+- `scripts/spec_from_ado.sh`
 
 Validation & governance:
 
-- scripts/validate_spec.sh
-- scripts/score_spec.sh
-- scripts/enforce_version.sh
-- scripts/diff_spec.sh
-- scripts/emit_artifact.sh
+- `scripts/validate_spec.sh`
+- `scripts/score_spec.sh`
+- `scripts/enforce_version.sh`
+- `scripts/diff_spec.sh`
+- `scripts/emit_artifact.sh`
 
 In CI environments:
 
-- scripts/ci_gate.sh (authoritative atomic enforcement)
+- `scripts/ci_gate.sh` (authoritative atomic enforcement)
 
 Hand-written full specs are prohibited unless CLI is unavailable.
 
@@ -50,63 +50,73 @@ Hand-written full specs are prohibited unless CLI is unavailable.
 
 # 2. Risk Tier Classification (Mandatory)
 
-Every spec must declare a risk tier before generation:
+Every spec must declare a risk tier within the first 40 lines:
 
-| Tier | Criteria | Required Gates |
-|------|----------|----------------|
-| Low | Cosmetic / internal | Structure + style |
-| Medium | Feature change | + Diff review |
-| High | Cross-module impact | + Security review |
-| Critical | Behavioral/API change | + Architecture board sign-off |
+```
 
-Risk tier must be included in output contract.
+Version: x.y.z
+Risk Tier: Low|Medium|High|Critical
+
+```
+
+### Risk Tiers
+
+| Tier      | Criteria                     | Required Governance Expectations |
+|-----------|-----------------------------|-----------------------------------|
+| Low       | Cosmetic / internal         | Structure + style gates           |
+| Medium    | Feature change              | + Diff review                     |
+| High      | Cross-module impact         | + Security review recommended     |
+| Critical  | Behavioral/API change       | + Architecture review required    |
+
+Risk tier must be included in artifact output.
 
 ---
 
 # 3. Version Governance (Mandatory)
 
-If spec modifies:
+If a spec modifies:
 
-- Functional behavior
+- Functional requirements (FR)
+- Acceptance criteria (AC)
 - API contracts
-- Acceptance criteria
-- Constraints
+- Constraints (NFR)
 - Security posture
 
 Then:
 
-- Version bump required
+- Semantic version bump required
 - Diff summary required
-- Compatibility impact documented
+- Compatibility impact must be reviewed
 
-Version bump rules:
+### Version Rules
 
-- Patch → wording clarification
+- Patch → wording clarification only
 - Minor → additive requirement
 - Major → breaking behavior change
 
+Failure to bump version when FR/AC change is blocking.
+
 ---
 
-# 4. Core Workflow (v2)
+# 4. Core Workflow
 
 1. Determine risk tier.
 2. Select input source.
 3. Generate spec via script.
-4. Validate via `validate_spec.sh`.
-5. Execute policy gates.
-6. Run deterministic quality scoring.
-7. Generate structured diff summary.
-8. Apply version governance rules.
-9. Collect required sign-offs.
-10. Emit structured artifact.
+4. Validate via `validate_spec.sh` (includes policy gates).
+5. Run deterministic quality scoring.
+6. Generate structured diff summary.
+7. Enforce version governance.
+8. Emit structured artifact.
+9. Collect required human sign-offs (not enforced by script; tracked in artifact.json).
 
 ---
 
-# 5. Deterministic Quality Scoring (New Requirement)
+# 5. Deterministic Quality Scoring
 
-Scoring must be automated via script.
+Scoring is fully automated via `score_spec.sh`.
 
-Score breakdown:
+### Weighted Categories (100 total)
 
 - Requirements coverage (25)
 - Acceptance/testability (20)
@@ -114,25 +124,33 @@ Score breakdown:
 - Clarity & structure (20)
 - Validation readiness (15)
 
-Minimum passing score: 80/100.
+Minimum passing score: **80/100**
 
-If < 80:
-- Remediate weakest category.
-- Re-run validation + scoring.
+### Additional Deterministic Signals
+
+The scoring engine evaluates:
+
+- Duplicate FR IDs (penalized)
+- Duplicate AC IDs (penalized)
+- AC count relative to FR count (traceability heuristic)
+- Presence of measurable constraints (latency, %, SLO, etc.)
+- Vague language penalties
+- Non-empty Open Questions section
+
+Remediation hints are emitted deterministically.
 
 ---
 
 # 6. Diff Intelligence Enforcement
 
-Diff summary must include:
+Diff summary includes:
 
-- Added requirements
-- Modified requirements
-- Removed requirements
-- Acceptance criteria changes
-- Constraint changes
-- Security impact
-- Version bump rationale
+- Added FR/AC IDs
+- Removed FR/AC IDs
+- Modified FR/AC IDs
+- Semantic change detection (text changes beyond ID changes)
+
+`semantic_change_detected = true` requires explicit review even if IDs remain unchanged.
 
 Accidental deletions are blocking failures.
 
@@ -140,70 +158,78 @@ Accidental deletions are blocking failures.
 
 # 7. Policy Enforcement (Mandatory)
 
-Run:
+The following policies are executed by `validate_spec.sh`:
 
 - `10_spec_structure.sh`
 - `20_requirements_style.sh`
 - `30_security_redactions.sh`
 
-Failure is blocking.
+Each gate produces structured results in `gates.json`.
 
-Optional (recommended for v2+):
-- Sequential FR numbering validation
-- AC-to-FR mapping validation
-- Duplicate requirement detection
+Failure of any gate is blocking.
 
 ---
 
-# 8. Structured Artifact Emission (New)
+# 8. Structured Artifact Emission
 
-After successful validation, emit structured JSON artifact:
+After validation, `emit_artifact.sh` produces `artifact.json`:
 
 ```json
 {
   "spec_name": "",
+  "spec_file": "",
   "risk_tier": "",
   "version": "",
-  "validation": "pass",
-  "quality_score": 0,
-  "diff_summary": {
-    "added": [],
-    "modified": [],
-    "removed": []
-  },
+  "validation": "pass|fail",
   "gates": {
-    "structure": "pass",
-    "style": "pass",
-    "security": "pass"
+    "structure": "pass|fail",
+    "style": "pass|fail",
+    "security": "pass|fail",
+    "version_governance": "pass|fail"
+  },
+  "quality": {
+    "score": 0,
+    "passing": true,
+    "breakdown": {},
+    "signals": {},
+    "remediation_hints": []
+  },
+  "diff": {
+    "available": true,
+    "semantic_change_detected": false,
+    "summary": {}
   },
   "signoff": {
     "tech_lead": "",
     "qa": "",
     "timestamp": ""
-  }
+  },
+  "downstream_recommendations": []
 }
-````
+```
 
-This enables integration with:
+Artifacts enable integration with:
 
-* analysis-cache
 * CI dashboards
-* release governance
+* Release governance
+* analysis-cache
+* audit trails
 
 ---
 
 # 9. Cross-Skill Coordination Hooks
 
-If spec changes:
+Based on diff + risk tier:
 
-| Condition                     | Trigger Suggestion      |
-| ----------------------------- | ----------------------- |
-| API modified                  | Trigger refactor-engine |
-| Boundary changed              | Trigger threat-modeler  |
-| FR modified                   | Trigger test-forge      |
-| Performance constraints added | Trigger perf-analyst    |
+| Condition                     | Suggested Trigger |
+| ----------------------------- | ----------------- |
+| API modified                  | refactor-engine   |
+| Boundary changed              | threat-modeler    |
+| FR modified                   | test-forge        |
+| High/Critical risk tier       | threat-modeler    |
+| Performance constraints added | perf-analyst      |
 
-No automatic execution — emit recommendation.
+No automatic execution — only structured recommendations.
 
 ---
 
@@ -211,12 +237,14 @@ No automatic execution — emit recommendation.
 
 In CI environments, governance MUST be executed via:
 
+```
 scripts/ci_gate.sh <spec> [base_ref]
+```
 
 This script enforces atomically:
 
-1. openspec validation
-2. Policy gates (structure, style, security)
+1. OpenSpec validation
+2. Policy gates
 3. Quality scoring (>= 80 required)
 4. Version governance enforcement
 5. Diff intelligence validation
@@ -224,26 +252,26 @@ This script enforces atomically:
 
 CI MUST NOT orchestrate individual scripts separately.
 
-If any step fails → exit non-zero → pipeline fails.
+If any step fails → non-zero exit → pipeline fails.
 
 ---
 
 # 11. Output Contract (Required)
 
-Every execution must return:
+Every execution must return structured artifact data including:
 
 1. Spec name
-2. Risk tier
-3. Version + bump reason
-4. Paths touched
+2. Spec file path
+3. Risk tier
+4. Version
 5. Validation status
 6. Policy gate results
 7. Diff summary
-8. Quality score
-9. Sign-off status
-10. Suggested downstream actions
+8. Quality score and signals
+9. Sign-off placeholders
+10. Downstream recommendations
 
-No narrative-only responses.
+Narrative-only responses are prohibited.
 
 ---
 
@@ -254,23 +282,25 @@ This skill guarantees:
 * Deterministic generation
 * Structured validation
 * Enforced quality threshold
-* Risk-tier governance
 * Version discipline
-* Review accountability
-* CI-safe workflows
-* Atomic CI gate enforcement via ci_gate.sh
+* Risk-tier governance
+* Diff traceability
+* Structured audit artifacts
+* Atomic CI enforcement via `ci_gate.sh`
 
 ---
 
 # 13. Blocker Format
 
-Return only:
+When required input is missing, return only:
 
-* BLOCKER:
-* REQUIRED INPUT:
-* NEXT QUESTION:
+```
+BLOCKER:
+REQUIRED INPUT:
+NEXT QUESTION:
+```
 
-Use when:
+Used when:
 
 * Risk tier missing
 * Version unclear
@@ -283,14 +313,16 @@ Use when:
 
 Append:
 
+```
 --END-OPENSPEC-EXPERT--
+```
 
 ---
 
 # 15. Execution Modes
 
-| Mode        | Entry Point          | Purpose                          |
-|-------------|---------------------|----------------------------------|
-| Interactive | Individual scripts  | Iterative refinement             |
-| CI          | ci_gate.sh          | Atomic enforcement               |
-| Audit       | emit_artifact.sh    | Governance reporting only        |
+| Mode        | Entry Point        | Purpose                       |
+| ----------- | ------------------ | ----------------------------- |
+| Interactive | Individual scripts | Iterative refinement          |
+| CI          | ci_gate.sh         | Atomic governance enforcement |
+| Audit       | emit_artifact.sh   | Reporting without blocking CI |

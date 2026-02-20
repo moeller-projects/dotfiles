@@ -67,9 +67,8 @@ to_json_array() { printf '%s\n' "$1" | sed '/^\s*$/d' | jq -R . | jq -s .; }
 # Semantic change signal (beyond ID add/remove):
 # Any +/- line touching spec content that does NOT merely add/remove the same ID-only token.
 semantic_change="false"
-if grep -qE '^[+-](?!\+\+\+|---).*[A-Za-z0-9]' <<<"$diff"; then
-  # If there are any changed lines besides headers, we consider semantic change possible.
-  # This is intentionally conservative.
+filtered="$(printf '%s' "$diff" | grep -E '^[+-]' | grep -vE '^\+\+\+|^---' || true)"
+if [[ -n "$filtered" ]]; then
   semantic_change="true"
 fi
 
