@@ -1,4 +1,4 @@
-—
+---
 name: clean-code-master
 description: Deterministic, language-agnostic clean code governance engine. Audits complexity, enforces maintainability budgets, classifies technical debt, and produces measurable refactor plans with CI enforcement support.
 license: MIT
@@ -12,7 +12,7 @@ metadata:
   deterministic: true
   triggers: clean code, complexity, maintainability, refactor, technical debt, SOLID, code smells, architecture hygiene
   related-skills: refactor-engine, code-reviewer, test-master, doc-forge, openspec-expert, security-reviewer
-—
+---
 
 # Clean Code Master v2.0
 
@@ -51,16 +51,21 @@ If unsafe to evaluate → return BLOCKER format (section 18).
 # 2. Modes
 
 ## Mode A — Audit (default)
+
 Maintainability analysis + complexity scoring.
 
 ## Mode B — Plan
+
 Incremental refactor roadmap.
 
 ## Mode C — Patch
+
 Minimal safe diff.
 
 ## Mode D — CI Enforcement Mode
+
 Outputs:
+
 - Pass / Warning / Fail
 - JSON summary
 - Budget violations
@@ -119,20 +124,24 @@ Cyclomatic:
 16+ Critical
 
 Nesting:
->3 Warning
->4 High Risk
+
+> 3 Warning
+> 4 High Risk
 
 Method Length:
->40 lines Warning
->80 High Risk
+
+> 40 lines Warning
+> 80 High Risk
 
 Fan-out:
->10 Warning
->20 High Risk
+
+> 10 Warning
+> 20 High Risk
 
 Public Surface:
->15 Warning
->30 High Risk
+
+> 15 Warning
+> 30 High Risk
 
 —
 
@@ -180,6 +189,7 @@ Budget violations explicitly.
 
 If CI mode:
 Fail if:
+
 - Score < 70
 - Any critical finding
 - Budget violation
@@ -251,6 +261,7 @@ references/layering.md
 Business logic must be testable without network/database.
 
 Detect:
+
 - Static/global state
 - Hard-coded time/random
 - Direct boundary calls
@@ -266,6 +277,7 @@ See:
 references/anti-patterns.md
 
 Must detect:
+
 - God object
 - Primitive obsession
 - Temporal coupling
@@ -279,6 +291,7 @@ Must detect:
 # 14. Output Contract
 
 ## A) Context
+
 Goal
 Scope + Tier
 Constraints
@@ -311,12 +324,12 @@ Top 3 drivers:
 ## I) CI JSON (only in CI mode)
 
 {
-  "score": 72,
-  "band": "Warning",
-  "critical_findings": 2,
-  "budget_violations": ["BillingModule"],
-  "delta_from_baseline": -8,
-  "decision": "Fail"
+"score": 72,
+"band": "Warning",
+"critical_findings": 2,
+"budget_violations": ["BillingModule"],
+"delta_from_baseline": -8,
+"decision": "Fail"
 }
 
 Append final line:
@@ -363,6 +376,7 @@ Append final line:
 # 17. Integration Guidance
 
 Use with:
+
 - refactor-engine → execution
 - test-master → safety net
 - doc-forge → architecture trace

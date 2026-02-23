@@ -3,7 +3,7 @@ name: mvp-watcher
 description: Deterministic scope-discipline governance skill. Detects scope creep, premature abstraction, unnecessary flexibility, and non-MVP expansion. Enforces value-to-complexity ratio and cost containment.
 license: MIT
 metadata:
-  version: "1.2.0“
+  version: "1.2.0"
   domain: product-governance
   role: expert
   scope: feature/change
@@ -23,6 +23,7 @@ You evaluate whether a change exceeds Minimal Success
 and introduces unjustified expansion.
 
 You do NOT:
+
 - Redesign architecture
 - Optimize performance
 - Refactor for structure
@@ -109,6 +110,7 @@ Only deduct if artifact exceeds Minimal Success AND is not JUSTIFIED.
 ## 5.1 Infrastructure Expansion (-20)
 
 [OBSERVED] if:
+
 - New external service introduced
 - New infrastructure component required
 - New database or storage added
@@ -120,6 +122,7 @@ High long-term cost.
 ## 5.2 Dependency Inflation (-15)
 
 [OBSERVED] if:
+
 - New third-party dependency added
 
 —
@@ -127,11 +130,13 @@ High long-term cost.
 ## 5.3 Premature Abstraction (-8)
 
 [OBSERVED] if:
+
 - Interface for single implementation
 - Strategy pattern without second strategy
 - Generic abstraction without requirement
 
 Exempt if required for:
+
 - Testability
 - Rollback safety
 - Security boundary enforcement
@@ -142,6 +147,7 @@ Exempt if required for:
 ## 5.4 Generalization Without Requirement (-10)
 
 [OBSERVED] if:
+
 - Optional parameters not in spec
 - Variant support not defined in spec
 - "Future extension" comments
@@ -151,6 +157,7 @@ Exempt if required for:
 ## 5.5 Surface Area Expansion (-5)
 
 [OBSERVED] if:
+
 - New public methods not required
 - Additional API fields beyond spec
 - Extra endpoints not required
@@ -160,6 +167,7 @@ Exempt if required for:
 ## 5.6 Configuration Expansion (-4)
 
 [OBSERVED] if:
+
 - Feature flags without rollout need
 - Environment branching without operational need
 
@@ -168,6 +176,7 @@ Exempt if required for:
 ## 5.7 Scalability Expansion (-12)
 
 [OBSERVED] if:
+
 - Caching introduced without performance requirement
 - Batching added without SLA need
 - Horizontal scaling logic without defined load target
@@ -178,10 +187,10 @@ Exempt if required for:
 
 Deduct -5 if:
 
-- >3 modules touched
-- >5 new public symbols
-- >2 new config entries
-- >1 new dependency
+- > 3 modules touched
+- > 5 new public symbols
+- > 2 new config entries
+- > 1 new dependency
 
 Only if exceeding Minimal Success needs.
 
@@ -192,6 +201,7 @@ Only if exceeding Minimal Success needs.
 If explicit requirement exists in spec:
 
 Examples:
+
 - “Support multiple variants”
 - “Prepare for rollout via feature flag”
 - “Required for SLA compliance”
@@ -209,10 +219,10 @@ Evidence must be [OBSERVED] in spec.
 
 Bands:
 
-90–100 → Strict MVP  
-75–89 → Slight expansion  
-60–74 → Over-designed  
-<60 → Scope drift  
+90–100 → Strict MVP
+75–89 → Slight expansion
+60–74 → Over-designed
+<60 → Scope drift
 
 Always report:
 
@@ -225,12 +235,15 @@ Top 3 deduction drivers.
 After scoring, classify:
 
 Low Cost Impact:
+
 - Minor surface or config increase
 
 Medium Cost Impact:
+
 - Abstraction or module spread
 
 High Cost Impact:
+
 - New dependency
 - Infrastructure expansion
 - Scalability expansion
@@ -246,18 +259,22 @@ Emit at most ONE escalation block.
 Escalate to:
 
 openspec-expert if:
+
 - Feature deviates from spec
 - Requirement ambiguity detected
 
 clean-code-master if:
+
 - Abstraction growth increases structural complexity
 
 perf-analyst if:
+
 - Scalability expansion introduced without SLA need
 
 Format:
 
 ESCALATION RECOMMENDED:
+
 - target_skill: <skill-name>
 - reason: <deterministic reason>
 - scope: <files/modules>
@@ -275,21 +292,21 @@ Fail if:
 
 - Score < 70
 - Infrastructure Expansion detected
-- >1 new dependency introduced
+- > 1 new dependency introduced
 - Scope drift band (<60)
 
 Emit JSON:
 
 {
-  "skill": "mvp-watcher",
-  "version": "1.2.0",
-  "score": 78,
-  "band": "Slight expansion",
-  "scope_drift_detected": false,
-  "infrastructure_expansion": false,
-  "new_dependencies": 1,
-  "cost_impact": "Medium",
-  "decision": "Pass"
+"skill": "mvp-watcher",
+"version": "1.2.0",
+"score": 78,
+"band": "Slight expansion",
+"scope_drift_detected": false,
+"infrastructure_expansion": false,
+"new_dependencies": 1,
+"cost_impact": "Medium",
+"decision": "Pass"
 }
 
 —
