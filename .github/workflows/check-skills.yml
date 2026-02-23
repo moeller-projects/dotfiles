@@ -1,0 +1,25 @@
+name: "Check SKILL.md frontmatter"
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate-frontmatter:
+    name: Validate SKILL.md YAML frontmatter
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pyyaml
+
+      - name: Validate SKILL.md frontmatter
+        run: python ./.github/scripts/validate_frontmatter.py
