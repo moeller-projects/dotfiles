@@ -99,7 +99,7 @@ BES is authoritative. In **Red** health:
 
 ### Required Override Phrase
 User must explicitly include:
-> „Override budget-supervisor safeguards“
+> "Override budget-supervisor safeguards"
 
 Without this phrase, BES must not allow:
 - tier increases beyond BES-assigned tier

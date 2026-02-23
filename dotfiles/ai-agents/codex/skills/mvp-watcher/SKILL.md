@@ -1,9 +1,9 @@
-—
+---
 name: mvp-watcher
 description: Deterministic scope-discipline governance skill. Detects scope creep, premature abstraction, unnecessary flexibility, and non-MVP expansion. Enforces value-to-complexity ratio and cost containment.
 license: MIT
 metadata:
-  version: „1.2.0“
+  version: "1.2.0“
   domain: product-governance
   role: expert
   scope: feature/change
@@ -11,7 +11,7 @@ metadata:
   deterministic: true
   ci-enforced: true
   related-skills: clean-code-master, openspec-expert, perf-analyst
-—
+---
 
 # MVP Watcher v1.2
 
@@ -144,7 +144,7 @@ Exempt if required for:
 [OBSERVED] if:
 - Optional parameters not in spec
 - Variant support not defined in spec
-- „Future extension“ comments
+- "Future extension" comments
 
 —
 
@@ -281,15 +281,15 @@ Fail if:
 Emit JSON:
 
 {
-  „skill“: „mvp-watcher“,
-  „version“: „1.2.0“,
-  „score“: 78,
-  „band“: „Slight expansion“,
-  „scope_drift_detected“: false,
-  „infrastructure_expansion“: false,
-  „new_dependencies“: 1,
-  „cost_impact“: „Medium“,
-  „decision“: „Pass“
+  "skill": "mvp-watcher",
+  "version": "1.2.0",
+  "score": 78,
+  "band": "Slight expansion",
+  "scope_drift_detected": false,
+  "infrastructure_expansion": false,
+  "new_dependencies": 1,
+  "cost_impact": "Medium",
+  "decision": "Pass"
 }
 
 —

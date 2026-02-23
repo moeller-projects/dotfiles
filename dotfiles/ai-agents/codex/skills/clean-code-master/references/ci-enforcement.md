@@ -3,11 +3,11 @@
 Output JSON:
 
 {
-  „score“: 68,
-  „band“: „Warning“,
-  „critical_findings“: 2,
-  „budget_violations“: [„BillingModule“],
-  „decision“: „Fail“
+  "score": 68,
+  "band": "Warning",
+  "critical_findings": 2,
+  "budget_violations": ["BillingModule"],
+  "decision": "Fail"
 }
 
 Fail Conditions:

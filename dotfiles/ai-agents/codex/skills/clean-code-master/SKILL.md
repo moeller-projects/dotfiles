@@ -3,7 +3,7 @@ name: clean-code-master
 description: Deterministic, language-agnostic clean code governance engine. Audits complexity, enforces maintainability budgets, classifies technical debt, and produces measurable refactor plans with CI enforcement support.
 license: MIT
 metadata:
-  version: „2.0.0“
+  version: "2.0.0"
   domain: engineering-governance
   role: expert
   scope: implementation
@@ -311,12 +311,12 @@ Top 3 drivers:
 ## I) CI JSON (only in CI mode)
 
 {
-  „score“: 72,
-  „band“: „Warning“,
-  „critical_findings“: 2,
-  „budget_violations“: [„BillingModule“],
-  „delta_from_baseline“: -8,
-  „decision“: „Fail“
+  "score": 72,
+  "band": "Warning",
+  "critical_findings": 2,
+  "budget_violations": ["BillingModule"],
+  "delta_from_baseline": -8,
+  "decision": "Fail"
 }
 
 Append final line:

@@ -193,7 +193,7 @@ High complexity + multi-boundary exposure
 If required context is missing:
 
 - Do not fabricate metrics.
-- Use „~“ for approximate.
+- Use "~" for approximate.
 - Mark as [ASSUMPTION].
 - Request required input if critical.
 
