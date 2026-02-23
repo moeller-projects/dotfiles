@@ -214,6 +214,53 @@ function Process-Entry
     }
 
     Info "Linked: $Target -> $Source"
+
+    # If running on non-Windows and the source is a regular file that looks
+    # like a script (shebang), has a common script extension, or already has
+    # an executable bit, ensure the real file is executable. Prefer setting
+    # the executable bit on the repository source (the real file behind the
+    # symlink). If the installer ever copies instead of linking, the target
+    # will be chmod'd instead.
+    if (-not $IsWindows -and (Test-Path $Source -PathType Leaf))
+    {
+        $firstLine = Get-Content -Path $Source -TotalCount 1 -ErrorAction SilentlyContinue
+        $sourceItem = Get-Item $Source -ErrorAction SilentlyContinue
+        $hasExec = $false
+
+        if ($firstLine -and $firstLine -match '^#!') { $hasExec = $true }
+
+        $ext = [System.IO.Path]::GetExtension($Source).TrimStart('.')
+        $ext = if ($ext) { $ext.ToLowerInvariant() } else { '' }
+        $scriptExts = @('sh','bash','zsh','ksh','py','pl','rb','awk','sed','ps1','js')
+        if ($scriptExts -contains $ext) { $hasExec = $true }
+
+        if ($sourceItem -and ($sourceItem.Mode -and ($sourceItem.Mode -match 'x'))) { $hasExec = $true }
+
+        if ($hasExec)
+        {
+            if ($DryRun)
+            {
+                Info "Would set executable on source: $Source"
+            } else
+            {
+                # Prefer chmod on the source (the repo file) so symlinked targets
+                # inherit executability. If the source doesn't exist but the
+                # target is a regular file (e.g., copied), chmod target instead.
+                if (Test-Path $Source)
+                {
+                    & chmod +x -- $Source
+                }
+                elseif (Test-Path $Target)
+                {
+                    & chmod +x -- $Target
+                }
+
+                if ($LASTEXITCODE -ne 0)
+                { Warn "chmod failed"
+                }
+            }
+        }
+    }
 }
 
 # ------------------------------------------------------------
