@@ -2,7 +2,13 @@ name: "Check SKILL.md frontmatter"
 
 on:
   push:
+    paths:
+      - "dotfiles/ai-agents/**/SKILL.md"
+      - ".github/scripts/validate_frontmatter.py"
   pull_request:
+    paths:
+      - "dotfiles/ai-agents/**/SKILL.md"
+      - ".github/scripts/validate_frontmatter.py"
 
 jobs:
   validate-frontmatter:

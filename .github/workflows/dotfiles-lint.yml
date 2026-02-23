@@ -2,9 +2,21 @@ name: dotfiles-lint
 
 on:
   pull_request:
+    paths:
+      - "install.sh"
+      - "add-dotfile.sh"
+      - "install.ps1"
+      - "add-dotfile.ps1"
+      - ".github/scripts/**"
   push:
     branches:
       - main
+    paths:
+      - "install.sh"
+      - "add-dotfile.sh"
+      - "install.ps1"
+      - "add-dotfile.ps1"
+      - ".github/scripts/**"
   workflow_dispatch:
 
 jobs:
