@@ -200,6 +200,30 @@ while IFS="|" read -r key target platforms; do
   else
     ln -sfn "$SOURCE" "$TARGET"
     info "Linked: $TARGET -> $SOURCE"
+
+    # If the source is a regular file and looks like a script (shebang), has
+    # a common script extension, or already has the executable bit, ensure
+    # the real file is executable. For symlinks the source file is the real
+    # file; for copies (not used on this path) the target should be chmod'd.
+    if [[ -f "$SOURCE" ]]; then
+      first_line=$(head -n1 "$SOURCE" 2>/dev/null || true)
+      ext="${SOURCE##*.}"
+      case "$ext" in
+        sh|bash|zsh|ksh|py|pl|rb|awk|sed|ps1|js) is_ext=true ;;
+        *) is_ext=false ;;
+      esac
+
+      if [[ "$first_line" == \#!* ]] || [[ -x "$SOURCE" ]] || [[ "$is_ext" == true ]]; then
+        if $DRY_RUN; then
+          info "Would set executable on source: $SOURCE"
+        else
+          # Prefer setting executable on the source (the real file).
+          if ! chmod +x "$SOURCE" 2>/dev/null; then
+            warn "chmod failed on source: $SOURCE"
+          fi
+        fi
+      fi
+    fi
   fi
 done
 
