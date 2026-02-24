@@ -1,66 +1,84 @@
+// ~/.config/opencode/opencode.jsonc
 {
+  "$schema": "https://opencode.ai/config.json",
+
+  // Optional, but common
+  "theme": "opencode",
+  "autoupdate": false,
+
   ////////////////////////////////////////////////////////////
-  // PROVIDER
+  // PROVIDERS + MODEL
   ////////////////////////////////////////////////////////////
 
+  // Restrict OpenCode to only load OpenAI (closest to your config intent)
+  "enabled_providers": ["openai"],
+
+  // Default model (OpenCode uses provider/model style strings)
+  "model": "openai/gpt-5.2-codex",
+
+  // If you want to set the key via env/file instead of /connect:
+  // (Docs show provider.*.options.apiKey is supported)
   "provider": {
     "openai": {
-      "api_key_env": "OPENAI_API_KEY"
+      "options": {
+        "apiKey": "{env:OPENAI_API_KEY}"
+        // or: "apiKey": "{file:~/.secrets/openai-key}"
+      }
     }
   },
 
   ////////////////////////////////////////////////////////////
-  // MODEL
+  // PERMISSIONS (replaces Codex approval_policy/safety intent)
   ////////////////////////////////////////////////////////////
 
-  "model": "gpt-5.2-codex",
+  // Default: ask for anything that changes state or touches network.
+  // Allow read-only tools without prompting.
+  "permission": {
+    "*": "ask",
 
-  // OpenCode does not expose reasoning_effort.
-  // Keep output tight via max_output_tokens + temperature=0.
-  "max_output_tokens": 1500,
-  "temperature": 0,
-  "top_p": 1,
+    // Read-only / safe
+    "read": "allow",
+    "list": "allow",
+    "glob": "allow",
+    "grep": "allow",
 
-  ////////////////////////////////////////////////////////////
-  // EXECUTION & SAFETY
-  ////////////////////////////////////////////////////////////
+    // Writes / mutations (keep "ask")
+    "edit": "ask",
+    "write": "ask",
+    "patch": "ask",
+    "bash": "ask",
 
-  "approval_policy": "on-request",
-  "sandbox_mode": "workspace-write",
+    // Web: fully disable search, allow fetch only with approval
+    "websearch": "deny",
+    "webfetch": "ask",
 
-  "workspace": {
-    "network_access": true
+    // Skills/tooling (optional)
+    "skill": "allow"
   },
 
   ////////////////////////////////////////////////////////////
-  // COST CONTROL
+  // CONTEXT / COST CONTROL (OpenCode-native knobs)
   ////////////////////////////////////////////////////////////
 
-  // Cap tool output retained in history
-  "tool_output_token_limit": 3000,
-
-  // Limit project context ingestion
-  "project_doc_max_bytes": 12288,
-
-  // Disable automatic web search
-  "web_search": false,
+  // Controls automatic context compaction + pruning old tool output.
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 10000
+  },
 
   ////////////////////////////////////////////////////////////
-  // RETRY CONTROL
+  // WATCHER (reduce noise; helps perf + context)
   ////////////////////////////////////////////////////////////
 
-  "request_max_retries": 1,
-  "stream_max_retries": 1,
-
-  ////////////////////////////////////////////////////////////
-  // FEATURES
-  ////////////////////////////////////////////////////////////
-
-  "features": {
-    "skills": true,
-    "shell": true,
-    "multi_agent": false,
-    "search": false
+  "watcher": {
+    "ignore": [
+      ".git/**",
+      "node_modules/**",
+      "dist/**",
+      "bin/**",
+      "obj/**"
+    ]
   },
 
   ////////////////////////////////////////////////////////////
@@ -69,24 +87,28 @@
 
   "mcp": {
     "context7": {
-      "command": "bunx",
-      "args": ["-y", "@upstash/context7-mcp@latest"],
-      "startup_timeout_sec": 30,
-      "tool_timeout_sec": 30
+      "type": "local",
+      "command": ["bunx", "-y", "@upstash/context7-mcp@latest"],
+      "enabled": true,
+
+      // Docs: timeout is ms (default 5000)
+      "timeout": 30000
     }
 
     // Optional Chrome DevTools MCP
     // "chrome": {
-    //   "command": "bunx",
-    //   "args": ["chrome-devtools-mcp@latest"],
-    //   "startup_timeout_sec": 10,
-    //   "tool_timeout_sec": 30
+    //   "type": "local",
+    //   "command": ["bunx", "chrome-devtools-mcp@latest"],
+    //   "enabled": false,
+    //   "timeout": 30000
     // }
-  },
+  }
 
   ////////////////////////////////////////////////////////////
-  // LOGGING
+  // NOTES
+  //
+  // - OpenCode uses `permission` for approvals (tools booleans are deprecated).
+  // - Web search is disabled by denying `websearch`; `webfetch` is "ask".
+  // - Credentials can be managed via `/connect` (stored in auth.json) OR via provider.options.apiKey.
   ////////////////////////////////////////////////////////////
-
-  "log_dir": "~/.opencode/logs"
 }
