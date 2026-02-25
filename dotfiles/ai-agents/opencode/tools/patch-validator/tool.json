@@ -1,0 +1,14 @@
+{
+  "name": "patch-validator",
+  "description": "Validates unified diff against strict mutation contract",
+  "command": ["node", "dist/index.js"],
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "patch": { "type": "string" },
+      "max_change_percent": { "type": "number" },
+      "strict": { "type": "boolean" }
+    },
+    "required": ["patch"]
+  }
+}

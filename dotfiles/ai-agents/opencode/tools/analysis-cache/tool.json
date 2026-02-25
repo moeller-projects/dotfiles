@@ -1,0 +1,20 @@
+{
+  "name": "analysis-cache",
+  "description": "Deterministic structural artifact cache",
+  "command": ["node", "dist/index.js"],
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": "string",
+        "enum": ["lookup", "store", "invalidate", "stats"]
+      },
+      "namespace": { "type": "string" },
+      "key": { "type": "string" },
+      "artifact": { "type": "string" },
+      "ttl_sec": { "type": "number" },
+      "metadata": { "type": "object" }
+    },
+    "required": ["action"]
+  }
+}
