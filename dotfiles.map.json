@@ -103,6 +103,30 @@
     "target": "/home/lukas/.config/opencode/opencode.jsonc",
     "platforms": ["linux"]
   },
+  "ai-agents/opencode/skills": {
+    "target": "/home/lukas/.config/opencode/skills",
+    "platforms": ["linux"]
+  },
+  "ai-agents/opencode/agents": {
+    "target": "/home/lukas/.config/opencode/agents",
+    "platforms": ["linux"]
+  },
+  "ai-agents/opencode/commands": {
+    "target": "/home/lukas/.config/opencode/commands",
+    "platforms": ["linux"]
+  },
+  "ai-agents/opencode/tools/analysis-cache": {
+    "target": "/home/lukas/.config/opencode/tools/analysis-cache",
+    "platforms": ["linux"]
+  },
+  "ai-agents/opencode/tools/patch-validator": {
+    "target": "/home/lukas/.config/opencode/tools/patch-validator",
+    "platforms": ["linux"]
+  },
+  "ai-agents/opencode/AGENTS.md": {
+    "target": "/home/lukas/.config/opencode/AGENTS.md",
+    "platforms": ["linux"]
+  },
   "cli/openspec": {
     "target": "/home/lukas/.openspec/",
     "platforms": ["linux"]
