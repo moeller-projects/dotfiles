@@ -127,8 +127,12 @@
     "target": "/home/lukas/.config/opencode/AGENTS.md",
     "platforms": ["linux"]
   },
-  "cli/openspec": {
-    "target": "/home/lukas/.config/openspec/",
+  "cli/openspec/schemas": {
+    "target": "/home/lukas/.config/openspec/schemas",
+    "platforms": ["linux"]
+  },
+  "cli/openspec/config.json": {
+    "target": "/home/lukas/.config/openspec/config.json",
     "platforms": ["linux"]
   },
   "cli/starship.toml": {
