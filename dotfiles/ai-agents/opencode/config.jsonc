@@ -76,6 +76,16 @@
   },
 
   ////////////////////////////////////////////////////////////
+  // FORMATTER
+  ////////////////////////////////////////////////////////////
+
+  "formatter": {
+    "prettier": {
+      "disabled": true,
+    },
+  },
+
+  ////////////////////////////////////////////////////////////
   // MCP SERVERS
   ////////////////////////////////////////////////////////////
 
@@ -97,21 +107,6 @@
     //   "timeout": 30000
     // }
   },
-
-  ////////////////////////////////////////////////////////////
-  // TOOLS
-  ////////////////////////////////////////////////////////////
-
-  // "tools": {
-  //   "patch-validator": {
-  //     "command": ["node", "~/.config/opencode/tools/patch-validator/dist/index.js"],
-  //     "description": "Validates unified diff against strict mutation contract",
-  //   },
-  //   "analysis-cache": {
-  //     "command": ["node", "~/.config/opencode/tools/analysis-cache/dist/index.js"],
-  //     "description": "Deterministic analysis result cache (lookup/store/invalidate/stats)",
-  //   },
-  // },
 
   ////////////////////////////////////////////////////////////
   // NOTES
