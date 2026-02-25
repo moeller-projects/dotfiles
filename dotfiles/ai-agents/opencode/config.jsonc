@@ -21,10 +21,10 @@
   "provider": {
     "openai": {
       "options": {
-        "apiKey": "{env:OPENAI_API_KEY}"
+        "apiKey": "{env:OPENAI_API_KEY}",
         // or: "apiKey": "{file:~/.secrets/openai-key}"
-      }
-    }
+      },
+    },
   },
 
   ////////////////////////////////////////////////////////////
@@ -53,7 +53,7 @@
     "webfetch": "ask",
 
     // Skills/tooling (optional)
-    "skill": "allow"
+    "skill": "allow",
   },
 
   ////////////////////////////////////////////////////////////
@@ -64,7 +64,7 @@
   "compaction": {
     "auto": true,
     "prune": true,
-    "reserved": 10000
+    "reserved": 10000,
   },
 
   ////////////////////////////////////////////////////////////
@@ -72,13 +72,7 @@
   ////////////////////////////////////////////////////////////
 
   "watcher": {
-    "ignore": [
-      ".git/**",
-      "node_modules/**",
-      "dist/**",
-      "bin/**",
-      "obj/**"
-    ]
+    "ignore": [".git/**", "node_modules/**", "dist/**", "bin/**", "obj/**"],
   },
 
   ////////////////////////////////////////////////////////////
@@ -92,8 +86,8 @@
       "enabled": true,
 
       // Docs: timeout is ms (default 5000)
-      "timeout": 30000
-    }
+      "timeout": 30000,
+    },
 
     // Optional Chrome DevTools MCP
     // "chrome": {
@@ -102,7 +96,22 @@
     //   "enabled": false,
     //   "timeout": 30000
     // }
-  }
+  },
+
+  ////////////////////////////////////////////////////////////
+  // TOOLS
+  ////////////////////////////////////////////////////////////
+
+  // "tools": {
+  //   "patch-validator": {
+  //     "command": ["node", "~/.config/opencode/tools/patch-validator/dist/index.js"],
+  //     "description": "Validates unified diff against strict mutation contract",
+  //   },
+  //   "analysis-cache": {
+  //     "command": ["node", "~/.config/opencode/tools/analysis-cache/dist/index.js"],
+  //     "description": "Deterministic analysis result cache (lookup/store/invalidate/stats)",
+  //   },
+  // },
 
   ////////////////////////////////////////////////////////////
   // NOTES

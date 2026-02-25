@@ -1,212 +1,142 @@
 {
   "ai-agents/codex/config.toml": {
     "target": "/home/lukas/.codex/config.toml",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/policies": {
     "target": "/home/lukas/.codex/policies",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/prompts": {
     "target": "/home/lukas/.codex/prompts",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/agentsmd-expert": {
     "target": "/home/lukas/.codex/skills/agentsmd-expert",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/budget-guard": {
     "target": "/home/lukas/.codex/skills/budget-guard",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/budget-supervisor": {
     "target": "/home/lukas/.codex/skills/budget-supervisor",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/chaos-engineer": {
     "target": "/home/lukas/.codex/skills/chaos-engineer",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/deep-research": {
     "target": "/home/lukas/.codex/skills/deep-research",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/devops-engineer": {
     "target": "/home/lukas/.codex/skills/devops-engineer",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/doc-forge": {
     "target": "/home/lukas/.codex/skills/doc-forge",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/interactive-plan": {
     "target": "/home/lukas/.codex/skills/interactive-plan",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/kubernetes-specialist": {
     "target": "/home/lukas/.codex/skills/kubernetes-specialist",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/legacy-modernizer": {
     "target": "/home/lukas/.codex/skills/legacy-modernizer",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/monorepo-navigator": {
     "target": "/home/lukas/.codex/skills/monorepo-navigator",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/mvp-watcher": {
     "target": "/home/lukas/.codex/skills/mvp-watcher",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/openspec-expert": {
     "target": "/home/lukas/.codex/skills/openspec-expert",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/perf-analyst": {
     "target": "/home/lukas/.codex/skills/perf-analyst",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/playwright-expert": {
     "target": "/home/lukas/.codex/skills/playwright-expert",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/prompt-engineer": {
     "target": "/home/lukas/.codex/skills/prompt-engineer",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/readme-expert": {
     "target": "/home/lukas/.codex/skills/readme-expert",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/refactor-engine": {
     "target": "/home/lukas/.codex/skills/refactor-engine",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/spec-miner": {
     "target": "/home/lukas/.codex/skills/spec-miner",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/test-forge": {
     "target": "/home/lukas/.codex/skills/test-forge",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/the-fool": {
     "target": "/home/lukas/.codex/skills/the-fool",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "ai-agents/codex/skills/threat-modeler": {
     "target": "/home/lukas/.codex/skills/threat-modeler",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
-  "ai-agents/opencode/config.json": {
-    "target": "/home/lukas/.config/opencode/opencode.json",
-    "platforms": [
-      "linux"
-    ]
+  "ai-agents/opencode/config.jsonc": {
+    "target": "/home/lukas/.config/opencode/opencode.jsonc",
+    "platforms": ["linux"]
   },
   "cli/openspec": {
     "target": "/home/lukas/.openspec/",
-    "platforms": [
-      "linux"
-    ]
+    "platforms": ["linux"]
   },
   "cli/starship.toml": {
     "target": "C:\\Users\\lukas\\.config\\starship.toml",
-    "platforms": [
-      "windows"
-    ]
+    "platforms": ["windows"]
   },
   "editor/vscode/keybindings.json": {
     "target": "C:\\Users\\lukas\\AppData\\Roaming\\Code\\User\\keybindings.json",
-    "platforms": [
-      "windows"
-    ]
+    "platforms": ["windows"]
   },
   "editor/vscode/settings.json": {
     "target": "C:\\Users\\lukas\\AppData\\Roaming\\Code\\User\\settings.json",
-    "platforms": [
-      "windows"
-    ]
+    "platforms": ["windows"]
   },
   "editor/zed": {
     "target": "C:\\Users\\lukas\\.config\\zed\\",
-    "platforms": [
-      "windows"
-    ]
+    "platforms": ["windows"]
   },
   "git": {
-    "platforms": [
-      "windows"
-    ],
+    "platforms": ["windows"],
     "target": "C:\\Users\\lukas\\.gitconfig"
   },
   "mise-en-place": {
     "target": "C:\\Users\\lukas\\.config\\mise\\config.toml",
-    "platforms": [
-      "windows"
-    ]
+    "platforms": ["windows"]
   },
   "shell/.wslconfig": {
     "target": "C:\\Users\\lukas\\.wslconfig",
-    "platforms": [
-      "windows"
-    ]
+    "platforms": ["windows"]
   },
   "wezterm": {
-    "platforms": [
-      "windows"
-    ],
+    "platforms": ["windows"],
     "target": "C:\\Users\\lukas\\.wezterm.lua"
   }
 }
