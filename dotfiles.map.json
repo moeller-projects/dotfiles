@@ -128,7 +128,7 @@
     "platforms": ["linux"]
   },
   "cli/openspec": {
-    "target": "/home/lukas/.openspec/",
+    "target": "/home/lukas/.config/openspec/",
     "platforms": ["linux"]
   },
   "cli/starship.toml": {
