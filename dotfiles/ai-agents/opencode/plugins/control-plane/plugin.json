@@ -1,0 +1,5 @@
+{
+  "name": "control-plane",
+  "description": "Enterprise governance control plane: mutation enforcement + analysis cache",
+  "entry": "dist/index.js"
+}
