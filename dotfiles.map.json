@@ -115,12 +115,8 @@
     "target": "/home/lukas/.config/opencode/commands",
     "platforms": ["linux"]
   },
-  "ai-agents/opencode/tools/analysis-cache": {
-    "target": "/home/lukas/.config/opencode/tools/analysis-cache",
-    "platforms": ["linux"]
-  },
-  "ai-agents/opencode/tools/patch-validator": {
-    "target": "/home/lukas/.config/opencode/tools/patch-validator",
+  "ai-agents/opencode/tools": {
+    "target": "/home/lukas/.config/opencode/tools",
     "platforms": ["linux"]
   },
   "ai-agents/opencode/AGENTS.md": {

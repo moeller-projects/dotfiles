@@ -59,31 +59,7 @@
   ////////////////////////////////////////////////////////////
   // CUSTOM TOOLS & PLUGINS
   ////////////////////////////////////////////////////////////
-  "tool_search_paths": [
-    "/home/lukas/.config/opencode/tools",
-    "./tools", // relative to workspace
-    "${CUSTOM_TOOLS_DIR}",
-  ],
-
-  "tools": {
-    "analysis-cache": {
-      "path": "/home/lukas/.config/opencode/tools/analysis-cache/dist/index.js",
-      "enabled": true,
-    },
-    "patch-validator": {
-      "path": "/home/lukas/.config/opencode/tools/patch-validator/dist/index.js",
-      "enabled": true,
-    },
-  },
-
-  // Option 3: Plugins with full definitions (preferred over bare strings)
-  "plugin": [
-    {
-      "name": "control-plane",
-      "path": "/home/lukas/.config/opencode/plugins/control-plane",
-      "enabled": true,
-    },
-  ],
+  "tools": true,
 
   ////////////////////////////////////////////////////////////
   // CONTEXT / COST CONTROL (OpenCode-native knobs)
