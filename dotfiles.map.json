@@ -103,6 +103,10 @@
     "target": "/home/lukas/.config/opencode/opencode.jsonc",
     "platforms": ["linux"]
   },
+  "ai-agents/opencode/policies": {
+    "target": "/home/lukas/.config/opencode/policies",
+    "platforms": ["linux"]
+  },
   "ai-agents/opencode/skills": {
     "target": "/home/lukas/.config/opencode/skills",
     "platforms": ["linux"]
