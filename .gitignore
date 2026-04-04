@@ -1,4 +1,6 @@
 .backup/
 .idea/
+.bootstrap-logs/
 
 **/node_modules/
+packages/*/dist/

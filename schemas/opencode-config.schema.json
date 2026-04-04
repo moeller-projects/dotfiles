@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/moeller-projects/dotfiles/schemas/opencode-config.schema.json",
+  "title": "OpenCode Configuration",
+  "description": "Schema for opencode.jsonc configuration file",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON schema URL"
+    },
+    "theme": {
+      "type": "string",
+      "description": "UI theme name"
+    },
+    "autoupdate": {
+      "type": "boolean",
+      "description": "Enable automatic updates"
+    },
+    "enabled_providers": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of enabled AI providers"
+    },
+    "model": {
+      "type": "string",
+      "description": "Default model in provider/model format",
+      "examples": ["openai/gpt-4o", "anthropic/claude-3-5-sonnet-20241022"]
+    },
+    "provider": {
+      "type": "object",
+      "description": "Provider-specific configuration keyed by provider name",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "options": {
+            "type": "object",
+            "properties": {
+              "apiKey": {
+                "type": "string",
+                "description": "API key — use {env:VAR} or {file:path} references"
+              }
+            }
+          }
+        }
+      }
+    },
+    "permission": {
+      "type": "object",
+      "description": "Tool permission overrides. Values: allow | ask | deny",
+      "additionalProperties": {
+        "type": "string",
+        "enum": ["allow", "ask", "deny"]
+      }
+    },
+    "compaction": {
+      "type": "object",
+      "description": "Context compaction settings",
+      "properties": {
+        "auto":     { "type": "boolean" },
+        "prune":    { "type": "boolean" },
+        "reserved": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "watcher": {
+      "type": "object",
+      "description": "File watcher settings",
+      "properties": {
+        "ignore": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Glob patterns to ignore"
+        }
+      }
+    },
+    "formatter": {
+      "type": "object",
+      "description": "Code formatter settings",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "disabled": { "type": "boolean" }
+        }
+      }
+    },
+    "mcp": {
+      "type": "object",
+      "description": "MCP server definitions keyed by server name",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["type", "command"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["local", "remote"],
+            "description": "Server transport type"
+          },
+          "command": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "array", "items": { "type": "string" } }
+            ],
+            "description": "Command to launch the MCP server"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether this MCP server is active"
+          },
+          "timeout": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Connection timeout in milliseconds"
+          },
+          "env": {
+            "type": "object",
+            "additionalProperties": { "type": "string" },
+            "description": "Environment variables passed to the server process"
+          }
+        }
+      }
+    }
+  }
+}

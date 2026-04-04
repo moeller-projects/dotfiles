@@ -1,0 +1,31 @@
+{
+  "name": "opencode-tools",
+  "version": "1.0.0",
+  "description": "Custom runtime tools for OpenCode agent sessions",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "lint": "tsc --noEmit --project tsconfig.json",
+    "clean": "rm -rf dist",
+    "smoke": "node dist/patch-validator.js --version 2>/dev/null || node -e \"import('./dist/patch-validator.js').then(() => console.log('patch-validator: ok')).catch(e => { console.error('patch-validator: FAIL', e.message); process.exit(1); })\""
+  },
+  "peerDependencies": {
+    "@opencode-ai/plugin": "*"
+  },
+  "peerDependenciesMeta": {
+    "@opencode-ai/plugin": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@opencode-ai/plugin": "file:src/vendor/opencode-ai-plugin-stub",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
