@@ -74,7 +74,7 @@ def strip_jsonc(text):
                     i += 1
             elif ch == '/' and i + 1 < len(text) and text[i + 1] == '*':
                 i += 2
-                while i < len(text) and not (text[i] == '*' and i + 1 < len(text) and text[i + 1] == '/'):
+                while i < len(text) - 1 and not (text[i] == '*' and text[i + 1] == '/'):
                     i += 1
                 i += 2
             else:
