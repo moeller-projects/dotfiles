@@ -2,18 +2,31 @@
 """Validate YAML frontmatter in SKILL.md files under the repo.
 
 Checks that each SKILL.md begins with a '---' line, has a closing '---',
-and that the content between parses as valid YAML.
+that the content between parses as valid YAML, and that the frontmatter
+conforms to schemas/skill-metadata.schema.json.
 """
+import json
 from pathlib import Path
 import sys
 import yaml
+
+try:
+    import jsonschema
+except ImportError:
+    print("ERROR: jsonschema not installed. Run: pip install jsonschema")
+    sys.exit(1)
 
 
 def find_skill_files(root: Path):
     return list(root.glob("**/skills/**/SKILL.md"))
 
 
-def validate_file(path: Path):
+def load_schema(root: Path):
+    schema_path = root / "schemas" / "skill-metadata.schema.json"
+    return json.loads(schema_path.read_text(encoding="utf-8"))
+
+
+def validate_file(path: Path, schema: dict):
     text = path.read_text(encoding="utf-8")
     lines = text.splitlines()
     if not lines:
@@ -31,9 +44,14 @@ def validate_file(path: Path):
 
     fm = "\n".join(lines[1:end])
     try:
-        yaml.safe_load(fm)
+        data = yaml.safe_load(fm)
     except Exception as e:
         return f"{path}: YAML parse error: {e}"
+
+    try:
+        jsonschema.validate(data, schema)
+    except jsonschema.ValidationError as e:
+        return f"{path}: schema validation error: {e.message}"
 
     return None
 
@@ -45,9 +63,11 @@ def main():
         print("No SKILL.md files found; nothing to validate.")
         return 0
 
+    schema = load_schema(root)
+
     errors = []
     for f in sorted(files):
-        err = validate_file(f)
+        err = validate_file(f, schema)
         if err:
             errors.append(err)
 

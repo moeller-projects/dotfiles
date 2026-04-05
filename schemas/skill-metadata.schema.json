@@ -25,6 +25,13 @@
       "description": "SPDX license identifier",
       "examples": ["MIT", "Apache-2.0"]
     },
+    "allowed-tools": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } }
+      ],
+      "description": "Tools this skill is permitted to invoke"
+    },
     "metadata": {
       "type": "object",
       "additionalProperties": false,
@@ -50,12 +57,19 @@
         "role": {
           "type": "string",
           "description": "Agent role classification",
-          "enum": ["specialist", "generalist", "reviewer", "planner", "executor", "supervisor"]
+          "enum": [
+            "specialist", "generalist", "reviewer", "planner",
+            "executor", "supervisor", "expert", "engineer"
+          ]
         },
         "scope": {
           "type": "string",
           "description": "Scope of operation",
-          "enum": ["implementation", "analysis", "planning", "review", "documentation", "governance"]
+          "enum": [
+            "implementation", "analysis", "planning", "review",
+            "documentation", "governance", "architecture", "design",
+            "feature/change", "infrastructure", "testing"
+          ]
         },
         "output-format": {
           "type": "string",
@@ -65,6 +79,29 @@
         "related-skills": {
           "type": "string",
           "description": "Comma-separated related skill names"
+        },
+        "artifact-emission": {
+          "description": "Artifacts emitted by this skill (boolean flag or description string)",
+          "oneOf": [
+            { "type": "boolean" },
+            { "type": "string" }
+          ]
+        },
+        "ci-enforced": {
+          "type": "boolean",
+          "description": "Whether this skill's constraints are enforced in CI"
+        },
+        "ci-safe": {
+          "type": "boolean",
+          "description": "Whether the skill can run safely in CI environments"
+        },
+        "deterministic": {
+          "type": "boolean",
+          "description": "Whether the skill produces deterministic outputs"
+        },
+        "risk-aware": {
+          "type": "boolean",
+          "description": "Whether the skill includes risk assessment"
         }
       }
     }

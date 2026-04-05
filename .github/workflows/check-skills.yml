@@ -25,7 +25,7 @@ jobs:
           python-version: "3.x"
 
       - name: Install dependencies
-        run: python -m pip install --upgrade pip pyyaml
+        run: python -m pip install --upgrade pip pyyaml jsonschema
 
       - name: Validate SKILL.md frontmatter
         run: python ./.github/scripts/validate_frontmatter.py

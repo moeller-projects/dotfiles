@@ -124,7 +124,7 @@ jobs:
           python-version: "3.x"
 
       - name: Install dependencies
-        run: pip install pyyaml
+        run: pip install pyyaml jsonschema
 
       - name: Validate skills
         run: bash scripts/validate-skills.sh
@@ -139,10 +139,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          node-version: "22"
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: pip install jsonschema
 
       - name: Validate opencode.jsonc (from dotfiles)
         run: |

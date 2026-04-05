@@ -30,6 +30,10 @@
         { "type": "array", "items": { "type": "string" } }
       ],
       "description": "List of skills this command invokes"
+    },
+    "agent": {
+      "type": "string",
+      "description": "Agent role this command runs as"
     }
   }
 }

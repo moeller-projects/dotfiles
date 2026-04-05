@@ -6,7 +6,7 @@
 # Usage:
 #   bash scripts/validate-opencode-config.sh [--config <path>]
 #
-# Requires: node
+# Requires: python3, jsonschema
 
 set -euo pipefail
 
@@ -34,80 +34,74 @@ fi
 
 echo "Validating: ${CONFIG_FILE}"
 
-node - <<'JS' "$CONFIG_FILE"
-const fs   = require('fs');
-const path = require('path');
-const file = process.argv[2];
-const raw  = fs.readFileSync(file, 'utf8');
+python3 - "$CONFIG_FILE" "$REPO_ROOT/schemas/opencode-config.schema.json" <<'PY'
+import sys, json, re
+from pathlib import Path
 
-// String-aware JSONC parser (handles comments and trailing commas)
-function parseJsonc(text) {
-  // Step 1: strip comments while preserving string content
-  let result = '';
-  let inString = false;
-  let i = 0;
-  while (i < text.length) {
-    const ch = text[i];
-    if (inString) {
-      if (ch === '\\') {
-        result += ch + (text[i + 1] || '');
-        i += 2;
-        continue;
-      }
-      if (ch === '"') inString = false;
-      result += ch;
-      i++;
-    } else {
-      if (ch === '"') {
-        inString = true;
-        result += ch;
-        i++;
-      } else if (ch === '/' && text[i + 1] === '/') {
-        while (i < text.length && text[i] !== '\n') i++;
-      } else if (ch === '/' && text[i + 1] === '*') {
-        i += 2;
-        while (i < text.length && !(text[i] === '*' && text[i + 1] === '/')) i++;
-        i += 2;
-      } else {
-        result += ch;
-        i++;
-      }
-    }
-  }
-  // Step 2: strip trailing commas before } or ]
-  result = result.replace(/,(\s*[}\]])/g, '$1');
-  return JSON.parse(result);
-}
+try:
+    import jsonschema
+except ImportError:
+    print("ERROR: jsonschema not installed. Run: pip install jsonschema")
+    sys.exit(1)
 
-let parsed;
-try {
-  parsed = parseJsonc(raw);
-} catch (e) {
-  console.error(`FAIL: JSON parse error in ${file}`);
-  console.error(`  ${e.message}`);
-  process.exit(1);
-}
+config_file = sys.argv[1]
+schema_file = sys.argv[2]
 
-// Basic structural checks
-const errors = [];
-if (parsed.model && typeof parsed.model !== 'string') {
-  errors.push('"model" must be a string');
-}
-if (parsed.permission && typeof parsed.permission !== 'object') {
-  errors.push('"permission" must be an object');
-}
-if (parsed.mcp) {
-  for (const [name, srv] of Object.entries(parsed.mcp)) {
-    if (!srv.type) errors.push(`mcp.${name}: missing "type"`);
-    if (!srv.command) errors.push(`mcp.${name}: missing "command"`);
-  }
-}
+def strip_jsonc(text):
+    """Strip // and /* */ comments and trailing commas from JSONC text."""
+    result = []
+    in_string = False
+    i = 0
+    while i < len(text):
+        ch = text[i]
+        if in_string:
+            if ch == '\\':
+                result.append(ch)
+                result.append(text[i + 1] if i + 1 < len(text) else '')
+                i += 2
+                continue
+            if ch == '"':
+                in_string = False
+            result.append(ch)
+            i += 1
+        else:
+            if ch == '"':
+                in_string = True
+                result.append(ch)
+                i += 1
+            elif ch == '/' and i + 1 < len(text) and text[i + 1] == '/':
+                while i < len(text) and text[i] != '\n':
+                    i += 1
+            elif ch == '/' and i + 1 < len(text) and text[i + 1] == '*':
+                i += 2
+                while i < len(text) and not (text[i] == '*' and i + 1 < len(text) and text[i + 1] == '/'):
+                    i += 1
+                i += 2
+            else:
+                result.append(ch)
+                i += 1
+    stripped = ''.join(result)
+    # Strip trailing commas before } or ]
+    stripped = re.sub(r',(\s*[}\]])', r'\1', stripped)
+    return stripped
 
-if (errors.length > 0) {
-  console.error(`FAIL: ${errors.length} validation error(s):`);
-  errors.forEach(e => console.error(`  - ${e}`));
-  process.exit(1);
-}
+schema = json.loads(Path(schema_file).read_text(encoding="utf-8"))
+raw = Path(config_file).read_text(encoding="utf-8")
 
-console.log(`OK: ${file} is valid`);
-JS
+try:
+    parsed = json.loads(strip_jsonc(raw))
+except json.JSONDecodeError as e:
+    print(f"FAIL: JSON parse error in {config_file}: {e}")
+    sys.exit(1)
+
+try:
+    jsonschema.validate(parsed, schema)
+except jsonschema.ValidationError as e:
+    print(f"FAIL: {config_file} schema validation error: {e.message}")
+    sys.exit(1)
+except jsonschema.SchemaError as e:
+    print(f"FAIL: Schema error: {e.message}")
+    sys.exit(1)
+
+print(f"OK: {config_file} is valid")
+PY

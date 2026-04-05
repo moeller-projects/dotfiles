@@ -5,11 +5,12 @@
 #   - YAML frontmatter is present and parseable
 #   - Required fields (name, description) exist
 #   - name matches kebab-case convention
+#   - Frontmatter conforms to schemas/skill-metadata.schema.json
 #
 # Usage:
 #   bash scripts/validate-skills.sh [--dir <path>]
 #
-# Requires: python3, pyyaml
+# Requires: python3, pyyaml, jsonschema
 
 set -euo pipefail
 
@@ -23,8 +24,8 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-python3 - "$SEARCH_DIR" <<'PY'
-import sys, re
+python3 - "$SEARCH_DIR" "$REPO_ROOT/schemas/skill-metadata.schema.json" <<'PY'
+import sys, re, json
 from pathlib import Path
 
 try:
@@ -33,7 +34,16 @@ except ImportError:
     print("ERROR: pyyaml not installed. Run: pip install pyyaml")
     sys.exit(1)
 
+try:
+    import jsonschema
+except ImportError:
+    print("ERROR: jsonschema not installed. Run: pip install jsonschema")
+    sys.exit(1)
+
 search_dir = Path(sys.argv[1])
+schema_file = Path(sys.argv[2])
+schema = json.loads(schema_file.read_text(encoding="utf-8"))
+
 skill_files = sorted(search_dir.glob("**/skills/**/SKILL.md"))
 
 if not skill_files:
@@ -42,7 +52,6 @@ if not skill_files:
 
 errors = []
 warnings = []
-kebab_re = re.compile(r'^[a-z][a-z0-9-]*$')
 
 for path in skill_files:
     text = path.read_text(encoding="utf-8")
@@ -73,22 +82,18 @@ for path in skill_files:
         errors.append(f"{path}: frontmatter must be a YAML mapping")
         continue
 
-    if "name" not in fm:
-        errors.append(f"{path}: missing required field 'name'")
-    elif not kebab_re.match(str(fm["name"])):
-        errors.append(f"{path}: 'name' must be kebab-case, got: {fm['name']!r}")
-
-    if "description" not in fm:
-        errors.append(f"{path}: missing required field 'description'")
-    elif len(str(fm["description"])) < 20:
-        warnings.append(f"{path}: 'description' is very short (<20 chars)")
+    try:
+        jsonschema.validate(fm, schema)
+    except jsonschema.ValidationError as e:
+        errors.append(f"{path}: schema validation error: {e.message}")
 
     meta = fm.get("metadata", {})
-    if isinstance(meta, dict):
-        if "version" in meta:
-            ver = str(meta["version"])
-            if not re.match(r'^\d+\.\d+\.\d+$', ver):
-                errors.append(f"{path}: metadata.version must be semver (x.y.z), got: {ver!r}")
+    if isinstance(meta, dict) and "version" in meta:
+        if not re.match(r'^\d+\.\d+\.\d+$', str(meta["version"])):
+            errors.append(
+                f"{path}: metadata.version must be semver (x.y.z), "
+                f"got: {meta['version']!r}"
+            )
 
 if warnings:
     print(f"\nWarnings ({len(warnings)}):")
