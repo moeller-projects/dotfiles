@@ -1,6 +1,6 @@
 ---
 name: agentsmd-expert
-description: AGENTS.md authoring and refinement for Codex agent instructions. Use when creating or updating AGENTS.md files, standardizing repository guidelines, clarifying tooling commands, or documenting local skills and constraints for agents.
+description: Use when creating or updating AGENTS.md files, standardizing repository guidelines, clarifying tooling commands, or documenting local skills and constraints for agents. Not for general project documentation.
 license: MIT
 metadata:
   author: https://github.com/Jeffallan

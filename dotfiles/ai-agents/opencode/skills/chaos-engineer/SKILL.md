@@ -1,6 +1,6 @@
 ---
 name: chaos-engineer
-description: Use when designing chaos experiments, implementing failure injection frameworks, or conducting game day exercises. Invoke for chaos experiments, resilience testing, blast radius control, game days, antifragile systems.
+description: Use when designing chaos experiments, implementing failure injection frameworks, or conducting game day exercises. Invoke for resilience testing, blast radius control, game days, or building antifragile systems.
 license: MIT
 metadata:
   author: https://github.com/Jeffallan

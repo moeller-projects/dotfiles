@@ -1,6 +1,6 @@
 ---
 name: interactive-plan
-description: Interactive production planning with decision questions, task list, clean code, and test strategy.
+description: Use when a task needs clarifying questions answered before execution begins, or when you want a structured plan with clean-code and test strategy defined upfront. Invoke at the start of any complex feature or design decision.
 license: MIT
 metadata:
   author: https://github.com/Jeffallan

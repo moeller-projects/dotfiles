@@ -1,6 +1,6 @@
 ---
 name: spec-miner
-description: Use when understanding legacy or undocumented systems, creating documentation for existing code, or extracting specifications from implementations. Invoke for legacy analysis, code archaeology, undocumented features.
+description: Use when understanding legacy or undocumented systems, creating documentation for existing code, or extracting specifications from implementations. Invoke for legacy analysis, code archaeology, or undocumented feature mapping.
 license: MIT
 allowed-tools: Read, Grep, Glob, Bash
 metadata:

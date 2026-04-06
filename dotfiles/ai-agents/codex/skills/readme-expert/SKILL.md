@@ -1,6 +1,6 @@
 ---
 name: readme-expert
-description: README authoring and refinement for software projects. Use when creating or updating README.md files, improving project documentation structure, clarifying installation/usage, adding badges, or standardizing contribution and support sections.
+description: Use when creating or updating README.md files, improving project documentation structure, clarifying installation or usage instructions, adding badges, or standardizing contribution and support sections. Not for AGENTS.md or inline code docs.
 license: MIT
 metadata:
   author: https://github.com/Jeffallan

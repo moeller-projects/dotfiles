@@ -1,6 +1,6 @@
 ---
 name: devops-engineer
-description: Use when setting up CI/CD pipelines, containerizing applications, or managing infrastructure as code. Invoke for pipelines, Docker, Kubernetes, cloud platforms, GitOps.
+description: Use when setting up CI/CD pipelines, containerizing applications, or managing infrastructure as code. Invoke for pipelines, Docker, Kubernetes, cloud platforms, or GitOps workflows.
 license: MIT
 metadata:
   author: https://github.com/Jeffallan

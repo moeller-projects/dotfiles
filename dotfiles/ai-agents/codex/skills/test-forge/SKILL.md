@@ -1,6 +1,6 @@
 ---
 name: test-forge
-description: Elite production-grade test generation and strategy skill for agentic coding. Produces deterministic unit/integration/contract/property-based tests, diff-driven updates, branch/path coverage modeling, mutation-sensitive assertions, failure injection, compatibility guards, and test architecture governance. CI-ready and scope-tiered.
+description: Use when generating unit, integration, contract, or property-based tests, auditing coverage gaps, or producing a test strategy for a module. Invoke for diff-driven test updates, mutation testing, failure injection, or test architecture review.
 ---
 
 # Test Forge v2

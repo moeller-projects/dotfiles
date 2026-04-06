@@ -1,6 +1,6 @@
 ---
 name: budget-supervisor
-description: Production-grade session-level FinOps governor for OpenCode CLI. Authoritatively enforces rolling token/tool/time budgets across tasks and sub-agents, allocates per-task envelopes, resolves tier conflicts, locks/unlocks escalation, detects spend drift, logs overrides, and activates/parameterizes budget-guard deterministically per task.
+description: Use when orchestrating multi-task or multi-agent sessions that require rolling token/cost budgets, per-task envelope allocation, spend-drift detection, or escalation control. Do not use for single-task budget enforcement — prefer budget-guard.
 ---
 
 # Budget Enforcement Supervisor (BES) v2

@@ -1,6 +1,6 @@
 ---
 name: kubernetes-specialist
-description: Use when deploying or managing Kubernetes workloads requiring cluster configuration, security hardening, or troubleshooting. Invoke for Helm charts, RBAC policies, NetworkPolicies, storage configuration, performance optimization.
+description: Use when deploying or managing Kubernetes workloads requiring cluster configuration, security hardening, or troubleshooting. Invoke for Helm charts, RBAC policies, NetworkPolicies, storage configuration, or performance optimization.
 license: MIT
 metadata:
   author: https://github.com/Jeffallan

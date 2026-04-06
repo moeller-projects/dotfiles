@@ -1,6 +1,6 @@
 ---
 name: legacy-modernizer
-description: Use when modernizing legacy systems, implementing incremental migration strategies, or reducing technical debt. Invoke for strangler fig pattern, monolith decomposition, framework upgrades.
+description: Use when modernizing legacy systems, implementing incremental migration strategies, or reducing technical debt. Invoke for strangler fig pattern, monolith decomposition, or framework upgrades.
 license: MIT
 metadata:
   author: https://github.com/Jeffallan

@@ -1,6 +1,6 @@
 ---
 name: clean-code-master
-description: Deterministic, language-agnostic clean code governance engine. Audits complexity, enforces maintainability budgets, classifies technical debt, and produces measurable refactor plans with CI enforcement support.
+description: Use when auditing code complexity, enforcing maintainability budgets, classifying technical debt, or producing measurable refactor plans. Invoke for cyclomatic complexity violations, naming issues, oversized functions, or high coupling.
 license: MIT
 metadata:
   version: "2.0.0"

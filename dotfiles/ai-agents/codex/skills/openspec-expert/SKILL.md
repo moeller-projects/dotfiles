@@ -1,6 +1,6 @@
 ---
 name: openspec-expert
-description: Enterprise-grade OpenSpec governance engine with deterministic generation, risk-tier gating, automated quality scoring, version enforcement, diff intelligence, structured artifact emission, and CI-safe validation workflows.
+description: Use when generating, validating, or diff-reviewing an OpenSpec document, enforcing version constraints or quality scores, or integrating spec validation into CI. Invoke when a spec artifact needs authoring, auditing, or structured evaluation.
 license: MIT
 metadata:
   author: https://github.com/Jeffallan

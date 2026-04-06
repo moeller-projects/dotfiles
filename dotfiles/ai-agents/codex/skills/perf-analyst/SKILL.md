@@ -1,6 +1,6 @@
 ---
 name: perf-analyst
-description: Enterprise-grade performance engineering skill for agentic coding. Performs deterministic hotspot analysis, workload modeling, capacity estimation, tail-latency analysis, backpressure evaluation, scaling risk detection, and produces minimal safe optimization patches with measurement and rollout plans.
+description: Use when diagnosing performance bottlenecks, modeling workload capacity, analyzing tail latency, or producing measurement-driven optimization patches. Invoke for hotspot analysis, backpressure issues, scaling risk, or capacity planning.
 ---
 
 # Perf Analyst v2

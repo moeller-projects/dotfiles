@@ -1,6 +1,6 @@
 ---
 name: refactor-engine
-description: Enterprise-grade architectural evolution and safe refactoring skill. Performs deterministic behavioral-invariant modeling, API surface protection, dependency graph validation, blast-radius estimation, semantic diff analysis, migration sequencing, and cross-skill safety orchestration. Designed for large monorepos and modular SaaS systems.
+description: Use when performing large-scale refactors, migrating APIs, restructuring module boundaries, or validating behavioral invariants across a refactor. Invoke for breaking changes, API evolution, cross-module restructuring, or monorepo migrations.
 ---
 
 # Refactor Engine v2
