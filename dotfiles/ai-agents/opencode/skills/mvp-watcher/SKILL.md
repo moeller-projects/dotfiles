@@ -1,6 +1,6 @@
 ---
 name: mvp-watcher
-description: Deterministic scope-discipline governance skill. Detects scope creep, premature abstraction, unnecessary flexibility, and non-MVP expansion. Enforces value-to-complexity ratio and cost containment.
+description: Use when reviewing a plan, PR, or feature for scope creep, premature abstraction, or non-MVP complexity. Invoke before or during implementation to enforce value-to-complexity discipline and contain cost. Not for post-release retrospectives.
 license: MIT
 metadata:
   version: "1.2.0"

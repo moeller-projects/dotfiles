@@ -1,6 +1,6 @@
 ---
 name: monorepo-navigator
-description: Enterprise-grade architectural intelligence and monorepo analysis skill. Builds deterministic module graphs, computes structural metrics, detects architectural drift, bounded contexts, cycles, ownership boundaries, blast radius, and produces CI-ready reports and diagrams with strict scope control.
+description: Use when analyzing architecture, ownership boundaries, or dependency cycles across a monorepo. Invoke for module graph generation, blast-radius estimation, bounded context detection, or architectural drift reports. Not for single-package analysis.
 ---
 
 # Monorepo Navigator v2

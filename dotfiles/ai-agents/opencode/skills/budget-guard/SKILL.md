@@ -1,6 +1,6 @@
 ---
 name: budget-guard
-description: Deterministic cost-control guardrail for OpenCode CLI and agentic workflows. Enforces strict token/tool/attempt budgets, cost-optimized routing, state memory discipline, hash-based rescan prevention, search storm protection, CI-safe termination, and explicit build/test confirmation.
+description: Use when an OpenCode task must run within strict cost or token limits. Invoke to enforce hard budgets, prevent search storms, or gate CI-safe termination. Do not use for session-level multi-task budget governance (use budget-supervisor instead).
 ---
 
 # Budget Guard v2.1

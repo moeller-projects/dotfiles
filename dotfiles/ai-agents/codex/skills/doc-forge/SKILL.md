@@ -1,6 +1,6 @@
 ---
 name: doc-forge
-description: Enterprise-grade documentation and workflow analysis skill for complex codebases. Generates inline docs, structured documents, ADRs, traceability matrices, delta updates, and deterministic diagrams with evidence tagging.
+description: Use when generating or updating inline code docs, architecture decision records, workflow diagrams, or traceability matrices for a complex codebase. Invoke for ADRs, Mermaid diagrams, delta doc updates, or glossary extraction. Not for README or AGENTS.md authoring.
 ---
 
 # Doc Forge v2

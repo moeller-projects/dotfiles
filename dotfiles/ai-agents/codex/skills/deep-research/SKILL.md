@@ -1,6 +1,6 @@
 ---
 name: deep-research
-description: Multi-agent deep research orchestration workflow for parallel data collection, analysis, and report synthesis.
+description: Use when a task requires broad evidence gathering, parallel research streams, or synthesis across multiple sources before writing specs or plans. Invoke for multi-domain analysis, requirements extraction, or competitive research. Not for single-file or focused code analysis.
 license: MIT
 metadata:
   author: https://github.com/Jeffallan

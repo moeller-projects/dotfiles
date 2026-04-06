@@ -1,6 +1,6 @@
 ---
 name: agentsmd-expert
-description: AGENTS.md authoring and refinement for OpenCode agent instructions. Use when creating or updating AGENTS.md files, standardizing repository guidelines, clarifying tooling commands, or documenting local skills and constraints for agents.
+description: Use when creating or updating AGENTS.md files for OpenCode agents. Invoke for standardizing repository guidelines, clarifying tooling commands, or documenting local skills and constraints. Not for general README or project documentation (use readme-expert instead).
 license: MIT
 metadata:
   author: https://github.com/Jeffallan
