@@ -10,7 +10,7 @@ metadata:
   role: specialist
   scope: testing
   output-format: code
-  related-skills: test-master, devops-engineer, javascript-pro, typescript-pro, fullstack-guardian
+  related-skills: test-forge, devops-engineer
 ---
 
 # Playwright Expert

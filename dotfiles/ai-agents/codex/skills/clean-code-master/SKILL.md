@@ -11,7 +11,7 @@ metadata:
   ci-enforced: true
   deterministic: true
   triggers: clean code, complexity, maintainability, refactor, technical debt, SOLID, code smells, architecture hygiene
-  related-skills: refactor-engine, code-reviewer, test-master, doc-forge, openspec-expert, security-reviewer
+  related-skills: refactor-engine, the-fool, test-forge, doc-forge, openspec-expert, threat-modeler
 ---
 
 # Clean Code Master v2.0

@@ -10,7 +10,7 @@ metadata:
   role: engineer
   scope: implementation
   output-format: code
-  related-skills: sre-engineer, monitoring-expert, cloud-architect, kubernetes-specialist
+  related-skills: kubernetes-specialist
 ---
 
 # DevOps Engineer

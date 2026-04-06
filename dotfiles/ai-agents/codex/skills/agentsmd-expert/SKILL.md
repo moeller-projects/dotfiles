@@ -10,7 +10,7 @@ metadata:
   role: specialist
   scope: implementation
   output-format: document
-  related-skills: code-documenter, prompt-engineer, readme-expert
+  related-skills: doc-forge, prompt-engineer, readme-expert
 ---
 
 # AGENTS.md Expert

@@ -10,7 +10,7 @@ metadata:
   role: expert
   scope: planning
   output-format: document
-  related-skills: test-master, architecture-designer
+  related-skills: test-forge
 ---
 
 # Interactive Plan

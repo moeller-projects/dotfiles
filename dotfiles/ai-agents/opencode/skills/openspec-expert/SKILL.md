@@ -12,7 +12,7 @@ metadata:
   risk-aware: true
   ci-safe: true
   artifact-emission: true
-  related-skills: deep-research, refactor-engine, threat-modeler, test-forge, analysis-cache
+  related-skills: deep-research, refactor-engine, threat-modeler, test-forge
 ---
 
 # OpenSpec Expert v2.1
