@@ -1,6 +1,6 @@
 ---
 name: openspec-expert
-description: Use when creating or governing OpenAPI or AsyncAPI specifications, validating quality scores, or enforcing versioning and risk-tier gates. Invoke for spec generation, diff analysis, or CI-safe validation workflows. Not for inline code documentation.
+description: Use when creating, validating, or governing functional requirement specifications in OpenSpec format. Invoke for spec generation from inputs, risk-tier classification, quality scoring, version enforcement, diff analysis, or CI gate execution. Not for OpenAPI, AsyncAPI, or inline code documentation.
 license: MIT
 metadata:
   author: https://github.com/Jeffallan
