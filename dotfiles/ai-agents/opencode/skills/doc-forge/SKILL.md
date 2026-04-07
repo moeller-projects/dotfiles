@@ -1,6 +1,8 @@
 ---
 name: doc-forge
 description: Use when generating or updating inline code docs, architecture decision records, workflow diagrams, or traceability matrices for a complex codebase. Invoke for ADRs, Mermaid diagrams, delta doc updates, or glossary extraction. Not for README or AGENTS.md authoring.
+metadata:
+  related-skills: readme-expert, agentsmd-expert, spec-miner
 ---
 
 # Doc Forge v2

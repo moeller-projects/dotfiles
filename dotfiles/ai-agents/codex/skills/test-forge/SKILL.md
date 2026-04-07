@@ -1,6 +1,8 @@
 ---
 name: test-forge
 description: Use when generating or updating tests for changed behavior, designing test architecture, or building coverage for complex flows. Invoke for unit, integration, contract, or property-based tests, diff-driven updates, or mutation-sensitive assertions. Not for E2E browser tests (use playwright-expert).
+metadata:
+  related-skills: playwright-expert, openspec-expert
 ---
 
 # Test Forge v2

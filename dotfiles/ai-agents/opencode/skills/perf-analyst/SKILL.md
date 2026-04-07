@@ -1,6 +1,8 @@
 ---
 name: perf-analyst
 description: Use when diagnosing performance bottlenecks, modeling capacity, or producing optimization patches with measurement plans. Invoke for tail-latency issues, backpressure analysis, scaling risk, or workload modeling. Not for general code quality review.
+metadata:
+  related-skills: refactor-engine, clean-code-master
 ---
 
 # Perf Analyst v2

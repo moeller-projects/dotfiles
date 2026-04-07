@@ -1,6 +1,8 @@
 ---
 name: budget-guard
 description: Use when a Codex task must run within strict cost or token limits. Invoke to enforce hard budgets, prevent search storms, or gate CI-safe termination. Do not use for session-level multi-task budget governance (use budget-supervisor instead).
+metadata:
+  related-skills: budget-supervisor
 ---
 
 # Budget Guard v2.1

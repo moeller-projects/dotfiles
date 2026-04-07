@@ -1,6 +1,8 @@
 ---
 name: budget-supervisor
 description: Use when governing token, tool, and time budgets across a full Codex session or multiple sub-agents. Invoke to allocate per-task envelopes, resolve tier conflicts, or audit override logs. Do not use for single-task cost control (use budget-guard instead).
+metadata:
+  related-skills: budget-guard
 ---
 
 # Budget Enforcement Supervisor (BES) v2

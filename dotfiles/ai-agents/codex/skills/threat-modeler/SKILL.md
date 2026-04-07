@@ -1,6 +1,8 @@
 ---
 name: threat-modeler
 description: Use when assessing security posture, mapping trust boundaries, or producing risk-scored mitigations for a system. Invoke for threat modeling sessions, compliance mapping, lateral movement analysis, or attack surface inventory. Not for general code review.
+metadata:
+  related-skills: refactor-engine, openspec-expert
 ---
 
 # Threat Modeler v2

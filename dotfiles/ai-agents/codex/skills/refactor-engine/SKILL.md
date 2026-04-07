@@ -1,6 +1,8 @@
 ---
 name: refactor-engine
 description: Use when planning or executing large-scale refactoring with behavioral-invariant preservation. Invoke for API surface protection, blast-radius estimation, migration sequencing, or architectural boundary enforcement in monorepos. Not for small cosmetic cleanups.
+metadata:
+  related-skills: monorepo-navigator, test-forge, threat-modeler, perf-analyst
 ---
 
 # Refactor Engine v2

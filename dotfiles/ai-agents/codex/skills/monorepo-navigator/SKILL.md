@@ -1,6 +1,8 @@
 ---
 name: monorepo-navigator
 description: Use when analyzing architecture, ownership boundaries, or dependency cycles across a monorepo. Invoke for module graph generation, blast-radius estimation, bounded context detection, or architectural drift reports. Not for single-package analysis.
+metadata:
+  related-skills: refactor-engine, clean-code-master
 ---
 
 # Monorepo Navigator v2
