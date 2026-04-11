@@ -1,6 +1,6 @@
 ---
 name: agentsmd-expert
-description: AGENTS.md authoring and refinement for Codex agent instructions. Use when creating or updating AGENTS.md files, standardizing repository guidelines, clarifying tooling commands, or documenting local skills and constraints for agents.
+description: Use when creating or updating AGENTS.md files for Codex agents. Invoke for standardizing repository guidelines, clarifying tooling commands, or documenting local skills and constraints. Not for general README or project documentation (use readme-expert instead).
 license: MIT
 metadata:
   author: https://github.com/Jeffallan
@@ -10,7 +10,7 @@ metadata:
   role: specialist
   scope: implementation
   output-format: document
-  related-skills: code-documenter, prompt-engineer, readme-expert
+  related-skills: doc-forge, prompt-engineer, readme-expert
 ---
 
 # AGENTS.md Expert

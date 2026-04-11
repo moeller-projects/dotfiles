@@ -1,6 +1,6 @@
 ---
 name: openspec-expert
-description: Enterprise-grade OpenSpec governance engine with deterministic generation, risk-tier gating, automated quality scoring, version enforcement, diff intelligence, structured artifact emission, and CI-safe validation workflows.
+description: Use when creating, validating, or governing functional requirement specifications in OpenSpec format. Invoke for spec generation from inputs, risk-tier classification, quality scoring, version enforcement, diff analysis, or CI gate execution. Not for inline code documentation (use doc-forge instead).
 license: MIT
 metadata:
   author: https://github.com/Jeffallan
@@ -12,7 +12,7 @@ metadata:
   risk-aware: true
   ci-safe: true
   artifact-emission: true
-  related-skills: deep-research, refactor-engine, threat-modeler, test-forge, analysis-cache
+  related-skills: deep-research, refactor-engine, threat-modeler, test-forge, perf-analyst
 ---
 
 # OpenSpec Expert v2.1

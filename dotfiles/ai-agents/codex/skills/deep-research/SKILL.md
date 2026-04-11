@@ -1,6 +1,6 @@
 ---
 name: deep-research
-description: Multi-agent deep research orchestration workflow for parallel data collection, analysis, and report synthesis.
+description: Use when a task requires broad evidence gathering, parallel research streams, or synthesis across multiple sources before writing specs or plans. Invoke for multi-domain analysis, requirements extraction, or competitive research. Not for single-file or focused code analysis.
 license: MIT
 metadata:
   author: https://github.com/Jeffallan
@@ -10,7 +10,7 @@ metadata:
   role: expert
   scope: analysis
   output-format: document
-  related-skills: openspec
+  related-skills: openspec-expert
 ---
 
 # Deep Research
@@ -23,7 +23,7 @@ You orchestrate parallel evidence collection, synthesize findings, and extract s
 
 - Need high-confidence requirements from mixed sources
 - Multi-threaded research and synthesis is required
-- Preparing structured inputs for the `openspec` skill
+- Preparing structured inputs for the `openspec-expert` skill
 
 ## Core Workflow
 
@@ -31,7 +31,7 @@ You orchestrate parallel evidence collection, synthesize findings, and extract s
 2. Run the research entrypoint and gather sources.
 3. Synthesize notes and constraints into structured requirements.
 4. Validate output contract artifacts.
-5. Hand off `requirements.json` to `openspec`.
+5. Hand off `requirements.json` to `openspec-expert`.
 
 
 ### Fast Path (Small Tasks)
@@ -79,7 +79,7 @@ Primary entrypoint:
 `scripts/run_research.sh "<goal>"`
 
 Handoff to OpenSpec:
-`.codex/skills/openspec/scripts/spec_from_input.sh .research/<run-id>/requirements.json`
+`.codex/skills/openspec-expert/scripts/spec_from_input.sh .research/<run-id>/requirements.json`
 
 ## Knowledge Reference
 

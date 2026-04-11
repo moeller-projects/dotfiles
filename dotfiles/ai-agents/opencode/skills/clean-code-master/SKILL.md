@@ -1,6 +1,6 @@
 ---
 name: clean-code-master
-description: Deterministic, language-agnostic clean code governance engine. Audits complexity, enforces maintainability budgets, classifies technical debt, and produces measurable refactor plans with CI enforcement support.
+description: Use when auditing code quality, measuring complexity, or planning technical debt reduction. Invoke for SOLID violations, naming convention enforcement, code smell detection, or maintainability budget reviews. Not for one-off formatting fixes.
 license: MIT
 metadata:
   version: "2.0.0"
@@ -11,7 +11,7 @@ metadata:
   ci-enforced: true
   deterministic: true
   triggers: clean code, complexity, maintainability, refactor, technical debt, SOLID, code smells, architecture hygiene
-  related-skills: refactor-engine, code-reviewer, test-master, doc-forge, openspec-expert, security-reviewer
+  related-skills: refactor-engine, the-fool, test-forge, doc-forge, openspec-expert, threat-modeler
 ---
 
 # Clean Code Master v2.0

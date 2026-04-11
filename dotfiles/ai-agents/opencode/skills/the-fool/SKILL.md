@@ -10,7 +10,7 @@ metadata:
   role: expert
   scope: review
   output-format: report
-  related-skills: architecture-designer, code-reviewer, security-reviewer
+  related-skills: clean-code-master, threat-modeler
 ---
 
 # The Fool

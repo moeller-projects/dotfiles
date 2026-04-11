@@ -10,7 +10,7 @@ metadata:
   role: specialist
   scope: implementation
   output-format: code
-  related-skills: sre-engineer, devops-engineer, kubernetes-specialist
+  related-skills: devops-engineer, kubernetes-specialist
 ---
 
 # Chaos Engineer

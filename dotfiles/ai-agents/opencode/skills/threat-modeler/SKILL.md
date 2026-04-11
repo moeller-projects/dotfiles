@@ -1,6 +1,8 @@
 ---
 name: threat-modeler
-description: Enterprise-grade security posture engineering skill for agentic coding. Performs asset-centric threat modeling, quantitative risk scoring, trust-boundary mapping, lateral movement analysis, compliance mapping, and produces actionable mitigations with verification hooks. Deterministic, evidence-tagged, and scope-tiered.
+description: Use when assessing security posture, mapping trust boundaries, or producing risk-scored mitigations for a system. Invoke for threat modeling sessions, compliance mapping, lateral movement analysis, or attack surface inventory. Not for general code review.
+metadata:
+  related-skills: refactor-engine, openspec-expert
 ---
 
 # Threat Modeler v2
