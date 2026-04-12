@@ -59,7 +59,7 @@ hide_full_access_warning = true
 ############################################################
 
 [features]
-
+codex_hooks = true
 skills = true
 unified_exec = true
 shell_snapshot = true
