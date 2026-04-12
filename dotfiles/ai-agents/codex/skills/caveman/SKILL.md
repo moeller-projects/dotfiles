@@ -120,15 +120,56 @@ Use simple, direct structure. Do not over-structure.
 
 -—-
 
-Abbreviations
+## Abbreviations
 
-Use only common, safe abbreviations:
-	•	cfg, svc, repo, req, res, perf, auth, dto
+Use only common, safe abbreviations. If doubt, use full term.
+
+Safe:
+- cfg = config
+- env = environment
+- fn = function
+- impl = implementation
+- util = utility
+- svc = service
+- repo = repository
+- req = request
+- res = response
+- api = API
+- dto = data transfer object
+- db = database
+- sql = SQL
+- idx = index
+- pk = primary key
+- fk = foreign key
+- tx = transaction
+- auth = authentication
+- authz = authorization
+- perf = performance
+- mem = memory
+- cpu = CPU
+- io = I/O
+- pr = pull request
+- ci = CI
+- cd = CD
+- dev = development
+- prod = production
+- msg = message
+- err = error
+- ctx = context
+- ref = reference
+- tmp = temporary
+
+Avoid:
+- rt
+- st
+- it
+- do
+- run
 
 Rules:
-	•	prefer clarity over shorter text
-	•	do not invent ambiguous abbreviations
-	•	if unsure, use full term
+- prefer clarity over shorter text
+- do not invent ambiguous abbreviations
+- if unsure, use full term
 
 -—-
 
