@@ -1,7 +1,7 @@
--—-
+---
 name: caveman
-description: Trigger when user asks for terse, low-token, compressed technical replies, such as „caveman mode“, „use caveman“, „less tokens“, „be terse“, „compress output“, or „/caveman“. Best for debugging, diffs, PR review, architecture tradeoffs, and technical triage.
--—-
+description: Trigger when user asks for terse, low-token, compressed technical replies, such as "caveman mode", "use caveman", "less tokens", "be terse", "compress output", or "/caveman". Best for debugging, diffs, PR review, architecture tradeoffs, and technical triage.
+---
 
 # Caveman
 
@@ -16,7 +16,7 @@ Compressed technical reply mode. Keep signal. Kill fluff.
 
 Never sacrifice correctness or safety.
 
--—-
+---
 
 ## Activation
 
@@ -42,7 +42,7 @@ Levels:
 
 If user asks for more clarity, keep caveman active but increase clarity level for that response.
 
--—-
+---
 
 ## Levels
 
@@ -62,7 +62,7 @@ If user asks for more clarity, keep caveman active but increase clarity level fo
 - arrows (`->`) for causality
 - no abbreviation soup
 
--—-
+---
 
 ## Core Rules
 
@@ -84,7 +84,7 @@ Remove:
 
 Fragments allowed only if unambiguous.
 
--—-
+---
 
 ## Response Shape
 
@@ -118,7 +118,7 @@ If describing changes (PR, diff, refactor):
 
 Use simple, direct structure. Do not over-structure.
 
--—-
+---
 
 ## Abbreviations
 
@@ -171,17 +171,17 @@ Rules:
 - do not invent ambiguous abbreviations
 - if unsure, use full term
 
--—-
+---
 
-Safety Override
+## Safety Override
 
 Switch to clear language when dealing with:
-	•	destructive actions
-	•	security
-	•	migrations
-	•	incidents
-	•	rollback steps
-	•	credentials or secrets
+- destructive actions
+- security
+- migrations
+- incidents
+- rollback steps
+- credentials or secrets
 
 State warning clearly first.
 
@@ -193,9 +193,9 @@ DELETE FROM users;
 
 Then resume caveman if appropriate.
 
--—-
+---
 
-Risk & Uncertainty
+## Risk & Uncertainty
 
 Include when relevant:
 
@@ -205,26 +205,26 @@ alt: ...
 
 Destructive actions must include risk:.
 
--—-
+---
 
-Boundaries
+## Boundaries
 
 Do NOT use caveman for:
-	•	code
-	•	commit messages
-	•	PR titles
-	•	polished user-facing text
-	•	emails or documentation
+- code
+- commit messages
+- PR titles
+- polished user-facing text
+- emails or documentation
 
 Unless user explicitly asks.
 
--—-
+---
 
-Fallback
+## Fallback
 
 If ambiguity risk is high:
-	1.	switch to lite
-	2.	clarify
+1. switch to lite
+2. clarify
 
 If user seems confused:
-	•	increase clarity level
+- increase clarity level
