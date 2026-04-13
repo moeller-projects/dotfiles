@@ -2,7 +2,7 @@
 # MODEL
 ############################################################
 
-model = "gpt-5.2-codex"
+model = "gpt-5.4"
 preferred_auth_method = "apikey"
 
 # Reduce internal reasoning + output size
@@ -63,6 +63,7 @@ codex_hooks = true
 skills = true
 unified_exec = true
 shell_snapshot = true
+undo = true
 
 # Keep advanced steering but avoid drift multipliers
 multi_agent = false
