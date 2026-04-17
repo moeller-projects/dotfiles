@@ -1,0 +1,125 @@
+﻿# --------------------------------
+# Angular / JS toolchain
+# --------------------------------
+
+prefix_rule(
+  pattern = ["ng", ["build", "test", "e2e", "serve"]],
+  decision = "forbidden",
+  justification = "Do not run Angular build, test, e2e, or dev server commands unless the user explicitly asks.",
+)
+
+prefix_rule(
+  pattern = ["yarn", ["build", "test", "start", "dev"]],
+  decision = "forbidden",
+  justification = "Do not run Yarn build, test, start, or dev commands unless the user explicitly asks.",
+)
+
+prefix_rule(
+  pattern = ["yarn", "run", ["build", "test", "start", "dev", "serve", "e2e"]],
+  decision = "forbidden",
+  justification = "Do not run Yarn scripts that build, test, or launch apps unless the user explicitly asks.",
+)
+
+prefix_rule(
+  pattern = ["bun", "test"],
+  decision = "forbidden",
+  justification = "Do not run Bun tests unless the user explicitly asks.",
+)
+
+prefix_rule(
+  pattern = ["bun", "run", ["build", "test", "start", "dev", "serve", "e2e"]],
+  decision = "forbidden",
+  justification = "Do not run Bun scripts that build, test, or launch apps unless the user explicitly asks.",
+)
+
+# --------------------------------
+# .NET
+# --------------------------------
+
+prefix_rule(
+  pattern = ["dotnet", ["build", "test", "run", "publish", "watch"]],
+  decision = "forbidden",
+  justification = "Do not build, test, run, publish, or watch .NET apps unless the user explicitly asks.",
+)
+
+# --------------------------------
+# Common alternate runners often present in Angular repos
+# --------------------------------
+
+prefix_rule(
+  pattern = ["npx", ["ng", "nx", "jest", "vitest", "playwright", "cypress"]],
+  decision = "prompt",
+  justification = "npx can launch build/test tooling indirectly. Review before allowing.",
+)
+
+prefix_rule(
+  pattern = ["pnpm", ["build", "test", "start", "dev"]],
+  decision = "forbidden",
+  justification = "Do not run pnpm build, test, start, or dev commands unless the user explicitly asks.",
+)
+
+prefix_rule(
+  pattern = ["npm", ["run", "test", "start"]],
+  decision = "prompt",
+  justification = "npm may invoke build or test scripts indirectly. Review before allowing.",
+)
+
+# --------------------------------
+# Shell wrappers
+# --------------------------------
+
+prefix_rule(
+  pattern = ["bash", ["-c", "-lc"]],
+  decision = "prompt",
+  justification = "Shell-wrapped commands can hide builds, tests, or servers. Review before allowing.",
+)
+
+prefix_rule(
+  pattern = ["sh", "-c"],
+  decision = "prompt",
+  justification = "Shell-wrapped commands can hide builds, tests, or servers. Review before allowing.",
+)
+
+prefix_rule(
+  pattern = ["zsh", ["-c", "-lc"]],
+  decision = "prompt",
+  justification = "Shell-wrapped commands can hide builds, tests, or servers. Review before allowing.",
+)
+
+# --------------------------------
+# Project-local scripts
+# --------------------------------
+
+prefix_rule(
+  pattern = ["./scripts/"],
+  decision = "prompt",
+  justification = "Project scripts may run builds or tests. Review before allowing.",
+)
+
+prefix_rule(
+  pattern = ["scripts/"],
+  decision = "prompt",
+  justification = "Project scripts may run builds or tests. Review before allowing.",
+)
+
+# --------------------------------
+# Task runners / CI-style entry points
+# --------------------------------
+
+prefix_rule(
+  pattern = ["make"],
+  decision = "prompt",
+  justification = "Make targets often build or test. Review before allowing.",
+)
+
+prefix_rule(
+  pattern = ["just"],
+  decision = "prompt",
+  justification = "Just recipes often build or test. Review before allowing.",
+)
+
+prefix_rule(
+  pattern = ["task"],
+  decision = "prompt",
+  justification = "Task runner commands may invoke builds or tests. Review before allowing.",
+)

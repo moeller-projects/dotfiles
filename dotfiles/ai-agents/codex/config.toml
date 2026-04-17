@@ -3,7 +3,6 @@
 ############################################################
 
 model = "gpt-5.4"
-preferred_auth_method = "apikey"
 
 # Reduce internal reasoning + output size
 model_reasoning_effort = "low"
@@ -37,7 +36,7 @@ stream_idle_timeout_ms = 120000
 # EXECUTION & SAFETY
 ############################################################
 
-approval_policy = "on-request"
+approval_policy = "untrusted"
 sandbox_mode = "workspace-write"
 
 [sandbox_workspace_write]
@@ -94,9 +93,10 @@ tool_timeout_sec = 30
 # startup_timeout_sec = 10
 # tool_timeout_sec = 30
 
+[projects."/home/lukas"]
+trust_level = "trusted"
 
-############################################################
-# LOGGING
-############################################################
+[projects."/mnt/d/projects"]
 
-log_dir = "~/.codex/logs"
+[tui]
+status_line = ["model-with-reasoning", "current-dir", "context-usage", "five-hour-limit", "weekly-limit", "codex-version", "context-window-size", "used-tokens", "total-input-tokens", "total-output-tokens"]
