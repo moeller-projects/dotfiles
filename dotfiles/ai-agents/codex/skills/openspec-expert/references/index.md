@@ -1,15 +1,26 @@
-# OpenSpec Expert References
+# OpenSpec Expert v2.1 References
 
-This folder contains supporting guidance for the `openspec-expert` skill.
+This folder contains supporting reference knowledge for the `openspec-expert` skill.
 
-## Contents
-- `workflow.md` — step-by-step execution flow and decision points
-- `checklist.md` — quality and safety checklist
-- `pitfalls.md` — common failure modes and mitigations
-- `examples.md` — concrete scenarios and outputs
-- `templates.md` — reusable templates and snippets
-- `evaluation.md` — success criteria and test scenarios
-- `tools.md` — allowed tools and safe usage patterns
-- `diffing.md` — diffing and version review guidance
-- `review.md` — review and sign-off workflow
-- `quality-scoring.md` — scoring rubric and thresholds
+## Runtime Package
+
+Primary operational files live in the skill root:
+- `../SKILL.md` -> runtime rules and domain protocol
+- `../README.md` -> purpose, scope, and package structure
+- `../anti-patterns.md` -> skill-behavior failures to avoid
+- `../examples.md` -> scenario-based examples of correct execution
+- `../evals.md` -> regression prompts and pass/fail checks
+
+## Reference Knowledge
+
+Load only the references needed for the current task:
+- `checklist.md`
+- `diffing.md`
+- `evaluation.md`
+- `examples.md`
+- `pitfalls.md`
+- `quality-scoring.md`
+- `review.md`
+- `templates.md`
+- `tools.md`
+- `workflow.md`
