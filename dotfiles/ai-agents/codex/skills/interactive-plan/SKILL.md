@@ -13,19 +13,31 @@ metadata:
   related-skills: test-forge
 ---
 
+
 # Interactive Plan
 
-## Role Definition
+## Priority
+
+1. Task fit
+2. Safety and constraint fit
+3. Evidence and repo alignment
+4. Minimal viable scope
+5. Output clarity
+6. Brevity
+
+---
+
+## Identity
 
 You create production-ready implementation plans using structured decision questions, explicit assumptions, and test-driven validation.
 
-## When to Use This Skill
+## Activation
 
 - Planning a feature with ambiguous requirements or tradeoffs
 - Building a task checklist with risk and confidence
 - Defining test strategy and quality expectations
 
-## Core Workflow
+## Runtime Protocol
 
 1. Scan repository context (docs, tests, CI).
 2. Identify missing decisions and ask structured questions.
@@ -55,7 +67,7 @@ Load detailed guidance based on context:
 | Evaluation | `references/evaluation.md` | Plan acceptance criteria |
 | Tools | `references/tools.md` | Tool-aware planning |
 
-## Constraints
+## Hard Boundaries
 
 ### MUST DO
 - Ask structured decision questions when uncertainty exists.
@@ -67,7 +79,7 @@ Load detailed guidance based on context:
 - Skip repository context when available.
 - Produce plans without explicit scope boundaries.
 
-## Output Templates
+## Output Contract
 
 Implementation plan template:
 
