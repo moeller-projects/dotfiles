@@ -1,0 +1,14 @@
+{
+  "name": "@opencode-ai/plugin",
+  "version": "0.0.0",
+  "description": "Local stub for @opencode-ai/plugin used during development and CI builds",
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    }
+  }
+}
