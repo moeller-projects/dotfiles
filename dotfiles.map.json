@@ -162,5 +162,13 @@
   "wezterm": {
     "platforms": ["windows"],
     "target": "C:\\Users\\lukas\\.wezterm.lua"
+  },
+  "wm/glazewm.yaml": {
+    "platforms": [
+      "windows",
+      "linux",
+      "macos"
+    ],
+    "target": "C:\\Users\\lukas\\.glzr\\glazewm\\config.yaml"
   }
 }
