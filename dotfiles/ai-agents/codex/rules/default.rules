@@ -123,3 +123,96 @@ prefix_rule(
   decision = "prompt",
   justification = "Task runner commands may invoke builds or tests. Review before allowing.",
 )
+
+# --------------------------------
+# OpenSpec CLI
+# Official docs: docs/cli.md
+# --------------------------------
+
+prefix_rule(
+  pattern = ["openspec", ["--version", "-V", "--help", "-h"]],
+  decision = "allow",
+  justification = "Allow safe OpenSpec version/help inspection.",
+)
+
+prefix_rule(
+  pattern = ["openspec", ["list", "show", "validate", "status", "instructions", "templates", "schemas"]],
+  decision = "allow",
+  justification = "Allow agent-compatible OpenSpec inspection, validation, status, templates, schemas, and instruction commands.",
+)
+
+prefix_rule(
+  pattern = ["openspec", "schema", ["validate", "which"]],
+  decision = "allow",
+  justification = "Allow safe OpenSpec schema validation and schema source inspection.",
+)
+
+prefix_rule(
+  pattern = ["openspec", "config", ["path", "list", "get"]],
+  decision = "allow",
+  justification = "Allow read-only OpenSpec configuration inspection.",
+)
+
+prefix_rule(
+  pattern = ["openspec", "completion", "generate"],
+  decision = "allow",
+  justification = "Allow generating shell completion output without installing it.",
+)
+
+prefix_rule(
+  pattern = ["openspec", ["init", "update", "archive"]],
+  decision = "prompt",
+  justification = "OpenSpec setup/update/archive commands can create, rewrite, move, or merge project files. Review before allowing.",
+)
+
+prefix_rule(
+  pattern = ["openspec", "schema", ["init", "fork"]],
+  decision = "prompt",
+  justification = "OpenSpec schema creation/forking writes project-local schema files. Review before allowing.",
+)
+
+prefix_rule(
+  pattern = ["openspec", "config", ["set", "unset", "reset", "edit", "profile"]],
+  decision = "prompt",
+  justification = "OpenSpec config modification can change global/project behavior or open an editor. Review before allowing.",
+)
+
+prefix_rule(
+  pattern = ["openspec", "completion", ["install", "uninstall"]],
+  decision = "prompt",
+  justification = "Installing or uninstalling shell completions modifies shell configuration. Review before allowing.",
+)
+
+prefix_rule(
+  pattern = ["openspec", ["view", "feedback"]],
+  decision = "prompt",
+  justification = "Interactive OpenSpec commands or commands requiring external tools/accounts should be reviewed.",
+)
+
+# --------------------------------
+# Safe read-only shell utilities
+# --------------------------------
+
+prefix_rule(
+  pattern = ["sort"],
+  decision = "allow",
+  justification = "Allow sorting stdin or file content. Read-only utility.",
+)
+
+prefix_rule(
+  pattern = ["jq"],
+  decision = "allow",
+  justification = "Allow JSON inspection/transformation. Read-only unless shell redirection is used, which is covered by shell-wrapper review rules.",
+)
+
+prefix_rule(
+  pattern = ["find"],
+  decision = "prompt",
+  justification = "Find is usually read-only, but -exec can run arbitrary commands. Review before allowing.",
+)
+
+prefix_rule(
+  pattern = ["find", "openspec/"],
+  decision = "allow",
+  justification = "Allow reading OpenSpec files with find in the project-local openspec directory.",
+)
