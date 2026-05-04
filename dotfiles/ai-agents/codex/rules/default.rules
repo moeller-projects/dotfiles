@@ -216,3 +216,93 @@ prefix_rule(
   decision = "allow",
   justification = "Allow reading OpenSpec files with find in the project-local openspec directory.",
 )
+
+# --------------------------------
+# RTK default fallback
+# --------------------------------
+
+prefix_rule(
+  pattern = ["rtk"],
+  decision = "prompt",
+  justification = "RTK is a command proxy. Unknown subcommands may execute hidden operations. Review before allowing.",
+)
+
+prefix_rule(
+  pattern = ["rtk", "proxy"],
+  decision = "forbidden",
+  justification = "rtk proxy can execute arbitrary shell commands and bypass all safeguards.",
+)
+
+# --------------------------------
+# RTK high-risk proxies (forbidden)
+# --------------------------------
+
+prefix_rule(
+  pattern = ["rtk", ["test", "err", "summary", "proxy"]],
+  decision = "forbidden",
+  justification = "RTK wrapper commands can execute hidden build, test, server, or arbitrary shell commands.",
+)
+
+prefix_rule(
+  pattern = ["rtk", ["npm", "yarn", "pnpm", "bun"]],
+  decision = "forbidden",
+  justification = "RTK can proxy package manager commands that build, test, or mutate dependencies.",
+)
+
+prefix_rule(
+  pattern = ["rtk", ["ng", "nx"]],
+  decision = "forbidden",
+  justification = "RTK can proxy Angular/Nx build, test, and dev server commands.",
+)
+
+prefix_rule(
+  pattern = ["rtk", ["dotnet"]],
+  decision = "forbidden",
+  justification = "RTK can proxy .NET build, run, test, or publish commands.",
+)
+
+prefix_rule(
+  pattern = ["rtk", ["make", "just", "task"]],
+  decision = "forbidden",
+  justification = "RTK can proxy task runners that execute builds or tests.",
+)
+
+prefix_rule(
+  pattern = ["rtk", ["docker", "kubectl"]],
+  decision = "forbidden",
+  justification = "RTK can proxy container or cluster commands with external side effects.",
+)
+
+prefix_rule(
+  pattern = ["rtk", ["curl", "wget"]],
+  decision = "forbidden",
+  justification = "RTK can proxy network commands that fetch or execute external content.",
+)
+
+prefix_rule(
+  pattern = ["rtk", "git", ["add", "commit", "push", "pull", "reset", "clean", "checkout", "restore", "rebase", "merge"]],
+  decision = "forbidden",
+  justification = "RTK can proxy mutating Git commands.",
+)
+
+# --------------------------------
+# RTK safe allowlist
+# --------------------------------
+
+prefix_rule(
+  pattern = ["rtk", ["--version", "-V", "--help", "-h"]],
+  decision = "allow",
+  justification = "Allow safe RTK version/help inspection.",
+)
+
+prefix_rule(
+  pattern = ["rtk", ["ls", "read", "smart", "find", "grep", "diff", "json", "deps", "log", "gain", "discover", "session"]],
+  decision = "allow",
+  justification = "Allow RTK read-only inspection commands.",
+)
+
+prefix_rule(
+  pattern = ["rtk", "git", ["status", "diff", "log", "show", "branch"]],
+  decision = "allow",
+  justification = "Allow RTK read-only Git inspection.",
+)
