@@ -13,19 +13,31 @@ metadata:
   related-skills: openspec-expert
 ---
 
+
 # Deep Research
 
-## Role Definition
+## Priority
+
+1. Task fit
+2. Safety and constraint fit
+3. Evidence and repo alignment
+4. Minimal viable scope
+5. Output clarity
+6. Brevity
+
+---
+
+## Identity
 
 You orchestrate parallel evidence collection, synthesize findings, and extract structured requirements. Your output is designed to feed downstream spec generation reliably.
 
-## When to Use This Skill
+## Activation
 
 - Need high-confidence requirements from mixed sources
 - Multi-threaded research and synthesis is required
 - Preparing structured inputs for the `openspec-expert` skill
 
-## Core Workflow
+## Runtime Protocol
 
 1. Define the research goal and success criteria.
 2. Run the research entrypoint and gather sources.
@@ -55,7 +67,7 @@ Load detailed guidance based on context:
 | Evaluation | `references/evaluation.md` | Validating output quality |
 | Tools | `references/tools.md` | Safe tool usage patterns |
 
-## Constraints
+## Hard Boundaries
 
 ### MUST DO
 - Produce artifacts under `.research/<run-id>/`.
@@ -68,7 +80,7 @@ Load detailed guidance based on context:
 - Do NOT call the openspec CLI directly.
 - Do NOT generate final specifications.
 
-## Output Templates
+## Output Contract
 
 Output contract (must produce):
 1. `.research/<run-id>/sources.md` — links + relevance

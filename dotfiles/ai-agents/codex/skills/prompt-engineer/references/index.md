@@ -1,12 +1,28 @@
-# Prompt Engineer References
+# Prompt Engineer v2 References
 
-This folder contains supporting guidance for the `prompt-engineer` skill.
+This folder contains supporting reference knowledge for the `prompt-engineer` skill.
 
-## Contents
-- `workflow.md` — step-by-step execution flow and decision points
-- `checklist.md` — quality and safety checklist
-- `pitfalls.md` — common failure modes and mitigations
-- `examples.md` — concrete scenarios and outputs
-- `templates.md` — reusable templates and snippets
-- `evaluation.md` — success criteria and test scenarios
-- `tools.md` — allowed tools and safe usage patterns
+## Runtime Package
+
+Primary operational files live in the skill root:
+- `../SKILL.md` -> runtime rules and domain protocol
+- `../README.md` -> purpose, scope, and package structure
+- `../anti-patterns.md` -> skill-behavior failures to avoid
+- `../examples.md` -> scenario-based examples of correct execution
+- `../evals.md` -> regression prompts and pass/fail checks
+
+## Reference Knowledge
+
+Load only the references needed for the current task:
+- `checklist.md`
+- `evaluation-frameworks.md`
+- `evaluation.md`
+- `examples.md`
+- `pitfalls.md`
+- `prompt-optimization.md`
+- `prompt-patterns.md`
+- `structured-outputs.md`
+- `system-prompts.md`
+- `templates.md`
+- `tools.md`
+- `workflow.md`
