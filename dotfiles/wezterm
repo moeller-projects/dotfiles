@@ -224,8 +224,8 @@ local config = wezterm.config_builder()
 
 config.color_scheme = 'zenwritten_dark'
 config.font = wezterm.font_with_fallback {
-  'FiraCode Nerd Font',
-  'JetBrainsMono Nerd Font',
+  'CommitMono',
+  'JetBrainsMono',
   'Consolas',
 }
 config.font_size = 12

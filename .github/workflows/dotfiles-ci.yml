@@ -67,11 +67,18 @@ jobs:
           echo "dirfile" > dotfiles/test/dir/a.txt
 
           bash ./install.sh --dry-run
-          bash ./install.sh --check
+          if bash ./install.sh --check; then
+            echo "check should fail when targets are missing"
+            exit 1
+          fi
 
           echo "foreign" > "$HOME/.testfile"
+          if bash ./install.sh; then
+            echo "install should refuse a foreign target without --force"
+            exit 1
+          fi
+          test "$(cat "$HOME/.testfile")" = "foreign"
           bash ./install.sh --force
-
           test -L "$HOME/.testfile"
           test -L "$HOME/.testdir"
 
@@ -145,8 +152,12 @@ jobs:
 
           pwsh ./install.ps1 -DryRun
           pwsh ./install.ps1 -Check
+          if ($LASTEXITCODE -eq 0) { throw 'check should fail when targets are missing' }
 
           "foreign" | Set-Content -Path $testFile
+          pwsh ./install.ps1
+          if ($LASTEXITCODE -eq 0) { throw 'install should refuse a foreign target without -Force' }
+          if ((Get-Content $testFile -Raw).Trim() -ne 'foreign') { throw 'foreign target was changed' }
           pwsh ./install.ps1 -Force
 
           if (-not (Test-Path $testFile)) { throw 'target missing' }
@@ -178,3 +189,29 @@ jobs:
           $map = Get-Content dotfiles.map.json -Raw | ConvertFrom-Json
           if (-not $map.'test/new-file') { throw 'map missing new-file' }
           if (-not $map.'test/new-dir') { throw 'map missing new-dir' }
+  macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install jq
+        run: brew install jq
+
+      - name: Verify macOS platform filtering
+        run: |
+          set -euo pipefail
+          cat > dotfiles.map.json <<'JSON'
+          {
+            "test/file.txt": {
+              "target": "~/.testfile",
+              "platforms": ["macos"]
+            }
+          }
+          JSON
+          mkdir -p dotfiles/test
+          echo "macos" > dotfiles/test/file.txt
+          export HOME="$(mktemp -d)"
+          bash ./install.sh
+          test -L "$HOME/.testfile"
+          test "$(cat "$HOME/.testfile")" = "macos"

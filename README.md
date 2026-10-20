@@ -69,14 +69,19 @@ Rules:
 - `target` supports `~` for the home directory
 - `platforms` controls which OSes a mapping applies to
 
-## Installer Behavior
-- PowerShell: `-DryRun`, `-Check`, `-Force`
-- Bash: `--dry-run`, `--check`, `--force`
-- Dry run shows actions without changes
-- Check validates current targets and reports missing/foreign items
-- Force overwrites non-repo targets (backup still occurs)
+Keys are path identifiers, not necessarily directories. A key such as `git` or `wezterm` can map a single source file.
+
+| Action | PowerShell | Bash | Result |
+|---|---|---|---|
+| Preview | `-DryRun` | `--dry-run` | Print intended actions without changing targets. |
+| Check | `-Check` | `--check` | Report missing, foreign, or broken targets; exit non-zero if any are found. |
+| Force | `-Force` | `--force` | Back up and replace foreign targets. Without Force, refuse replacement. |
+| Filter | `-Only <key>` | `--only <key>` | Process one mapping key. |
+| Uninstall | `-Uninstall` | `--uninstall` | Remove repo-owned links only. |
 
 On Windows, if symlink creation fails, the installer falls back to copying the file/folder.
+Backups of replaced targets are stored under `.backup/` and can contain personal configuration data.
+`--uninstall` / `-Uninstall` can remove a managed link even if its source has been deleted.
 
 ## Adding More Dotfiles
 Use `add-dotfile.ps1` to copy the source into `dotfiles/` and update the map:
@@ -90,10 +95,9 @@ pwsh ./add-dotfile.ps1 -Source "$HOME\.config\nvim" -Key "nvim" -Target "~/.conf
 ```
 
 `add-dotfile.ps1` follows symlinks. If the symlink target is outside `$HOME`, it prompts for confirmation.
+With `-DryRun`, it reports the external target without prompting or copying.
 
-`add-dotfile.sh` defaults platforms to `linux` if the optional platforms argument is omitted.
-
-Example without platforms (defaults to `linux`):
+Both add helpers default to all supported platforms (`windows`, `linux`, `macos`).
 
 ```bash
 ./add-dotfile.sh "$HOME/.config/nvim" "nvim" "~/.config/nvim"
@@ -115,6 +119,7 @@ Dry run and explicit platforms:
 
 ```bash
 ./add-dotfile.sh "$HOME/.config/nvim" "nvim" "~/.config/nvim" --platforms=linux,macos --dry-run
+pwsh ./add-dotfile.ps1 -Source "$HOME/.config/nvim" -Key "nvim" -Target "~/.config/nvim" -DryRun
 ```
 
 ## Safety Notes

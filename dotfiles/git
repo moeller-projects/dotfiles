@@ -1,17 +1,8 @@
 [user]
 	name = Lukas Möller
 	email = lukas@laekkerai.com
-	signingKey =
-[author "work"]
-    name = Lukas Möller
-    email = lukas@laekkerai.com
-    signingKey =
-[author "personal"]
-    name = Lukas Möller
-    email = hello@getmoeller.com
-    signingKey =
-[include]
-    path = D:\\projects\\private\\gitalias\\gitalias.txt
+[includeIf "hasconfig:remote.*.url:https://github.com/moeller-projects/**"]
+    path = D://pvt//repos//dotfiles//dotfiles//.gitconfig-github
 [alias]
     nb = "!f() { norm_type() { t=\"$1\"; case \"$t\" in f|feat|feature) echo feature ;; b|bug|bugfix) echo bugfix ;; h|hot|hotfix) echo hotfix ;; r|rel|release) echo release ;; s|supp|support) echo support ;; *) echo invalid ;; esac; }; if [ $# -lt 2 ]; then echo 'Usage: git nb <type|shorthand> <branch-name>'; exit 1; fi; rawtype=\"$1\"; shift; type=$(norm_type \"$rawtype\"); if [ \"$type\" = \"invalid\" ]; then echo \"Invalid branch type: $rawtype\"; echo \"Valid types/shorthands: f/feat/feature, b/bug/bugfix, h/hot/hotfix, r/rel/release, s/supp/support\"; exit 1; fi; name=$(printf '%s-' \"$@\" | sed 's/-$//'); name=${name%-}; git checkout -b \"$type/$name\"; }; f"
     np = "!f() { norm_type() { t=\"$1\"; case \"$t\" in f|feat|feature) echo feature ;; b|bug|bugfix) echo bugfix ;; h|hot|hotfix) echo hotfix ;; r|rel|release) echo release ;; s|supp|support) echo support ;; *) echo invalid ;; esac; }; if [ $# -lt 1 ]; then echo 'Usage: git np <type|shorthand>'; exit 1; fi; rawtype=\"$1\"; type=$(norm_type \"$rawtype\"); if [ \"$type\" = \"invalid\" ]; then echo \"Invalid branch type: $rawtype\"; echo \"Valid types/shorthands: f/feat/feature, b/bug/bugfix, h/hot/hotfix, r/rel/release, s/supp/support\"; exit 1; fi; branch=$(git symbolic-ref --short HEAD); if [[ \"$branch\" != \"$type\"/* ]]; then echo \"Current branch is not a $type branch\"; exit 1; fi; git push -u origin \"$branch\"; }; f"
@@ -35,32 +26,6 @@
                 [ -z \"$branch\" ] && return; \
                 if git switch \"$branch\"; then echo \"Switched to '$branch'.\"; fi; \
             }; f"
-    author = "!f() { \
-      if [ $# -lt 1 ]; then \
-        echo 'Usage: git author <profile> [--global|-g]'; \
-        echo 'Available profiles:'; \
-        git config --get-regexp '^author\\..*\\.email$' 2>/dev/null | sed -E 's/^author\\.([^.]*)\\.email\\s+(.*)$/  \\1 <\\2>/' | sort; \
-        exit 1; \
-      fi; \
-      p=\"$1\"; shift; \
-      scope='--local'; \
-      [ \"$1\" = '--global' ] || [ \"$1\" = '-g' ] && scope='--global'; \
-      name=$(git config --get \"author.$p.name\"); \
-      email=$(git config --get \"author.$p.email\"); \
-      sk=$(git config --get \"author.$p.signingKey\"); \
-      if [ -z \"$name\" ] || [ -z \"$email\" ]; then echo \"Unknown author profile: $p\"; exit 1; fi; \
-      git config $scope user.name \"$name\"; \
-      git config $scope user.email \"$email\"; \
-      if [ -n \"$sk\" ]; then git config $scope user.signingKey \"$sk\"; else git config $scope --unset-all user.signingKey >/dev/null 2>&1 || true; fi; \
-      echo \"Author set ($scope): $name <$email>\"; \
-    }; f"
-    author-select = "!f() { \
-      profiles=$(git config --name-only --get-regexp '^author\\.[^.]+\\.name$' 2>/dev/null | sed -E 's/^author\\.([^.]+)\\.name$/\\1/' | sort -u); \
-      [ -z \"$profiles\" ] && echo 'No author profiles configured (see [author \"...\"] sections)' && exit 1; \
-      p=$(echo \"$profiles\" | fzf); \
-      [ -z \"$p\" ] && exit 0; \
-      git author \"$p\" \"$@\"; \
-    }; f"
     # ---------------------------------------
     # Create new worktree + new branch
     # git wt-new feature/xyz [base]
@@ -175,14 +140,14 @@
 [tag]
 	forceSignAnnotated = false
 [gpg "ssh"]
-	program = 
-	allowedSignersFile = 
+	program =
+	allowedSignersFile =
 [core]
-    pager = delta
 	longpaths = true
-[interactive]
-    diffFilter = delta --color-only
 [delta]
     navigate = true
 [merge]
     conflictStyle = zdiff3
+
+[include]
+    path = C:/Users/Lukasvonlaekkeraicom/AppData/Roaming/git-kit/aliases.gitconfig

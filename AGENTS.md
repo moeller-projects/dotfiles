@@ -10,16 +10,20 @@
 
 ## Build, Test, and Development Commands
 This repo is script-driven; there is no build step.
-- `pwsh ./install.ps1`: Install dotfiles by creating links (or copying on Windows if symlinks fail).
-- `pwsh ./install.ps1 -DryRun`: Show intended actions without changing the system.
-- `pwsh ./install.ps1 -Check`: Validate current targets and report missing/foreign items.
-- `pwsh ./install.ps1 -Force`: Overwrite non-repo targets (backup still occurs).
+- `pwsh ./install.ps1`: Install dotfiles; Windows falls back to copying if symlinks fail.
+- `pwsh ./install.ps1 -DryRun`: Show intended actions without filesystem changes.
+- `pwsh ./install.ps1 -Check`: Validate targets; exits non-zero for missing, foreign, or broken targets.
+- `pwsh ./install.ps1 -Force`: Permit replacing foreign targets after backup.
+- `pwsh ./install.ps1 -Only "git"`: Process one mapping key.
+- `pwsh ./install.ps1 -Uninstall`: Remove repo-owned links only.
 - `pwsh ./add-dotfile.ps1 -Source "<path>" -Key "git/.gitconfig" -Target "~/.gitconfig"`: Add a new file and map it.
 - `./install.sh`: Install dotfiles by creating links (Bash; requires `jq`).
-- `./install.sh --dry-run`: Show intended actions without changing the system.
-- `./install.sh --check`: Validate current targets and report missing/foreign items.
-- `./install.sh --force`: Overwrite non-repo targets (backup still occurs).
-- `./add-dotfile.sh "<path>" "git/.gitconfig" "~/.gitconfig" "linux,macos"`: Add a new file and map it.
+- `./install.sh --dry-run`: Show intended actions without filesystem changes.
+- `./install.sh --check`: Validate targets; exits non-zero for missing, foreign, or broken targets.
+- `./install.sh --force`: Permit replacing foreign targets after backup.
+- `./install.sh --only "git"`: Process one mapping key.
+- `./install.sh --uninstall`: Remove repo-owned links only.
+- `./add-dotfile.sh "<path>" "git/.gitconfig" "~/.gitconfig" "windows,linux,macos"`: Add a new file and map it.
 
 Prerequisites:
 - PowerShell 7+ recommended (`pwsh`).
@@ -32,7 +36,7 @@ Prerequisites:
 - Platforms should be `windows`, `linux`, or `macos` (avoid `darwin`).
 
 ## Testing Guidelines
-- No automated test suite exists. Use `-DryRun` and `-Check` to validate behavior before applying changes.
+- CI runs automated checks; use installer `-DryRun` / `--dry-run` and `-Check` / `--check` for local behavior checks.
 
 ## Commit & Pull Request Guidelines
 - Commit history is minimal; no enforced convention. Prefer short, imperative summaries (e.g., "Add zsh config").
@@ -40,6 +44,6 @@ Prerequisites:
 - PRs should include: a brief description, affected platforms (windows/linux/macos), and example commands run.
 
 ## Security & Configuration Tips
-- Review targets in `dotfiles.map.json` carefully; `-Force` can overwrite existing files.
-- Keep secrets out of `dotfiles/`; prefer references to secure stores or local-only files.
+- Without `-Force` / `--force`, foreign targets are refused and are not changed.
+- With Force, foreign targets are backed up under `.backup/` before replacement; backups contain copies of the replaced files.
 - `add-dotfile.ps1` follows symlinks; if the symlink target is outside `$HOME`, it prompts for confirmation.

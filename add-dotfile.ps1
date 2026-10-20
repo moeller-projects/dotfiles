@@ -24,7 +24,8 @@ param(
     [Parameter(Mandatory)]
     [string]$Target,
 
-    [string[]]$Platforms = @('windows', 'linux', 'macos')
+    [string[]]$Platforms = @('windows', 'linux', 'macos'),
+    [switch]$DryRun
 )
 
 $ErrorActionPreference = 'Stop'
@@ -108,10 +109,13 @@ if ($sourceItem.LinkType)
     if (-not $resolvedSource.StartsWith($homeResolved, $comparison))
     {
         Warn "Symlink target is outside HOME: $resolvedSource"
-        $confirm = Read-Host "Continue and copy target contents? (y/N)"
-        if ($confirm -notin @('y','Y','yes','YES'))
+        if (-not $DryRun)
         {
-            throw "Aborted by user."
+            $confirm = Read-Host "Continue and copy target contents? (y/N)"
+            if ($confirm -notin @('y','Y','yes','YES'))
+            {
+                throw "Aborted by user."
+            }
         }
     }
     $copySource = $resolvedSource
@@ -126,6 +130,13 @@ $RepoDir  = Split-Path -Parent $RepoPath
 if (Test-Path $RepoPath)
 {
     throw "Destination already exists: $RepoPath"
+}
+
+if ($DryRun)
+{
+    Info "Would copy: $copySource -> $RepoPath"
+    Info "Would update mapping: $Key -> $Target"
+    return
 }
 
 New-Item -ItemType Directory -Path $RepoDir -Force | Out-Null

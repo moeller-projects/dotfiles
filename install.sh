@@ -27,18 +27,23 @@ require_command jq
 DRY_RUN=false
 CHECK=false
 FORCE=false
-
-for arg in "$@"; do
-  case "$arg" in
+ONLY_KEY=""
+UNINSTALL=false
+ERRORS=0
+while [[ $# -gt 0 ]]; do
+  case "$1" in
     --dry-run) DRY_RUN=true ;;
-    --check)   CHECK=true ;;
-    --force)   FORCE=true ;;
-    *)
-      echo "[ERROR] Unknown argument: $arg"
-      exit 1
-      ;;
+    --check) CHECK=true ;;
+    --force) FORCE=true ;;
+    --uninstall) UNINSTALL=true ;;
+    --only)
+      [[ $# -ge 2 && "$2" != --* ]] || { echo "[ERROR] --only requires a key" >&2; exit 2; }
+      ONLY_KEY="$2"; shift ;;
+    *) echo "[ERROR] Unknown argument: $1" >&2; exit 2 ;;
   esac
+  shift
 done
+
 
 # ------------------------------------------------------------
 # Paths
@@ -58,15 +63,24 @@ TRANSCRIPT="$BACKUP_RUN_DIR/transcript.txt"
 info() { echo "[INFO]  $*"; }
 warn() { echo "[WARN]  $*" >&2; }
 err()  { echo "[ERROR] $*" >&2; }
+if $UNINSTALL && $CHECK; then err "--uninstall cannot be combined with --check"; exit 2; fi
 
 # ------------------------------------------------------------
 # Helpers
 # ------------------------------------------------------------
 resolve_path() {
-  local path="$1"
+  local path="$1" resolved
   if command -v realpath >/dev/null 2>&1; then
-    realpath "$path"
-  elif command -v python3 >/dev/null 2>&1; then
+    if resolved="$(realpath "$path" 2>/dev/null)"; then
+      printf '%s\n' "$resolved"
+      return
+    fi
+    if resolved="$(realpath -m "$path" 2>/dev/null)"; then
+      printf '%s\n' "$resolved"
+      return
+    fi
+  fi
+  if command -v python3 >/dev/null 2>&1; then
     python3 - <<'PY' "$path"
 import os,sys
 print(os.path.realpath(sys.argv[1]))
@@ -95,11 +109,11 @@ ensure_dir() {
 }
 
 is_repo_owned_link() {
-  local target="$1"
+  local target="$1" resolved root
   [[ -L "$target" ]] || return 1
-  local resolved
   resolved="$(resolve_path "$target")"
-  [[ "$resolved" == "$REPO_ROOT"* ]]
+  root="$(resolve_path "$REPO_ROOT")"
+  [[ "$resolved" == "$root/"* ]]
 }
 
 backup_target() {
@@ -111,7 +125,7 @@ backup_target() {
   if $DRY_RUN; then
     info "Would backup: $target -> $dest"
   else
-    if [[ -L "$target" ]]; then
+    if [[ -L "$target" && -e "$target" ]]; then
       cp -aL "$target" "$dest"
     else
       cp -a "$target" "$dest"
@@ -126,10 +140,12 @@ backup_target() {
 [[ -f "$MAP_FILE" ]] || { err "Mapping file not found: $MAP_FILE"; exit 1; }
 jq -e '
   to_entries | all(
-    .key and (.value.target | type == "string")
+    .key and
+    (.value.target | type == "string") and
+    (.value.platforms == null or
+      (.value.platforms | type == "array" and all(.[]; type == "string")))
   )
 ' "$MAP_FILE" >/dev/null || { err "Invalid map file format: $MAP_FILE"; exit 1; }
-
 # ------------------------------------------------------------
 # Transcript (not in --check)
 # ------------------------------------------------------------
@@ -154,77 +170,45 @@ info "RepoRoot : $REPO_ROOT"
 # ------------------------------------------------------------
 # Process mappings
 # ------------------------------------------------------------
-jq -r 'to_entries[] | "\(.key)|\(.value.target)|\(.value.platforms // empty | join(","))"' "$MAP_FILE" |
-while IFS="|" read -r key target platforms; do
+platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
+[[ "$platform" == darwin ]] && platform=macos
+while IFS= read -r -d '' key && IFS= read -r -d '' target && IFS= read -r -d '' platforms; do
+  [[ -n "$key" ]] || continue
+  [[ -z "$ONLY_KEY" || "$key" == "$ONLY_KEY" ]] || continue
+  if [[ -n "$platforms" ]] && ! printf '%s\n' "$platforms" | tr ',' '\n' | grep -Fxq "$platform"; then continue; fi
   SOURCE="$DOTFILES_ROOT/$key"
   TARGET="$(resolve_home "$target")"
-
-  [[ -e "$SOURCE" ]] || { warn "Source missing: $SOURCE"; continue; }
-
-  if [[ -n "$platforms" ]]; then
-    uname_s="$(uname | tr '[:upper:]' '[:lower:]')"
-    if ! printf '%s\n' "$platforms" | tr ',' '\n' | grep -Fxq "$uname_s"; then
-      continue
-    fi
-  fi
-
+  [[ $UNINSTALL == true || -e "$SOURCE" ]] || { warn "Source missing: $SOURCE"; ERRORS=$((ERRORS + 1)); continue; }
   info "Processing: $key"
 
-  if $CHECK; then
-    if [[ ! -e "$TARGET" ]]; then
-      warn "MISSING : $TARGET"
-    elif ! is_repo_owned_link "$TARGET"; then
-      warn "FOREIGN : $TARGET"
-    else
-      info "OK      : $TARGET"
+  if $UNINSTALL; then
+    if is_repo_owned_link "$TARGET"; then
+      if $DRY_RUN; then info "Would remove repo-owned target: $TARGET"
+      else rm -rf "$TARGET"; info "Removed: $TARGET"; fi
     fi
     continue
   fi
 
-  if [[ -e "$TARGET" ]] && ! is_repo_owned_link "$TARGET"; then
-    if $FORCE; then
-      info "Force enabled; backing up then overwriting: $TARGET"
-    fi
+  if $CHECK; then
+    if [[ ! -e "$TARGET" ]]; then warn "MISSING : $TARGET"; ERRORS=$((ERRORS + 1))
+    elif ! is_repo_owned_link "$TARGET"; then warn "FOREIGN : $TARGET"; ERRORS=$((ERRORS + 1))
+    else info "OK      : $TARGET"; fi
+    continue
+  fi
+
+  if [[ -e "$TARGET" || -L "$TARGET" ]] && ! is_repo_owned_link "$TARGET"; then
+    if ! $FORCE; then err "Refusing to replace foreign target without --force: $TARGET"; ERRORS=$((ERRORS + 1)); continue; fi
+    info "Force enabled; backing up then overwriting: $TARGET"
     backup_target "$TARGET"
-    if $DRY_RUN; then
-      info "Would remove: $TARGET"
-    else
-      rm -rf "$TARGET"
-    fi
+    if $DRY_RUN; then info "Would remove: $TARGET"; else rm -rf "$TARGET"; fi
   fi
 
   ensure_dir "$(dirname "$TARGET")"
-
-  if $DRY_RUN; then
-    info "Would link: $TARGET -> $SOURCE"
+  if $DRY_RUN; then info "Would link: $TARGET -> $SOURCE"
   else
     ln -sfn "$SOURCE" "$TARGET"
     info "Linked: $TARGET -> $SOURCE"
-
-    # If the source is a regular file and looks like a script (shebang), has
-    # a common script extension, or already has the executable bit, ensure
-    # the real file is executable. For symlinks the source file is the real
-    # file; for copies (not used on this path) the target should be chmod'd.
-    if [[ -f "$SOURCE" ]]; then
-      first_line=$(head -n1 "$SOURCE" 2>/dev/null || true)
-      ext="${SOURCE##*.}"
-      case "$ext" in
-        sh|bash|zsh|ksh|py|pl|rb|awk|sed|ps1|js) is_ext=true ;;
-        *) is_ext=false ;;
-      esac
-
-      if [[ "$first_line" == \#!* ]] || [[ -x "$SOURCE" ]] || [[ "$is_ext" == true ]]; then
-        if $DRY_RUN; then
-          info "Would set executable on source: $SOURCE"
-        else
-          # Prefer setting executable on the source (the real file).
-          if ! chmod +x "$SOURCE" 2>/dev/null; then
-            warn "chmod failed on source: $SOURCE"
-          fi
-        fi
-      fi
-    fi
   fi
-done
-
+done < <(jq -j 'to_entries[] | .key, "\u0000", .value.target, "\u0000", ((.value.platforms // []) | join(",")), "\u0000"' "$MAP_FILE")
+if (( ERRORS > 0 )); then exit 1; fi
 info "Done."

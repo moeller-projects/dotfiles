@@ -17,7 +17,9 @@
 param(
     [switch]$DryRun,
     [switch]$Check,
-    [switch]$Force
+    [switch]$Force,
+    [string]$Only,
+    [switch]$Uninstall
 )
 
 $ErrorActionPreference = 'Stop'
@@ -102,19 +104,40 @@ function Is-RepoOwnedLink
 
     try
     {
-        $item = Get-Item $Target -ErrorAction Stop
-        if (-not $item.LinkType)
-        { return $false
+        $root = [System.IO.Path]::GetFullPath($RepoRoot).TrimEnd('\', '/')
+        $comparison = if ($IsWindows) { [StringComparison]::OrdinalIgnoreCase } else { [StringComparison]::Ordinal }
+        $separator = [System.IO.Path]::DirectorySeparatorChar
+        $rootPrefix = $root + $separator
+        $seen = if ($IsWindows)
+        { [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase) }
+        else
+        { [System.Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal) }
+        $current = [System.IO.Path]::GetFullPath($Target)
+
+        while ($true)
+        {
+            if (-not $seen.Add($current)) { return $false }
+            $item = Get-Item -LiteralPath $current -Force -ErrorAction SilentlyContinue
+            if ($null -eq $item)
+            {
+                return $seen.Count -gt 1 -and ($current.Equals($root, $comparison) -or $current.StartsWith($rootPrefix, $comparison))
+            }
+            if (-not $item.LinkType)
+            {
+                break
+            }
+
+            $linkTarget = @($item.Target) | Select-Object -First 1
+            if ([string]::IsNullOrEmpty($linkTarget)) { return $false }
+            if (-not [System.IO.Path]::IsPathRooted($linkTarget))
+            {
+                $linkTarget = Join-Path (Split-Path -Parent $current) $linkTarget
+            }
+            $current = [System.IO.Path]::GetFullPath($linkTarget)
         }
 
-        return (Resolve-Path $Target).Path.StartsWith(
-            $RepoRoot,
-            [StringComparison]::OrdinalIgnoreCase
-        )
-    } catch
-    {
-        return $false
-    }
+        return $current.Equals($root, $comparison) -or $current.StartsWith($rootPrefix, $comparison)
+    } catch { return $false }
 }
 
 # ------------------------------------------------------------
@@ -152,7 +175,8 @@ function Process-Entry
         [string]$Target
     )
 
-    $exists    = Test-Path $Target
+    $targetItem = Get-Item -LiteralPath $Target -Force -ErrorAction SilentlyContinue
+    $exists    = $null -ne $targetItem
     $repoOwned = $exists -and (Is-RepoOwnedLink $Target)
 
     if ($Check)
@@ -160,11 +184,19 @@ function Process-Entry
         if (-not $exists)
         {
             Warn "MISSING : $Target"
+            $script:ErrorCount++
             return
         }
         if (-not $repoOwned)
         {
             Warn "FOREIGN : $Target"
+            $script:ErrorCount++
+            return
+        }
+        if (-not (Test-Path -LiteralPath $Target -ErrorAction SilentlyContinue))
+        {
+            Warn "BROKEN  : $Target"
+            $script:ErrorCount++
             return
         }
         Info "OK      : $Target"
@@ -173,18 +205,16 @@ function Process-Entry
 
     if ($exists -and -not $repoOwned)
     {
-        if ($Force)
-        { Info "Force enabled; backing up then overwriting: $Target"
+        if (-not $Force)
+        {
+            Warn "Refusing to replace foreign target without -Force: $Target"
+            $script:ErrorCount++
+            return
         }
         Backup-Target $Target
 
-        if ($DryRun)
-        {
-            Info "Would remove foreign target: $Target"
-        } else
-        {
-            Remove-Item $Target -Recurse -Force
-        }
+        if ($DryRun) { Info "Would remove foreign target: $Target" }
+        else { Remove-Item $Target -Recurse -Force }
     }
 
     Ensure-Directory (Split-Path -Parent $Target)
@@ -215,52 +245,7 @@ function Process-Entry
 
     Info "Linked: $Target -> $Source"
 
-    # If running on non-Windows and the source is a regular file that looks
-    # like a script (shebang), has a common script extension, or already has
-    # an executable bit, ensure the real file is executable. Prefer setting
-    # the executable bit on the repository source (the real file behind the
-    # symlink). If the installer ever copies instead of linking, the target
-    # will be chmod'd instead.
-    if (-not $IsWindows -and (Test-Path $Source -PathType Leaf))
-    {
-        $firstLine = Get-Content -Path $Source -TotalCount 1 -ErrorAction SilentlyContinue
-        $sourceItem = Get-Item $Source -ErrorAction SilentlyContinue
-        $hasExec = $false
-
-        if ($firstLine -and $firstLine -match '^#!') { $hasExec = $true }
-
-        $ext = [System.IO.Path]::GetExtension($Source).TrimStart('.')
-        $ext = if ($ext) { $ext.ToLowerInvariant() } else { '' }
-        $scriptExts = @('sh','bash','zsh','ksh','py','pl','rb','awk','sed','ps1','js')
-        if ($scriptExts -contains $ext) { $hasExec = $true }
-
-        if ($sourceItem -and ($sourceItem.Mode -and ($sourceItem.Mode -match 'x'))) { $hasExec = $true }
-
-        if ($hasExec)
-        {
-            if ($DryRun)
-            {
-                Info "Would set executable on source: $Source"
-            } else
-            {
-                # Prefer chmod on the source (the repo file) so symlinked targets
-                # inherit executability. If the source doesn't exist but the
-                # target is a regular file (e.g., copied), chmod target instead.
-                if (Test-Path $Source)
-                {
-                    & chmod +x -- $Source
-                }
-                elseif (Test-Path $Target)
-                {
-                    & chmod +x -- $Target
-                }
-
-                if ($LASTEXITCODE -ne 0)
-                { Warn "chmod failed"
-                }
-            }
-        }
-    }
+    # Repository sources keep their committed executable mode unchanged.
 }
 
 # ------------------------------------------------------------
@@ -273,26 +258,22 @@ if (-not (Test-Path $MapFile))
 }
 
 # ------------------------------------------------------------
-# Prepare backup + transcript (not in CHECK mode)
-# ------------------------------------------------------------
-if (-not $Check)
+if (-not $Check -and -not $DryRun)
 {
     Ensure-Directory $BackupRunDir
     try
-    { Start-Transcript -Path $Transcript | Out-Null
-      $TranscriptStarted = $true
-    } catch
-    { throw "Failed to start transcript at $Transcript. $($_.Exception.Message)"
-    }
+    {
+        Start-Transcript -Path $Transcript | Out-Null
+        $TranscriptStarted = $true
+    } catch { throw "Failed to start transcript at $Transcript. $($_.Exception.Message)" }
 }
 
 try
 {
-    # --------------------------------------------------------
-    # Load mapping
-    # --------------------------------------------------------
-    $Map      = Get-Content $MapFile -Raw | ConvertFrom-Json
+    $Map = Get-Content $MapFile -Raw | ConvertFrom-Json
     $Platform = Get-Platform
+    $script:ErrorCount = 0
+    if ($Uninstall -and $Check) { throw "-Uninstall cannot be combined with -Check." }
 
     Info "Mode     : $(if ($Check) {'CHECK'} elseif ($DryRun) {'DRY-RUN'} else {'INSTALL'})"
     Info "Platform : $Platform"
@@ -300,40 +281,33 @@ try
     foreach ($p in $Map.PSObject.Properties)
     {
         if (-not $p.Value.target -or -not ($p.Value.target -is [string]))
-        { throw "Invalid map entry for key '$($p.Name)': target is required and must be a string."
-        }
-    }
-
-    # --------------------------------------------------------
-    # Process mappings
-    # --------------------------------------------------------
-    foreach ($key in $Map.PSObject.Properties.Name)
-    {
-        $entry = $Map.$key
-
-        if ($entry.platforms -and -not ($entry.platforms -contains $Platform))
+        { throw "Invalid map entry for key '$($p.Name)': target is required and must be a string." }
+        if ($Only -and $p.Name -ne $Only) { continue }
+        if ($p.Value.platforms -and -not ($p.Value.platforms -contains $Platform)) { continue }
+        $Source = Join-Path $DotfilesRoot $p.Name
+        $Target = Resolve-HomePath $p.Value.target
+        if ($Uninstall)
         {
+            if (Is-RepoOwnedLink $Target)
+            {
+                if ($DryRun) { Info "Would remove repo-owned target: $Target" }
+                else { Remove-Item $Target -Force -Recurse; Info "Removed: $Target" }
+            }
             continue
         }
-
-        $Source = Join-Path $DotfilesRoot $key
         if (-not (Test-Path $Source))
         {
             Warn "Source missing: $Source"
+            $script:ErrorCount++
             continue
         }
-
-        $Target = Resolve-HomePath $entry.target
-
-        Info "Processing: $key"
+        Info "Processing: $($p.Name)"
         Process-Entry -Source $Source -Target $Target
     }
 
+    if ($script:ErrorCount -gt 0) { exit 1 }
     Info "Done."
 } finally
 {
-    if (-not $Check -and $TranscriptStarted)
-    {
-        Stop-Transcript | Out-Null
-    }
+    if ($TranscriptStarted) { Stop-Transcript | Out-Null }
 }

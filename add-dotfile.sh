@@ -28,7 +28,7 @@ DRY_RUN=false
 SOURCE=""
 KEY=""
 TARGET=""
-PLATFORMS="linux"
+PLATFORMS="windows,linux,macos"
 
 usage() {
   cat <<'USAGE'
@@ -41,7 +41,7 @@ Options:
 
 Examples:
   ./add-dotfile.sh ~/.gitconfig git/.gitconfig ~/.gitconfig
-  ./add-dotfile.sh ~/.config/nvim nvim ~/.config/nvim linux,darwin --dry-run
+  ./add-dotfile.sh ~/.config/nvim nvim ~/.config/nvim windows,linux,macos --dry-run
 USAGE
 }
 
@@ -79,7 +79,7 @@ done
 SOURCE="${POSITIONAL[0]:-}"
 KEY="${POSITIONAL[1]:-}"
 TARGET="${POSITIONAL[2]:-}"
-if [[ -n "${POSITIONAL[3]:-}" && "$PLATFORMS" == "linux" ]]; then
+if [[ -n "${POSITIONAL[3]:-}" && "$PLATFORMS" == "windows,linux,macos" ]]; then
   PLATFORMS="${POSITIONAL[3]}"
 fi
 
@@ -132,7 +132,7 @@ fi
 IFS=',' read -r -a plats <<< "$PLATFORMS"
 for p in "${plats[@]}"; do
   case "$p" in
-    linux|darwin|windows) ;;
+    linux|macos|windows) ;;
     *) echo "[ERROR] Invalid platform: $p"; exit 1 ;;
   esac
 done
